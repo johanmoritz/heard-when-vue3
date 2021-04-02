@@ -114,11 +114,11 @@ export const startGame = functions.https.onCall(async (data, context) => {
     }
 
     const gameUpdate: Partial<GameDocument.Game> = {
-      status: 'started',
-      currentPlayer: randomPlayer({game}),
-      phase: 'newTurn',
-    }
-    
+      status: "started",
+      currentPlayer: randomPlayer({ game }),
+      phase: "newTurn",
+    };
+
     transaction.update(gameRef, gameUpdate);
   });
 });

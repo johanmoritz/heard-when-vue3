@@ -16,11 +16,10 @@ export interface Player {
   lockedCards: Array<Card>;
 }
 
-export interface Guess {
-}
+export interface Guess {}
 
-export type GamePhase = 'newTurn' | 'choice' | 'draw' | 'listen' | 'evaluation';
-export type GameStatus = 'initialized' | 'started' | 'finished';
+export type GamePhase = "newTurn" | "choice" | "draw" | "listen" | "evaluation";
+export type GameStatus = "initialized" | "started" | "finished";
 
 export namespace GameDocument {
   export interface Game {
