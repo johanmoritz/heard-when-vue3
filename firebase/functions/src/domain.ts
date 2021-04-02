@@ -153,6 +153,22 @@ function insert<T>(val: T, at: number, arr: Array<T>): Array<T> {
   return arr.slice(0, at).concat([val], arr.slice(at));
 }
 
+function randomReal(args: {min: number, max: number}): number {
+  const {min, max} = args;
+  return Math.random() * (max - min) + min;
+}
+
+function randomInt(args: {min: number, max: number}): number {
+  return Math.floor(randomReal(args));
+}
+
+export function randomPlayer(args: {game: GameDocument.Game}) {
+  const players = args.game.players;
+  const numberOfPlayers = players.length;
+  const i = randomInt({min: 0, max: numberOfPlayers});
+  return players[i];
+}
+
 export function executeEvents(args: {
   events: Array<GameEvent>;
   game: GameDocument.Game;

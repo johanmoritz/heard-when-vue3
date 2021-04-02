@@ -5,9 +5,10 @@ import {
   eventsFromAction,
   executeEvents,
   player,
+  randomPlayer,
   stepGameStateMachine,
 } from "./domain";
-import { Deck, GameDocument } from "./types";
+import { Card, GameDocument } from "./types";
 
 initializeApp();
 const db = firestore();
@@ -18,7 +19,7 @@ const db = firestore();
 export const initializeGame = functions.https.onCall(async (data, context) => {
   const uid = context.auth?.uid;
   const displayName = data?.displayName as string | undefined;
-  const deck = data?.deck as Deck | undefined;
+  const deck = data?.deck as Array<Card> | undefined;
 
   if (uid === undefined || displayName === undefined || deck === undefined) {
     throw new functions.https.HttpsError(
@@ -34,6 +35,7 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
     players: [firstPlayer],
     deck,
     currentHiddenCard: undefined,
+    temporaryCards: [],
     goalNumberOfCards: 7,
     log: [],
     phase: "newTurn",
@@ -60,18 +62,66 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
   }
 
   const gameRef = db.collection("game").doc(gameId);
-  const addPlayer = firestore.FieldValue.arrayUnion(
-    player({ id: uid, displayName })
-  );
-  gameRef.update(addPlayer);
+
+  db.runTransaction(async (transaction) => {
+    const game = (await transaction
+      .get(gameRef)
+      .then((result) => result.data())) as GameDocument.Game;
+    const gameIsInitialized = game.status === "initialized";
+    const playerAlreadyAdded = game.players.find(({ id }) => id === uid);
+
+    if (!gameIsInitialized) {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Game must be initialized."
+      );
+    }
+    if (playerAlreadyAdded) {
+      return;
+    }
+    const newPlayer = player({ id: uid, displayName });
+    transaction.update(gameRef, { players: game.players.concat(newPlayer) });
+  });
 });
 
 /**
  * Start an initialized game.
  */
 export const startGame = functions.https.onCall(async (data, context) => {
-  // TODO
-})
+  const uid = context.auth?.uid;
+  const gameId = data?.gameId as string | undefined;
+
+  if (uid === undefined || gameId === undefined) {
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      `Needs to be authenticated. Needs: 'gameId'.`
+    );
+  }
+
+  const gameRef = db.collection("game").doc(gameId);
+  db.runTransaction(async (transaction) => {
+    const game = (await transaction
+      .get(gameRef)
+      .then((result) => result.data())) as GameDocument.Game;
+    const gameIsInitialized = game.status === "initialized";
+    const playerIsOwner = game.currentPlayer.id === uid;
+
+    if (!gameIsInitialized || !playerIsOwner) {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "Game must be initialized. Only the owner of the game can start it."
+      );
+    }
+
+    const gameUpdate: Partial<GameDocument.Game> = {
+      status: 'started',
+      currentPlayer: randomPlayer({game}),
+      phase: 'newTurn',
+    }
+    
+    transaction.update(gameRef, gameUpdate);
+  });
+});
 
 /**
  * Called by players.
