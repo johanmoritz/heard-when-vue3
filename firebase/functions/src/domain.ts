@@ -100,7 +100,8 @@ export function handleEvent(args: {
   const { event, state } = args;
 
   const gameIsFinished =
-    state.status === "finished" || (state.phase === "newTurn" && hasWinner());
+    state.status === "finished" ||
+    (state.phase === "newTurn" && hasWinner({ game: state }));
 
   if (gameIsFinished) {
     return [{ ...state, status: "finished" }];
@@ -131,18 +132,20 @@ export function handleEvent(args: {
   }
 }
 
-export function player(args: {id: PlayerId; displayName: string}): Player {
-  const {id, displayName} = args;
-  return {id, displayName, lockedCards: []}
+export function player(args: { id: PlayerId; displayName: string }): Player {
+  const { id, displayName } = args;
+  return { id, displayName, lockedCards: [] };
 }
 
-export function winners(args: {game: GameDocument.Game}) {
+export function winners(args: { game: GameDocument.Game }) {
   const goal = args.game.goalNumberOfCards;
-  return args.game.players.filter(({lockedCards}) => lockedCards.length >= goal);
+  return args.game.players.filter(
+    ({ lockedCards }) => lockedCards.length >= goal
+  );
 }
 
-export function hasWinner(args: {game: GameDocument.Game}) {
-  return winners({game: args.game}).length > 0;
+export function hasWinner(args: { game: GameDocument.Game }) {
+  return winners({ game: args.game }).length > 0;
 }
 
 function insert<T>(val: T, at: number, arr: Array<T>): Array<T> {
@@ -153,19 +156,19 @@ function insert<T>(val: T, at: number, arr: Array<T>): Array<T> {
   return arr.slice(0, at).concat([val], arr.slice(at));
 }
 
-function randomReal(args: {min: number, max: number}): number {
-  const {min, max} = args;
+function randomReal(args: { min: number; max: number }): number {
+  const { min, max } = args;
   return Math.random() * (max - min) + min;
 }
 
-function randomInt(args: {min: number, max: number}): number {
+function randomInt(args: { min: number; max: number }): number {
   return Math.floor(randomReal(args));
 }
 
-export function randomPlayer(args: {game: GameDocument.Game}) {
+export function randomPlayer(args: { game: GameDocument.Game }) {
   const players = args.game.players;
   const numberOfPlayers = players.length;
-  const i = randomInt({min: 0, max: numberOfPlayers});
+  const i = randomInt({ min: 0, max: numberOfPlayers });
   return players[i];
 }
 
