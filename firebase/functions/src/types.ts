@@ -1,23 +1,19 @@
-import { firestore } from "firebase-admin";
 import { GameEvent } from "./event";
 
-type PlayerId = string;
+type FirebaseUid = string;
+export type PlayerId = FirebaseUid;
 
 export interface Card {
   id: number;
   releaseYear: number;
 }
 
+export type Deck = Array<Card>;
+
 export interface Player {
   id: PlayerId;
-}
-
-export interface State {
-  deck: Array<Card>;
-  players: Array<Player>;
-  currentPlayer: Player;
-  eventQueue: EventQueue;
-  eventLog: ReadonlyArray<GameEvent>;
+  displayName: string;
+  lockedCards: Array<Card>;
 }
 
 export interface EventQueue {
@@ -33,9 +29,11 @@ export type GameStatus = 'initialized' | 'started' | 'finished';
 
 export namespace GameDocument {
   export interface Game {
-    deck: Array<Card>;
+    deck: Deck;
+    goalNumberOfCards: number;
     players: Array<Player>;
     currentPlayer: Player;
+    currentHiddenCard: Card | undefined;
     log: Array<GameEvent>;
     status: GameStatus;
     phase: GamePhase;
