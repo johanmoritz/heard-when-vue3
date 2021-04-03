@@ -8,6 +8,7 @@ import {
   randomPlayer,
   stepGameStateMachine,
 } from "./domain";
+import { nextEvent } from "./event";
 import { Card, GameDocument } from "./types";
 
 initializeApp();
@@ -21,20 +22,20 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
   const displayName = data?.displayName as string | undefined;
   const deck = data?.deck as Array<Card> | undefined;
 
-  if (uid === undefined || displayName === undefined || deck === undefined) {
+  if (uid === undefined || displayName === undefined || deck === undefined || deck.length === 0) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      `Needs to be authenticated. Needs: 'displayName', 'deck'.`
+      `Needs to be authenticated. Needs: 'displayName', 'deck'. Needs at least one card in 'deck'.`
     );
   }
 
   const firstPlayer = player({ id: uid, displayName });
 
-  const initialGame: GameDocument.Game = {
+  const initialGame: Partial<GameDocument.Game> = {
     currentPlayer: firstPlayer,
     players: [firstPlayer],
     deck,
-    currentHiddenCard: undefined,
+    // currentHiddenCard: undefined, // Cannot have undefined values in firebase
     temporaryCards: [],
     goalNumberOfCards: 7,
     log: [],
@@ -43,7 +44,7 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
   };
 
   const gameRef = await db.collection("game").add(initialGame);
-  return gameRef;
+  return gameRef.id;
 });
 
 /**
@@ -113,13 +114,14 @@ export const startGame = functions.https.onCall(async (data, context) => {
       );
     }
 
-    const gameUpdate: Partial<GameDocument.Game> = {
-      status: "started",
-      currentPlayer: randomPlayer({ game }),
-      phase: "newTurn",
-    };
+    const initialPlayer = randomPlayer({ game });
 
-    transaction.update(gameRef, gameUpdate);
+    const newGameState = executeEvents({
+      events: [nextEvent({ from: initialPlayer, to: initialPlayer })],
+      game: { ...game, status: "started" },
+    });
+
+    transaction.set(gameRef, newGameState);
   });
 });
 
@@ -147,7 +149,10 @@ export const runAction = functions.https.onCall(async (data, context) => {
     const game = await transaction.get(gameRef).then((result) => result.data());
     if (game === undefined) {
       //  Should not happen
-      return;
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        "The game must be initialized"
+      );
     }
 
     const newPhase = stepGameStateMachine({
@@ -155,8 +160,9 @@ export const runAction = functions.https.onCall(async (data, context) => {
       status: game.phase,
     });
     if (newPhase === undefined) {
-      // Invalid action
-      return;
+      throw new functions.https.HttpsError(
+        "failed-precondition", `The action '${action}' is not valid in the '${game.phase}' part of the game. ${newPhase}`
+      )
     }
 
     const events = eventsFromAction({
@@ -167,6 +173,7 @@ export const runAction = functions.https.onCall(async (data, context) => {
       events: events,
       game: { ...game, phase: newPhase },
     });
+    console.log(gamePostEvents);
     transaction.set(gameRef, gamePostEvents);
   });
 

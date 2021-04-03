@@ -6,6 +6,7 @@ import {
   nextEvent,
   finnishEvent,
   wrongEvent,
+  passEvent,
 } from "./event";
 import { GameDocument, GamePhase, Player, PlayerId } from "./types";
 
@@ -45,10 +46,14 @@ export function stepGameStateMachine(args: {
   const validTransitions: TransitionTable = {
     newTurn: {
       nextEvent: "choice",
+      finnishEvent: "newTurn",
+    },
+    pass: {
+      passEvent: "newTurn",
     },
     choice: {
       drawAction: "draw",
-      passAction: "newTurn",
+      passAction: "pass",
     },
     draw: {
       drawEvent: "listen",
@@ -82,10 +87,7 @@ export function eventsFromAction(args: {
       return successfulGuess() ? [correctEvent()] : [wrongEvent()];
     }
     case "passAction": {
-      // TODO: add a SaveEvent and non-saved cards
-      return state.deck.length > 0
-        ? [nextEvent({ from: state.currentPlayer, to: playerInTurn(state) })]
-        : [finnishEvent()];
+      return [passEvent()];
     }
   }
 }
@@ -96,38 +98,46 @@ export function eventsFromAction(args: {
 export function handleEvent(args: {
   event: GameEvent;
   state: GameDocument.Game;
-}): [GameDocument.Game, GameEvent?] {
+}): GameDocument.Game {
   const { event, state } = args;
-
-  const gameIsFinished =
-    state.status === "finished" ||
-    (state.phase === "newTurn" && hasWinner({ game: state }));
-
-  if (gameIsFinished) {
-    return [{ ...state, status: "finished" }];
-  }
 
   const newPhase = stepGameStateMachine({ symbol: event, status: state.phase });
   if (newPhase === undefined) {
     throw "Event not allowed. Should not happen.";
   }
 
+  const newLog = state.log.concat(event);
+
   switch (event._tag) {
     case "nextEvent": {
-      return [{ ...state, currentPlayer: event.next, phase: newPhase }];
+      // TODO?
+      return {
+        ...state,
+        currentPlayer: event.next,
+        phase: newPhase,
+        log: newLog,
+      };
     }
     case "drawEvent": {
+      // TODO
       const deck = state.deck.filter(({ id }) => id !== event.card.id);
-      return [{ ...state, deck, phase: newPhase }];
+      return { ...state, deck, phase: newPhase, log: newLog };
+    }
+    case "passEvent": {
+      // TODO
+      return { ...state, phase: newPhase, log: newLog };
     }
     case "correctEvent": {
-      return [{ ...state, phase: newPhase }];
+      // TODO
+      return { ...state, phase: newPhase, log: newLog };
     }
     case "wrongEvent": {
-      return [{ ...state, phase: newPhase }];
+      // TODO
+      return { ...state, phase: newPhase, log: newLog };
     }
     case "finnishEvent": {
-      return [{ ...state, phase: newPhase }];
+      // TODO
+      return { ...state, phase: newPhase, log: newLog, status: 'finished' };
     }
   }
 }
@@ -138,7 +148,12 @@ export function player(args: { id: PlayerId; displayName: string }): Player {
 }
 
 export function winners(args: { game: GameDocument.Game }) {
-  const goal = args.game.goalNumberOfCards;
+  const goal =
+    args.game.deck.length === 0
+      ? Math.max(
+          ...args.game.players.map(({ lockedCards }) => lockedCards.length)
+        )
+      : args.game.goalNumberOfCards;
   return args.game.players.filter(
     ({ lockedCards }) => lockedCards.length >= goal
   );
@@ -172,23 +187,54 @@ export function randomPlayer(args: { game: GameDocument.Game }) {
   return players[i];
 }
 
+function evaluateState(args: {
+  state: GameDocument.Game;
+}): GameEvent | undefined {
+  if (args.state.phase !== "newTurn" || args.state.status !== 'started') {
+    return undefined;
+  }
+
+  if (hasWinner({ game: args.state })) {
+    return finnishEvent();
+  }
+
+  const lastEvent: GameEvent | undefined =
+    args.state.log[args.state.log.length - 1];
+  console.log("lastEvent", lastEvent);
+  if (lastEvent?._tag === "correctEvent") {
+    return nextEvent({
+      from: args.state.currentPlayer,
+      to: args.state.currentPlayer,
+    });
+  } else if (
+    lastEvent?._tag === "wrongEvent" ||
+    lastEvent?._tag === "passEvent"
+  ) {
+    return nextEvent({
+      from: args.state.currentPlayer,
+      to: playerInTurn(args.state),
+    });
+  } else {
+    return undefined;
+  }
+}
+
 export function executeEvents(args: {
   events: Array<GameEvent>;
   game: GameDocument.Game;
 }) {
   // Note the mutability here
   let { events, game } = args;
-  let event: GameEvent | undefined = undefined;
 
   for (let i = 0; i < events.length; i += 1) {
-    [game, event] = handleEvent({
+    game = handleEvent({
       event: events[i],
       state: game,
     });
+    const event: GameEvent | undefined = evaluateState({ state: game });
     if (event !== undefined) {
       events = insert(event, i + 1, events);
     }
   }
-  game.log = game.log.concat(events);
   return game;
 }

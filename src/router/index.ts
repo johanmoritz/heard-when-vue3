@@ -8,6 +8,11 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
+    path: "/firebase",
+    name: "Firebase",
+    component: () => import("../views/FirebaseExample.vue"),
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

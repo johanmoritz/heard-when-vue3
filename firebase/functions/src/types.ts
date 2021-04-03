@@ -18,7 +18,7 @@ export interface Player {
 
 export interface Guess {}
 
-export type GamePhase = "newTurn" | "choice" | "draw" | "listen" | "evaluation";
+export type GamePhase = "newTurn" | "choice" | "draw" | "pass" | "listen" | "evaluation";
 export type GameStatus = "initialized" | "started" | "finished";
 
 export namespace GameDocument {
