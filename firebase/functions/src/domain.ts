@@ -25,23 +25,28 @@ export function playerInTurn(state: GameDocument.Game): Player {
 /**
  * Evaluates whether or not a guess is correct.
  */
-export function successfulGuess(args: {hiddenCardPosition: number, state: GameDocument.Game}): boolean {
+export function successfulGuess(args: {
+  hiddenCardPosition: number;
+  state: GameDocument.Game;
+}): boolean {
   const { hiddenCardPosition, state } = args;
 
   const cardBefore = state.temporaryCards[hiddenCardPosition - 1];
   const cardAfter = state.temporaryCards[hiddenCardPosition + 1];
 
-  const hidden =  state.currentHiddenCard;
+  const hidden = state.currentHiddenCard;
   if (hidden === undefined) {
     // We've done something wrong here
     return false;
   }
 
-  const isAfterBeforeCard = cardBefore === undefined || cardBefore.year <= hidden.year;
-  const isBeforeAfterCard = cardAfter === undefined || cardAfter.year >= hidden.year;
+  const isAfterBeforeCard =
+    cardBefore === undefined || cardBefore.year <= hidden.year;
+  const isBeforeAfterCard =
+    cardAfter === undefined || cardAfter.year >= hidden.year;
 
-  console.log('test', isAfterBeforeCard, isBeforeAfterCard);
-  return  isAfterBeforeCard && isBeforeAfterCard;
+  console.log("test", isAfterBeforeCard, isBeforeAfterCard);
+  return isAfterBeforeCard && isBeforeAfterCard;
 }
 
 export function stepGameStateMachine(args: {
@@ -96,8 +101,10 @@ export function eventsFromAction(args: {
       return [drawEvent({ card: state.deck[0] })];
     }
     case "guessAction": {
-      const {hiddenCardPosition} = action;
-      return successfulGuess({hiddenCardPosition, state}) ? [correctEvent({hiddenCardPosition})] : [wrongEvent({hiddenCardPosition})];
+      const { hiddenCardPosition } = action;
+      return successfulGuess({ hiddenCardPosition, state })
+        ? [correctEvent({ hiddenCardPosition })]
+        : [wrongEvent({ hiddenCardPosition })];
     }
     case "passAction": {
       return [passEvent()];
@@ -180,7 +187,22 @@ export function handleEvent(args: {
       return { ...state, phase: newPhase, log: newLog };
     }
     case "finnishEvent": {
-      return { ...state, phase: newPhase, log: newLog, status: "finished" };
+      const currentPlayerIndex = state.players.findIndex(
+        ({ id }) => id === state.currentPlayer.id
+      );
+      const savedPlayer = {
+        ...state.players[currentPlayerIndex],
+        lockedCards: state.temporaryCards,
+      };
+      const newPlayers = update(savedPlayer, currentPlayerIndex, state.players);
+
+      return {
+        ...state,
+        phase: newPhase,
+        players: newPlayers,
+        log: newLog,
+        status: "finished",
+      };
     }
   }
 }
