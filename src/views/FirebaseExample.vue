@@ -1,4 +1,5 @@
 <template>
+  <!-- Step 1: Login -->
   <div v-if="user === undefined">
     <input
       type="text"
@@ -8,6 +9,8 @@
     />
     <button @click="signIn">Sign in</button>
   </div>
+
+  <!-- Step 2: Create or join a game -->
   <div v-if="user !== undefined">
     <button @click="signOut">Sign out {{ user.email }}</button>
 
@@ -36,6 +39,8 @@
         Player {{ game.currentPlayer.displayName }}s deck:
         {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
       </p>
+
+      <!-- Step 3: Wait for players to join and then start the game. -->
       <div v-if="game.status === 'initialized' && user !== undefined">
         <p>Waiting for players to join...</p>
         <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
@@ -44,6 +49,7 @@
       </div>
       <div v-if="game.status === 'started'">
         <p v-if="game.log.length === 0">Game has begun!</p>
+        <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
         <div
           v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
         >
@@ -54,6 +60,7 @@
             Lock cards
           </button>
         </div>
+        <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
         <div
           v-if="
             game.phase === 'listen' &&
@@ -61,6 +68,7 @@
               game.currentHiddenCard !== undefined
           "
         >
+          <!-- Imagine that we have spotify integration instead of this: -->
           <p>When is the song '{{ game.currentHiddenCard.title }}' from?</p>
           <button
             v-for="n in game.temporaryCards.length + 1"
@@ -82,6 +90,7 @@
         </div>
       </div>
 
+      <!-- Step 6: Now the game is over. -->
       <div v-if="game.status === 'finished'">
         The score is
         <p v-for="player in game.players" :key="player.displayName">
@@ -97,6 +106,7 @@ import { defineComponent, reactive, ref, onUnmounted } from "vue";
 import { fb } from "@/config/firebaseConfig";
 import firebase from "firebase/app";
 import { GameDocument } from "../../firebase/functions/src/types";
+import * as action from "@/domain/action";
 
 export default defineComponent({
   setup() {
@@ -111,12 +121,11 @@ export default defineComponent({
     const username = ref("");
     const user = ref<firebase.User | undefined>(undefined);
     const game = ref<GameDocument.Game | undefined>(undefined);
-    const gameStr = ref("");
     const gameId = ref("");
-    const data = reactive({ username, user, game, gameStr, gameId });
+    const data = reactive({ username, user, game, gameId });
 
-    let unsub = () => {
-      /* */
+    let unsubscribeFromFirestore = () => {
+      /* See below. */
     };
 
     const setUser = (user: firebase.User | null) => {
@@ -125,17 +134,32 @@ export default defineComponent({
       }
     };
 
+    const subscribeToGameChanges = (args: { gameId: string }) => {
+      const { gameId } = args;
+      return firestore
+        .collection("game")
+        .doc(gameId)
+        .onSnapshot(s => {
+          const gameData = s.data() as GameDocument.Game | undefined;
+          if (gameData !== undefined) {
+            data.game = gameData;
+          }
+        });
+    };
+
     setUser(auth.currentUser);
 
     const onSignIn = async () =>
       auth
         .signInWithEmailAndPassword(
+          // This is much more conventient than normal passwords ^^
           `${username.value}@example.com`,
           `${username.value}@example.com`
         )
         .then(() => {
           setUser(auth.currentUser);
         });
+
     const onSignOut = async () =>
       auth.signOut().then(() => {
         data.user = undefined;
@@ -145,6 +169,7 @@ export default defineComponent({
       functions
         .httpsCallable("initializeGame")({
           displayName: data.username,
+          // Imagine we had som real songs to add :)
           deck: [
             { id: 0, title: "A song 1", artist: "BSD", year: "2000" },
             { id: 1, title: "A song 2", artist: "BSD", year: "1999" },
@@ -155,18 +180,8 @@ export default defineComponent({
         })
         .then(response => {
           const gameId = response.data;
-          unsub = firestore
-            .collection("game")
-            .doc(gameId)
-            .onSnapshot(s => {
-              const gameData = s.data() as GameDocument.Game | undefined;
-              if (gameData !== undefined) {
-                console.log("data", gameData);
-                data.gameId = gameId;
-                data.game = gameData;
-                data.gameStr = JSON.stringify(gameData);
-              }
-            });
+          data.gameId = gameId;
+          unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
         });
     };
 
@@ -181,44 +196,36 @@ export default defineComponent({
           displayName: data.username
         })
         .then(() => {
-          unsub = firestore
-            .collection("game")
-            .doc(data.gameId)
-            .onSnapshot(s => {
-              const gameData = s.data() as GameDocument.Game | undefined;
-              if (gameData !== undefined) {
-                console.log("data", gameData);
-                data.game = gameData;
-                data.gameStr = JSON.stringify(gameData);
-              }
-            });
+          unsubscribeFromFirestore = subscribeToGameChanges({
+            gameId: data.gameId
+          });
         });
     };
 
     const draw = async () => {
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "drawAction" }
+        action: action.drawAction()
       });
     };
 
     const lock = async () => {
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "passAction" }
+        action: action.passAction()
       });
     };
 
     const guess = async (pos: number) => {
-      console.log("guess", pos);
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "guessAction", hiddenCardPosition: pos }
+        action: action.guessAction({ hiddenCardPosition: pos })
       });
     };
 
+    // This is a cool 'vue' function
     onUnmounted(() => {
-      unsub();
+      unsubscribeFromFirestore();
     });
 
     return {
@@ -226,7 +233,6 @@ export default defineComponent({
       user,
       game,
       gameId,
-      gameStr,
       signIn: onSignIn,
       signOut: onSignOut,
       initialize,

@@ -1,10 +1,10 @@
-interface DrawAction {
+export interface DrawAction {
   _tag: "drawAction";
 }
-interface PassAction {
+export interface PassAction {
   _tag: "passAction";
 }
-interface GuessAction {
+export interface GuessAction {
   _tag: "guessAction";
   // [0, temporaryCards+1]
   hiddenCardPosition: number;

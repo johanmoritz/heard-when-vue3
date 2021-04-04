@@ -13,7 +13,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env", "./firebase/functions/src"
+      "webpack-env"
     ],
     "paths": {
       "@/*": [
