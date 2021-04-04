@@ -96,6 +96,7 @@
         <p v-for="player in game.players" :key="player.displayName">
           {{ player.displayName }} has {{ player.lockedCards.length }} cards
         </p>
+        <button @click="quit">End game</button>
       </div>
     </div>
   </div>
@@ -149,6 +150,49 @@ export default defineComponent({
 
     setUser(auth.currentUser);
 
+    const storeCurrentGame = async (args: {
+      userId: string;
+      gameId: string;
+    }) => {
+      const { userId, gameId } = args;
+
+      firestore
+        .collection("user")
+        .doc(userId)
+        .set({ currentGame: gameId });
+    };
+
+    const loadCurrentGame = async (args: { userId: string }) => {
+      const { userId } = args;
+
+      firestore
+        .collection("user")
+        .doc(userId)
+        .get()
+        .then(res => res.data())
+        .then(result => {
+          if (result && result["currentGame"] !== undefined) {
+            const gameId = result["currentGame"];
+            console.log("gameId", gameId);
+            data.gameId = gameId;
+            unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
+          }
+        });
+    };
+
+    const quit = async () => {
+      data.gameId = "";
+      data.game = undefined;
+      unsubscribeFromFirestore();
+
+      if (data.user) {
+        firestore
+          .collection("user")
+          .doc(data.user.uid)
+          .set({});
+      }
+    };
+
     const onSignIn = async () =>
       auth
         .signInWithEmailAndPassword(
@@ -158,6 +202,9 @@ export default defineComponent({
         )
         .then(() => {
           setUser(auth.currentUser);
+          if (data.user) {
+            loadCurrentGame({ userId: data.user.uid });
+          }
         });
 
     const onSignOut = async () =>
@@ -182,6 +229,9 @@ export default defineComponent({
           const gameId = response.data;
           data.gameId = gameId;
           unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
+          if (data.user) {
+            storeCurrentGame({ gameId, userId: data.user.uid });
+          }
         });
     };
 
@@ -199,6 +249,9 @@ export default defineComponent({
           unsubscribeFromFirestore = subscribeToGameChanges({
             gameId: data.gameId
           });
+          if (data.user) {
+            storeCurrentGame({ gameId: data.gameId, userId: data.user.uid });
+          }
         });
     };
 
@@ -240,7 +293,8 @@ export default defineComponent({
       join,
       draw,
       lock,
-      guess
+      guess,
+      quit
     };
   }
 });
