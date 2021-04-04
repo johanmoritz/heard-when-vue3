@@ -16,8 +16,6 @@ export interface Player {
   lockedCards: Array<Card>;
 }
 
-export interface Guess {}
-
 export type GamePhase = "newTurn" | "choice" | "draw" | "pass" | "listen" | "evaluation";
 export type GameStatus = "initialized" | "started" | "finished";
 

@@ -4,40 +4,69 @@
     <button @click="signIn">Sign in</button>
   </div>
   <div v-if="user !== undefined">
-    <button v-if="user !== undefined" @click="signOut">
-      Sign out {{ user.email }}
-    </button>
-    <button
-      v-if="user !== undefined"
-      :disabled="game !== undefined"
-      @click="initialize"
-    >
+    <button @click="signOut">Sign out {{ user.email }}</button>
+    <button :disabled="game !== undefined" @click="initialize">
       Create new game
     </button>
-  </div>
-  <div v-if="game !== undefined">
-    <p>Status: {{ game.status }}</p>
-    <p>Phase: {{ game.phase }}</p>
 
-    <div v-if="game.status === 'initialized' && user !== undefined">
-      <p>Waiting for players to join...</p>
-      <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
-        Start game
-      </button>
+    <div v-if="game === undefined">
+      <input type="text" placeholder="Game id" v-model="gameId" />
+      <button @click="join">Join game</button>
     </div>
-    <div v-if="game.status === 'started'">
-      <p v-if="game.log.length === 0">Game has begun!</p>
-      <button :disabled="game.phase !== 'choice'" @click="draw">
-        Draw card
-      </button>
-      <button :disabled="game.phase !== 'choice'" @click="lock">
-        Lock cards
-      </button>
-
-      <button :disabled="game.phase !== 'listen'" @click="guess">Guess</button>
-      <p v-if="game.currentHiddenCard !== undefined">
-        Hidden card: {{ game.currentHiddenCard.title }}
+    <div v-if="game !== undefined">
+      <p>{{ gameId }}</p>
+      <p>Status: {{ game.status }}</p>
+      <p>Phase: {{ game.phase }}</p>
+      <p>{{ game.currentPlayer.displayName }}s turn</p>
+      <p>
+        Players:
+        {{ game.players.map(({ displayName }) => displayName).join(", ") }},
       </p>
+      <p>
+        Player {{ game.currentPlayer.displayName }}s deck:
+        {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+      </p>
+      <div v-if="game.status === 'initialized' && user !== undefined">
+        <p>Waiting for players to join...</p>
+        <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
+          Start game
+        </button>
+      </div>
+      <div v-if="game.status === 'started'">
+        <p v-if="game.log.length === 0">Game has begun!</p>
+        <div
+          v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
+        >
+          <button @click="draw">
+            Draw card
+          </button>
+          <button @click="lock">
+            Lock cards
+          </button>
+        </div>
+        <div
+          v-if="game.phase === 'listen' && game.currentPlayer.id === user.uid"
+        >
+          <p>When is the song '{{ game.currentHiddenCard.title }}' from?</p>
+          <button
+            v-for="n in game.temporaryCards.length + 1"
+            :key="n"
+            @click="() => guess(n - 1)"
+          >
+            {{
+              game.temporaryCards.length === 0
+                ? "Guess"
+                : n - 1 === game.temporaryCards.length
+                ? `After ${game.temporaryCards[n - 2].year}`
+                : n - 1 === 0
+                ? `Before ${game.temporaryCards[0].year}`
+                : `Between ${game.temporaryCards[n - 2].year} and ${
+                    game.temporaryCards[n - 1].year
+                  }`
+            }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -94,14 +123,20 @@ export default defineComponent({
       functions
         .httpsCallable("initializeGame")({
           displayName: data.username,
-          deck: [{ id: 0, title: "A song", artist: "BSD", year: "2000" }],
+          deck: [
+            { id: 0, title: "A song 1", artist: "BSD", year: "2000" },
+            { id: 1, title: "A song 2", artist: "BSD", year: "1999" },
+            { id: 2, title: "A song 3", artist: "BSD", year: "2001" },
+            { id: 3, title: "A song 4", artist: "BSD", year: "2004" },
+            { id: 4, title: "A song 5", artist: "BSD", year: "2002" }
+          ]
         })
-        .then((response) => {
+        .then(response => {
           const gameId = response.data;
           unsub = firestore
             .collection("game")
             .doc(gameId)
-            .onSnapshot((s) => {
+            .onSnapshot(s => {
               const gameData = s.data();
               if (gameData !== undefined) {
                 console.log("data", gameData);
@@ -117,24 +152,46 @@ export default defineComponent({
       functions.httpsCallable("startGame")({ gameId: data.gameId });
     };
 
+    const join = async () => {
+      functions
+        .httpsCallable("connectToGame")({
+          gameId: data.gameId,
+          displayName: data.username
+        })
+        .then(() => {
+          unsub = firestore
+            .collection("game")
+            .doc(data.gameId)
+            .onSnapshot(s => {
+              const gameData = s.data();
+              if (gameData !== undefined) {
+                console.log("data", gameData);
+                data.game = gameData;
+                data.gameStr = JSON.stringify(gameData);
+              }
+            });
+        });
+    };
+
     const draw = async () => {
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "drawAction" },
+        action: { _tag: "drawAction" }
       });
     };
 
     const lock = async () => {
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "passAction" },
+        action: { _tag: "passAction" }
       });
     };
 
-    const guess = async () => {
+    const guess = async (pos: number) => {
+      console.log("guess", pos);
       functions.httpsCallable("runAction")({
         gameId: data.gameId,
-        action: { _tag: "guessAction" },
+        action: { _tag: "guessAction", hiddenCardPosition: pos }
       });
     };
 
@@ -146,15 +203,17 @@ export default defineComponent({
       username,
       user,
       game,
+      gameId,
       gameStr,
       signIn: onSignIn,
       signOut: onSignOut,
       initialize,
       start,
+      join,
       draw,
       lock,
-      guess,
+      guess
     };
-  },
+  }
 });
 </script>

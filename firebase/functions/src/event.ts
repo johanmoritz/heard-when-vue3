@@ -15,9 +15,12 @@ interface PassEvent {
 }
 interface CorrectEvent {
   _tag: "correctEvent";
+  // [0, temporaryCards + 1]
+  hiddenCardPosition: number;
 }
 interface WrongEvent {
   _tag: "wrongEvent";
+  hiddenCardPosition: number;
 }
 interface FinnishEvent {
   _tag: "finnishEvent";
@@ -57,15 +60,15 @@ export function passEvent(): PassEvent {
 /**
  * @return {CorrectEvent}
  */
-export function correctEvent(): CorrectEvent {
-  return { _tag: "correctEvent" };
+export function correctEvent(args: {hiddenCardPosition: number}): CorrectEvent {
+  return { _tag: "correctEvent", hiddenCardPosition: args.hiddenCardPosition };
 }
 
 /**
  * @return {WrongEvent}
  */
-export function wrongEvent(): WrongEvent {
-  return { _tag: "wrongEvent" };
+export function wrongEvent(args: {hiddenCardPosition: number}): WrongEvent {
+  return { _tag: "wrongEvent", hiddenCardPosition: args.hiddenCardPosition };
 }
 
 /**

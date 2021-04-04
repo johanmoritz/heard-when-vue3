@@ -25,11 +25,23 @@ export function playerInTurn(state: GameDocument.Game): Player {
 /**
  * Evaluates whether or not a guess is correct.
  */
-export function successfulGuess(): boolean {
-  // const { guess, state } = args;
+export function successfulGuess(args: {hiddenCardPosition: number, state: GameDocument.Game}): boolean {
+  const { hiddenCardPosition, state } = args;
 
-  // TODO:
-  return true;
+  const cardBefore = state.temporaryCards[hiddenCardPosition - 1];
+  const cardAfter = state.temporaryCards[hiddenCardPosition + 1];
+
+  const hidden =  state.currentHiddenCard;
+  if (hidden === undefined) {
+    // We've done something wrong here
+    return false;
+  }
+
+  const isAfterBeforeCard = cardBefore === undefined || cardBefore.year <= hidden.year;
+  const isBeforeAfterCard = cardAfter === undefined || cardAfter.year >= hidden.year;
+
+  console.log('test', isAfterBeforeCard, isBeforeAfterCard);
+  return  isAfterBeforeCard && isBeforeAfterCard;
 }
 
 export function stepGameStateMachine(args: {
@@ -84,7 +96,8 @@ export function eventsFromAction(args: {
       return [drawEvent({ card: state.deck[0] })];
     }
     case "guessAction": {
-      return successfulGuess() ? [correctEvent()] : [wrongEvent()];
+      const {hiddenCardPosition} = action;
+      return successfulGuess({hiddenCardPosition, state}) ? [correctEvent({hiddenCardPosition})] : [wrongEvent({hiddenCardPosition})];
     }
     case "passAction": {
       return [passEvent()];
@@ -110,34 +123,64 @@ export function handleEvent(args: {
 
   switch (event._tag) {
     case "nextEvent": {
-      // TODO?
+      const newPlayer = event.next.id !== event.current.id;
+      const temporaryCards = newPlayer
+        ? event.next.lockedCards
+        : state.temporaryCards;
       return {
         ...state,
         currentPlayer: event.next,
         phase: newPhase,
         log: newLog,
+        temporaryCards,
       };
     }
     case "drawEvent": {
-      // TODO
       const deck = state.deck.filter(({ id }) => id !== event.card.id);
-      return { ...state, deck, phase: newPhase, log: newLog };
+      return {
+        ...state,
+        deck,
+        currentHiddenCard: event.card,
+        phase: newPhase,
+        log: newLog,
+      };
     }
     case "passEvent": {
-      // TODO
-      return { ...state, phase: newPhase, log: newLog };
+      const currentPlayerIndex = state.players.findIndex(
+        ({ id }) => id === state.currentPlayer.id
+      );
+      const savedPlayer = {
+        ...state.players[currentPlayerIndex],
+        lockedCards: state.temporaryCards,
+      };
+      const newPlayers = update(savedPlayer, currentPlayerIndex, state.players);
+
+      return {
+        ...state,
+        phase: newPhase,
+        log: newLog,
+        players: newPlayers,
+        temporaryCards: [],
+      };
     }
     case "correctEvent": {
-      // TODO
-      return { ...state, phase: newPhase, log: newLog };
+      const newTemporaryCards = insert(
+        state.currentHiddenCard!,
+        event.hiddenCardPosition,
+        state.temporaryCards
+      );
+      return {
+        ...state,
+        phase: newPhase,
+        log: newLog,
+        temporaryCards: newTemporaryCards,
+      };
     }
     case "wrongEvent": {
-      // TODO
       return { ...state, phase: newPhase, log: newLog };
     }
     case "finnishEvent": {
-      // TODO
-      return { ...state, phase: newPhase, log: newLog, status: 'finished' };
+      return { ...state, phase: newPhase, log: newLog, status: "finished" };
     }
   }
 }
@@ -171,6 +214,20 @@ function insert<T>(val: T, at: number, arr: Array<T>): Array<T> {
   return arr.slice(0, at).concat([val], arr.slice(at));
 }
 
+function update<T>(val: T, at: number, arr: Array<T>): Array<T> {
+  if (arr.length === 0) {
+    return [val];
+  }
+
+  const updatedArr = arr.slice(0, at).concat([val], arr.slice(at + 1));
+
+  if (updatedArr.length !== arr.length) {
+    throw new Error("Different lengths should not happen");
+  }
+
+  return updatedArr;
+}
+
 function randomReal(args: { min: number; max: number }): number {
   const { min, max } = args;
   return Math.random() * (max - min) + min;
@@ -190,7 +247,7 @@ export function randomPlayer(args: { game: GameDocument.Game }) {
 function evaluateState(args: {
   state: GameDocument.Game;
 }): GameEvent | undefined {
-  if (args.state.phase !== "newTurn" || args.state.status !== 'started') {
+  if (args.state.phase !== "newTurn" || args.state.status !== "started") {
     return undefined;
   }
 

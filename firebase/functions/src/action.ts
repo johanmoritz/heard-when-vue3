@@ -1,5 +1,3 @@
-import { Guess } from "./types";
-
 interface DrawAction {
   _tag: "drawAction";
 }
@@ -8,7 +6,8 @@ interface PassAction {
 }
 interface GuessAction {
   _tag: "guessAction";
-  guess: Guess;
+  // [0, temporaryCards+1]
+  hiddenCardPosition: number;
 }
 
 export type UserAction = DrawAction | PassAction | GuessAction;
