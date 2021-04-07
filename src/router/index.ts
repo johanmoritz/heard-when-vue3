@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/firebase",
     name: "Firebase",
-    component: () => import("../views/FirebaseExample.vue"),
+    component: () => import("../views/FirebaseDemo.vue")
   },
   {
     path: "/about",

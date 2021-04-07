@@ -9,7 +9,7 @@ import {
   stepGameStateMachine,
 } from "./domain";
 import { nextEvent } from "./event";
-import { Card, GameDocument } from "./types";
+import { Card, Game } from "./types";
 
 initializeApp();
 const db = firestore();
@@ -25,13 +25,13 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
   if (uid === undefined || displayName === undefined || deck === undefined || deck.length === 0) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      `Needs to be authenticated. Needs: 'displayName', 'deck'. Needs at least one card in 'deck'.`
+      "Needs to be authenticated. Needs: 'displayName', 'deck'. Needs at least one card in 'deck'."
     );
   }
 
   const firstPlayer = player({ id: uid, displayName });
 
-  const initialGame: Partial<GameDocument.Game> = {
+  const initialGame: Partial<Game> = {
     currentPlayer: firstPlayer,
     players: [firstPlayer],
     deck,
@@ -58,7 +58,7 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
   if (uid === undefined || gameId === undefined || displayName === undefined) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      `Needs to be authenticated. Needs: 'gameId', 'displayName'.`
+      "Needs to be authenticated. Needs: 'gameId', 'displayName'."
     );
   }
 
@@ -67,7 +67,7 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
   db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
-      .then((result) => result.data())) as GameDocument.Game;
+      .then((result) => result.data())) as Game;
     const gameIsInitialized = game.status === "initialized";
     const playerAlreadyAdded = game.players.find(({ id }) => id === uid);
 
@@ -95,7 +95,7 @@ export const startGame = functions.https.onCall(async (data, context) => {
   if (uid === undefined || gameId === undefined) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      `Needs to be authenticated. Needs: 'gameId'.`
+      "Needs to be authenticated. Needs: 'gameId'."
     );
   }
 
@@ -103,7 +103,7 @@ export const startGame = functions.https.onCall(async (data, context) => {
   db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
-      .then((result) => result.data())) as GameDocument.Game;
+      .then((result) => result.data())) as Game;
     const gameIsInitialized = game.status === "initialized";
     const playerIsOwner = game.currentPlayer.id === uid;
 
@@ -137,13 +137,13 @@ export const runAction = functions.https.onCall(async (data, context) => {
   if (action === undefined || gameId === undefined || uid === undefined) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      `Needs to be authenticated and have 'action' and 'gameId'.`
+      "Needs to be authenticated and have 'action' and 'gameId'."
     );
   }
 
   const gameRef = db
     .collection("game")
-    .doc(gameId) as firestore.DocumentReference<GameDocument.Game>;
+    .doc(gameId) as firestore.DocumentReference<Game>;
 
   await db.runTransaction(async (transaction) => {
     const game = await transaction.get(gameRef).then((result) => result.data());
