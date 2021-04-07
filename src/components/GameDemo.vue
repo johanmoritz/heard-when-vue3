@@ -67,7 +67,10 @@
             "
           >
             <!-- Imagine that we have spotify integration instead of this: -->
-            <p>When is the song '{{ game.currentHiddenCard.title }}' from?</p>
+            <p>
+              When is the song <b>'{{ game.currentHiddenCard.title }}'</b> by
+              {{ game.currentHiddenCard.artist }} from?
+            </p>
             <button
               v-for="n in game.temporaryCards.length + 1"
               :key="n"
@@ -94,8 +97,9 @@
           <p v-for="player in game.players" :key="player.displayName">
             {{ player.displayName }} has {{ player.lockedCards.length }} cards
           </p>
-          <button @click="quit">End game</button>
         </div>
+
+        <button @click="quit">End game</button>
       </div>
     </div>
   </main>
