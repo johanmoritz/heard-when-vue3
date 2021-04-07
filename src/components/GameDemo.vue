@@ -221,7 +221,7 @@ export default defineComponent({
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() =>
-          props.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+          props.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
         )
         .then(() => {
           setUser(props.auth.currentUser);
