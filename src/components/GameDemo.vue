@@ -2,18 +2,12 @@
   <main>
     <!-- Step 1: Login -->
     <div v-if="user === undefined">
-      <input
-        type="text"
-        name="username"
-        placeholder="username"
-        v-model="username"
-      />
       <button @click="signIn">Sign in</button>
     </div>
 
     <!-- Step 2: Create or join a game -->
     <div v-if="user !== undefined">
-      <button @click="signOut">Sign out {{ user.email }}</button>
+      <button @click="signOut">Sign out {{ username }}</button>
 
       <div v-if="game === undefined">
         Click to
@@ -28,7 +22,9 @@
       </div>
 
       <div v-if="game !== undefined">
-        <p>{{ gameId }}</p>
+        <p>
+          Game <b> {{ gameId }} </b>
+        </p>
         <p>Status: {{ game.status }}</p>
         <p>Phase: {{ game.phase }}</p>
         <p>{{ game.currentPlayer.displayName }}s turn</p>
@@ -125,25 +121,32 @@ aside {
 </style>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onUnmounted } from "vue";
-import { fb } from "@/config/firebaseConfig";
+import { defineComponent, reactive, ref, onUnmounted, PropType } from "vue";
 import firebase from "firebase/app";
-import { GameDocument } from "../../firebase/functions/src/types";
+import { Game, Card } from "../../firebase/functions/src/types";
 import * as action from "@/domain/action";
+import { fb } from "@/config/firebaseConfig";
 
 export default defineComponent({
-  setup() {
-    const functions = fb.functions();
-    const auth = fb.auth();
-    const firestore = fb.firestore();
-
-    functions.useEmulator("localhost", 5001);
-    auth.useEmulator("http://localhost:9099");
-    firestore.useEmulator("localhost", 8080);
-
+  props: {
+    deck: { type: Array as PropType<Array<Card>>, required: true },
+    functions: {
+      type: Object as PropType<firebase.functions.Functions>,
+      required: true
+    },
+    auth: {
+      type: Object as PropType<firebase.auth.Auth>,
+      required: true
+    },
+    firestore: {
+      type: Object as PropType<firebase.firestore.Firestore>,
+      required: true
+    }
+  },
+  setup(props) {
     const username = ref("");
     const user = ref<firebase.User | undefined>(undefined);
-    const game = ref<GameDocument.Game | undefined>(undefined);
+    const game = ref<Game | undefined>(undefined);
     const gameId = ref("");
     const data = reactive({ username, user, game, gameId });
 
@@ -154,23 +157,22 @@ export default defineComponent({
     const setUser = (user: firebase.User | null) => {
       if (user !== null) {
         data.user = user;
+        data.username = user.email?.split("@")[0] ?? user.uid;
       }
     };
 
     const subscribeToGameChanges = (args: { gameId: string }) => {
       const { gameId } = args;
-      return firestore
+      return props.firestore
         .collection("game")
         .doc(gameId)
         .onSnapshot(s => {
-          const gameData = s.data() as GameDocument.Game | undefined;
+          const gameData = s.data() as Game | undefined;
           if (gameData !== undefined) {
             data.game = gameData;
           }
         });
     };
-
-    setUser(auth.currentUser);
 
     const storeCurrentGame = async (args: {
       userId: string;
@@ -178,7 +180,7 @@ export default defineComponent({
     }) => {
       const { userId, gameId } = args;
 
-      firestore
+      props.firestore
         .collection("user")
         .doc(userId)
         .set({ currentGame: gameId });
@@ -187,7 +189,7 @@ export default defineComponent({
     const loadCurrentGame = async (args: { userId: string }) => {
       const { userId } = args;
 
-      firestore
+      props.firestore
         .collection("user")
         .doc(userId)
         .get()
@@ -195,7 +197,6 @@ export default defineComponent({
         .then(result => {
           if (result && result["currentGame"] !== undefined) {
             const gameId = result["currentGame"];
-            console.log("gameId", gameId);
             data.gameId = gameId;
             unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
           }
@@ -208,7 +209,7 @@ export default defineComponent({
       unsubscribeFromFirestore();
 
       if (data.user) {
-        firestore
+        props.firestore
           .collection("user")
           .doc(data.user.uid)
           .set({});
@@ -216,36 +217,33 @@ export default defineComponent({
     };
 
     const onSignIn = async () =>
-      auth
-        .signInWithEmailAndPassword(
-          // This is much more conventient than normal passwords ^^
-          `${username.value}@example.com`,
-          `${username.value}@example.com`
+      fb
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(() =>
+          props.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
         )
         .then(() => {
-          setUser(auth.currentUser);
+          setUser(props.auth.currentUser);
           if (data.user) {
             loadCurrentGame({ userId: data.user.uid });
           }
         });
 
     const onSignOut = async () =>
-      auth.signOut().then(() => {
-        data.user = undefined;
-      });
+      fb
+        .auth()
+        .signOut()
+        .then(() => {
+          data.user = undefined;
+        });
 
     const initialize = async () => {
-      functions
+      props.functions
         .httpsCallable("initializeGame")({
           displayName: data.username,
           // Imagine we had som real songs to add :)
-          deck: [
-            { id: 0, title: "A song 1", artist: "BSD", year: "2000" },
-            { id: 1, title: "A song 2", artist: "BSD", year: "1999" },
-            { id: 2, title: "A song 3", artist: "BSD", year: "2001" },
-            { id: 3, title: "A song 4", artist: "BSD", year: "2004" },
-            { id: 4, title: "A song 5", artist: "BSD", year: "2002" }
-          ]
+          deck: props.deck
         })
         .then(response => {
           const gameId = response.data;
@@ -258,11 +256,11 @@ export default defineComponent({
     };
 
     const start = async () => {
-      functions.httpsCallable("startGame")({ gameId: data.gameId });
+      props.functions.httpsCallable("startGame")({ gameId: data.gameId });
     };
 
     const join = async () => {
-      functions
+      props.functions
         .httpsCallable("connectToGame")({
           gameId: data.gameId,
           displayName: data.username
@@ -278,25 +276,35 @@ export default defineComponent({
     };
 
     const draw = async () => {
-      functions.httpsCallable("runAction")({
+      props.functions.httpsCallable("runAction")({
         gameId: data.gameId,
         action: action.drawAction()
       });
     };
 
     const lock = async () => {
-      functions.httpsCallable("runAction")({
+      props.functions.httpsCallable("runAction")({
         gameId: data.gameId,
         action: action.passAction()
       });
     };
 
     const guess = async (pos: number) => {
-      functions.httpsCallable("runAction")({
+      props.functions.httpsCallable("runAction")({
         gameId: data.gameId,
         action: action.guessAction({ hiddenCardPosition: pos })
       });
     };
+
+    // Load the state when auth picks up the user
+    props.auth.onIdTokenChanged(user => {
+      setUser(user);
+      if (user) {
+        loadCurrentGame({ userId: user.uid });
+      } else {
+        data.game = undefined;
+      }
+    });
 
     // This is a cool 'vue' function
     onUnmounted(() => {

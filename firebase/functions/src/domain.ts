@@ -8,12 +8,12 @@ import {
   wrongEvent,
   passEvent,
 } from "./event";
-import { GameDocument, GamePhase, Player, PlayerId } from "./types";
+import { Game, GamePhase, Player, PlayerId } from "./types";
 
 /**
  * Determines who the next player is.
  */
-export function playerInTurn(state: GameDocument.Game): Player {
+export function playerInTurn(state: Game): Player {
   const numberOfPlayers = state.players.length;
   const currentPlayerIndex = state.players.findIndex(
     ({ id }) => id === state.currentPlayer.id
@@ -27,7 +27,7 @@ export function playerInTurn(state: GameDocument.Game): Player {
  */
 export function successfulGuess(args: {
   hiddenCardPosition: number;
-  state: GameDocument.Game;
+  state: Game;
 }): boolean {
   const { hiddenCardPosition, state } = args;
 
@@ -92,7 +92,7 @@ export function stepGameStateMachine(args: {
  */
 export function eventsFromAction(args: {
   action: UserAction;
-  state: GameDocument.Game;
+  state: Game;
 }): Array<GameEvent> {
   const { action, state } = args;
 
@@ -117,8 +117,8 @@ export function eventsFromAction(args: {
  */
 export function handleEvent(args: {
   event: GameEvent;
-  state: GameDocument.Game;
-}): GameDocument.Game {
+  state: Game;
+}): Game {
   const { event, state } = args;
 
   const newPhase = stepGameStateMachine({ symbol: event, status: state.phase });
@@ -212,7 +212,7 @@ export function player(args: { id: PlayerId; displayName: string }): Player {
   return { id, displayName, lockedCards: [] };
 }
 
-export function winners(args: { game: GameDocument.Game }) {
+export function winners(args: { game: Game }) {
   const goal =
     args.game.deck.length === 0
       ? Math.max(
@@ -224,7 +224,7 @@ export function winners(args: { game: GameDocument.Game }) {
   );
 }
 
-export function hasWinner(args: { game: GameDocument.Game }) {
+export function hasWinner(args: { game: Game }) {
   return winners({ game: args.game }).length > 0;
 }
 
@@ -259,7 +259,7 @@ function randomInt(args: { min: number; max: number }): number {
   return Math.floor(randomReal(args));
 }
 
-export function randomPlayer(args: { game: GameDocument.Game }) {
+export function randomPlayer(args: { game: Game }) {
   const players = args.game.players;
   const numberOfPlayers = players.length;
   const i = randomInt({ min: 0, max: numberOfPlayers });
@@ -267,7 +267,7 @@ export function randomPlayer(args: { game: GameDocument.Game }) {
 }
 
 function evaluateState(args: {
-  state: GameDocument.Game;
+  state: Game;
 }): GameEvent | undefined {
   if (args.state.phase !== "newTurn" || args.state.status !== "started") {
     return undefined;
@@ -300,7 +300,7 @@ function evaluateState(args: {
 
 export function executeEvents(args: {
   events: Array<GameEvent>;
-  game: GameDocument.Game;
+  game: Game;
 }) {
   // Note the mutability here
   let { events, game } = args;
