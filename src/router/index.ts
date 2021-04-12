@@ -3,6 +3,11 @@ import Home from "../views/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    redirect: "/firebase"
+  },
+  {
     path: "/",
     name: "Home",
     component: Home
