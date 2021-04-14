@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-
+**/*Config.ts*
 
 # local env files
 .env.local
@@ -12,6 +12,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+**/firestore-debug.log*
+ui-debug.log*
+
+firebase/functions/lib/*
 
 # Editor directories and files
 .idea
@@ -22,3 +26,5 @@ pnpm-debug.log*
 *.sln
 *.sw?
 .env
+*.cache
+.firebaserc
