@@ -1,8 +1,15 @@
 import { createStore } from "vuex";
 
 const store = createStore({
-  state: {},
-  mutations: {},
+  /*state: { person: null },
+  mutations: {
+    updateUser(state, { person }) {
+      state.person = person;
+    }
+  },
+  getters: {
+    person: state => state.person
+  },*/
   actions: {},
   modules: {}
 });
