@@ -1,7 +1,9 @@
 <template>
   <main>
     <!-- Step 1: Login -->
-    <Login click="signIn" user= {{user}} />
+    <div v-if="user === undefined">
+      <Login @click="signIn" />
+    </div>
     <!-- Step 2: Create or join a game -->
     <div v-if="user !== undefined">
       <button @click="signOut">Sign out {{ username }}</button>
@@ -129,12 +131,8 @@ import * as action from "@/domain/action";
 import { fb } from "@/config/firebaseConfig";
 import Login from "@/components/Login.vue";
 
-
-
-
 export default defineComponent({
-  components: 
-      {Login},
+  components: { Login },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {

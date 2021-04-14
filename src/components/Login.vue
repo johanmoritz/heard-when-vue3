@@ -1,18 +1,20 @@
 <template>
-    <div v-if= "user === undefined">
-        <button @click="signIn">Sign in</button>
-    </div> 
+  <div>
+    <p>Sign in using your Google account</p>
+    <button @click="signInAct">Sign in</button>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { signIn } from "./GameDemo.vue";
 
-export default defineComponent({
+export default {
   name: "Login",
-  props: {
-    user: Object,
-    signIn: Function 
-  }
-});
+  props: ["signIn"],
+  setup() {
+    const signInAct = signIn;
 
+    return { signInAct };
+  }
+};
 </script>
