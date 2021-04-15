@@ -11,6 +11,7 @@ const _deviceId = ref<string | undefined>(undefined);
 const _errorMsg = ref<string | undefined>(undefined);
 const _playing = ref<boolean>(false);
 const _loading = ref<Promise<any> | undefined>(undefined);
+const _currentTrackUri = ref<string | undefined>(undefined);
 
 // Reactive copy of the current state.
 const publicState = computed<State>(() => {
@@ -94,30 +95,10 @@ async function connect() {
   });
 }
 
-async function playTrack(trackUri: string) {
-  if (publicState.value.kind === "connected") {
-    const { authId, deviceId } = publicState.value;
-    await spotify
-      .auth(authId)
-      .post("/me/player/queue", {
-        query: { uri: trackUri, device_id: deviceId }
-      })
-      .catch(handleAsyncError);
-    await spotify
-      .auth(authId)
-      .put("/me/player/pause", { query: { device_id: deviceId } })
-      .catch(handleAsyncError);
-  }
-}
-
 async function play() {
   if (publicState.value.kind === "connected") {
-    const { authId, deviceId } = publicState.value;
-    await asyncAction(
-      spotify
-        .auth(authId)
-        .put("/me/player/play", { query: { device_id: deviceId } })
-    ).then(
+    const { authId } = publicState.value;
+    await asyncAction(spotify.auth(authId).put("/me/player/play")).then(
       httpErrorGuard(() => {
         _playing.value = true;
       })
@@ -125,14 +106,32 @@ async function play() {
   }
 }
 
+async function playTrack(trackUri: string) {
+  if (publicState.value.kind === "connected") {
+    const { authId } = publicState.value;
+    if (trackUri === _currentTrackUri.value) {
+      return play();
+    }
+
+    return asyncAction(
+      spotify.auth(authId).put("/me/player/play", {
+        body: JSON.stringify({ uris: [trackUri] })
+      })
+    )
+      .then(
+        httpErrorGuard(() => {
+          _playing.value = true;
+          _currentTrackUri.value = trackUri;
+        })
+      )
+      .catch(handleAsyncError);
+  }
+}
+
 async function pause() {
   if (publicState.value.kind === "connected") {
-    const { authId, deviceId } = publicState.value;
-    await asyncAction(
-      spotify
-        .auth(authId)
-        .put("/me/player/pause", { query: { device_id: deviceId } })
-    ).then(
+    const { authId } = publicState.value;
+    await asyncAction(spotify.auth(authId).put("/me/player/pause")).then(
       httpErrorGuard(() => {
         _playing.value = false;
       })

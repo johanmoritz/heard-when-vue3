@@ -8,6 +8,7 @@ export interface Card {
   title: string;
   artist: string;
   year: number;
+  uri: string;
 }
 
 export interface Player {

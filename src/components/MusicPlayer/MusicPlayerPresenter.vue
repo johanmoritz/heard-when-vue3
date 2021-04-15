@@ -16,16 +16,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, toRefs, onBeforeUnmount } from "vue";
 import music from "@/store/music";
 import MusicPlayerView from "./MusicPlayerView.vue";
 
 export default defineComponent({
   components: { MusicPlayerView },
   props: {
-    songId: String
+    songId: {
+      type: String,
+      required: true
+    }
   },
-  setup() {
+  setup(props) {
+    const { songId } = toRefs(props);
     const api = music();
 
     const msg = computed(() => {
@@ -50,7 +54,7 @@ export default defineComponent({
 
     const play = () => {
       if (api.value.kind === "connected") {
-        api.value.play();
+        api.value.playTrack(songId.value);
       }
     };
 
@@ -65,6 +69,10 @@ export default defineComponent({
         api.value.connect();
       }
     };
+
+    onBeforeUnmount(() => {
+      pause();
+    });
 
     return {
       play,
