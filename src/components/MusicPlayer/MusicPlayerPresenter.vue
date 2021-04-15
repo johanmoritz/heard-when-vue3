@@ -16,7 +16,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, toRefs, onBeforeUnmount } from "vue";
+import {
+  defineComponent,
+  computed,
+  toRefs,
+  onBeforeUnmount,
+  onMounted
+} from "vue";
 import music from "@/store/music";
 import MusicPlayerView from "./MusicPlayerView.vue";
 
@@ -69,6 +75,10 @@ export default defineComponent({
         api.value.connect();
       }
     };
+
+    onMounted(() => {
+      play();
+    });
 
     onBeforeUnmount(() => {
       pause();
