@@ -66,11 +66,10 @@
                 game.currentHiddenCard !== undefined
             "
           >
-            <!-- Imagine that we have spotify integration instead of this: -->
-            <p>
-              When is the song <b>'{{ game.currentHiddenCard.title }}'</b> by
-              {{ game.currentHiddenCard.artist }} from?
-            </p>
+            <MusicPlayerPresenter
+              class="music-player"
+              :songId="game.currentHiddenCard.uri"
+            />
             <button
               v-for="n in game.temporaryCards.length + 1"
               :key="n"
@@ -130,8 +129,10 @@ import firebase from "firebase/app";
 import { Game, Card } from "../../firebase/functions/src/types";
 import * as action from "@/domain/action";
 import { fb } from "@/config/firebaseConfig";
+import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 
 export default defineComponent({
+  components: { MusicPlayerPresenter },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
