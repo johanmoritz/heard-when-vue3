@@ -1,24 +1,28 @@
 <template>
-  <div class="container">
+  <div v-if="gameUser === undefined">
+    <div class="container">
     <p class="info">Sign in using your Google account</p>
     <button class="button" @click="userClicked">Sign in</button>
-  </div>
+    </div>
+</div>
+ 
 </template>
 
 <script>
-import { signIn } from "./GameDemo.vue";
+import { signIn } from "./GameDemo.vue"; // osäker om denna behövs
 
 export default {
   name: "Login",
-  props: ["signIn"],
+  props: {
+    gameUser: Object
+},
   methods:  {
     userClicked(){
       this.$emit('buttonClicked');
     }
+},
 
-  },   
-
-  setup() {
+  setup() { // osäker om denna behövs
     const signInAct = signIn;
 
     return { signInAct };
