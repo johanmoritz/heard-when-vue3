@@ -27,7 +27,8 @@ Aside from the demo, we have also done some of the views with layouts, although 
 - Improve the MVP structure and connect the Views to the game logic. 
 - Make a model for the data taken from the API.
 - Add more options for users, such as "How to play" and "Statistics".
-- Improve the UI 
+- Improve the UI
+- Get store and routing between paths in place
 
 ## Our project file structure
 
