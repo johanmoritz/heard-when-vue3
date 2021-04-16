@@ -17,12 +17,31 @@ export default defineComponent({
 
 <style scoped>
 .board {
-  background: rgba(175, 134, 142, 0.8);
+  background: rgba(194, 155, 163, 0.8);
   width: fill;
   height: fill;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   padding: 60px;
+}
+.cards-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.button-card {
+  display: flex;
+  flex-direction: row;
+}
+.first-guess-button {
+  width: 100px;
+  flex-direction: row;
+  justify-content: center;
+}
+.guess-button {
+  opacity: 0;
+  width: 30px;
 }
 </style>

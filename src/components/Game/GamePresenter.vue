@@ -2,21 +2,17 @@
   <div>
     <div v-if="game.phase === 'listen' && song !== undefined">
       <GameView :msg="msg">
-        <button
-          v-if="cards.length === 0"
-          class="guess-button"
-          @click="guess(0)"
-        >
-          First guess is free!
-        </button>
         <div class="cards-container">
+          <button
+            v-if="cards.length === 0"
+            class="first-guess-button"
+            @click="guess(0)"
+          >
+            First guess is free!
+          </button>
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button class="guess-button" @click="guess(index - 1)">
-              {{
-                index === 0 || cards.length === 1
-                  ? `Before ${cards[0].year}`
-                  : `Between ${cards[index - 1].year} and ${cards[index].year}`
-              }}
+              {{ index }}
             </button>
             <Card
               :title="card.title"
@@ -30,7 +26,7 @@
             class="guess-button"
             @click="guess(cards.length)"
           >
-            {{ `After ${cards[cards.length - 1].year}` }}
+            {{ cards.length }}
           </button>
         </div>
       </GameView>
