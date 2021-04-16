@@ -14,6 +14,7 @@ The game part of the app is divided into two phases:
 The game is multiplayer and meant to support players attending on seperate devices/browsers. For this, Firebase is used to setup shared data handling and login. There is initially a Login-view which is handled by Firebase/Google. Once logged in there is a Setup-view for creating a new game or joining an already existing game, which then leads to a waiting room where stats from previous games and the start option is. The creator of the game starts the game when the players have joined and the gameboard (described above) appears.
 
 **Spotify** 
+
 The Spotify music player can be a bit wonky. It's currently very sensitive to state changes, for example if you pause the music in the Spotify app it won't understand that. To make a good connection, ensure that your Spotify app is opened (preferably on your computer) and start to play (and pause) a song on it before you click "Connect" in the UI. Otherwise Spotify might not understand that you have an active device, and the connection will fail. 
 
 **Prototype layout:** https://www.figma.com/file/wm9hhtZjF8UUN3JPo1QwNv/Heard-When?node-id=0%3A1
@@ -34,12 +35,13 @@ At this point we have a demo where the game logic and current data is visible th
 - Get store and routing between paths in place
 - Squash some logic bugs 
 - Add loading and error states where needed
+- CSS styling
 
 ## Our project file structure 
 We only include description/purpose of the files in /src as the rest of them are only to do with configuration and running of the app.
 /firebase includes backend code which can be ignored in the scope of the course.
 
-**Ignore:** /assets, components/HelloWorld.vue, pages/About.vue, pages/Home.vue
+**Ignore following files:** /assets, components/HelloWorld.vue, pages/About.vue, pages/Home.vue
 
 **/auth/index.ts**
 - this is where the OAuth integration needed for connecting to Spotify API is set up.
@@ -47,10 +49,10 @@ We only include description/purpose of the files in /src as the rest of them are
 **/config/...**
 - functionality for validating the .env file of users 
 
-**firebaseConfig.ts**
+firebaseConfig.ts
 - firebase and firestore is configured and setup.
 
-**index.ts**
+index.ts
 - makes sure the environment is correct for integrated APIs.
 
 **/domain/actions.ts**
