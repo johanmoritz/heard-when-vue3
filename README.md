@@ -27,13 +27,46 @@ Aside from the demo, we have also done some of the views with layouts, although 
 - Improve the MVP structure and connect the Views to the game logic. 
 - Make a model for the data taken from the API.
 - Add more options for users, such as "How to play" and "Statistics".
-- Improve the UI 
+- Improve the UI
+- Get store and routing between paths in place
 
 ## Our project file structure
 
 (short description/purpose of each file)
 
-/components
+**/auth/index.ts**
+- this is where the OAuth integration needed for connecting to Spotify API is set up.
+
+**/config/...**
+
+**firebaseConfig.ts**
+- firebase and firestore is configured and setup.
+
+**index.ts**
+- makes sure the environment is correct for integrated APIs.
+
+**/domain/actions.ts**
+- creates custom action for all user actions in the game; guessAction, drawAction, passAction (aka. lock cards)
+
+**/router/index.ts**
+- this is where the routing is created for navigating between different pages. The routing to FirebaseDemo is: localhost:8080/firebase
+
+**/pages/FirebaseDemo.vue**
+-  this is where the GameDemo is mounted. It is also where the mock data (songs) comes from right now, when the model is not in place.
+
+**/service/...**
+- Both files in this directory has to do with setup of authorization for Spotify
+
+**/store/...**
+- TODO!
+
+**/components/...**
+
+Card.vue
+- a card component which makes up the layout for Card instances. Takes in the Card arguments id, title, artist, year and displays the necessary information in the card.
+
+GameDemo.vue
+- this is where the firebase app runs, by writing localhost:8080/firebase in the browser.
 
 Login.vue
 - view for login screen, contains css for layout
@@ -43,6 +76,25 @@ DashBoardView.vue
 
 GameDetails.vue
 - view for game details including turn, phase, player(s), deck, contains css for layout
+
+**/components/Game/...**
+
+GamePresenter.vue
+- presenter for the core game functionalities. The GamePresenter displays and passes on data to GameView and ChoiceView and contains methods such as guess, draw and lock. The guess method is triggered onClick in guee-buttons between the cards while draw and lock gives the player an option to keep playing or lock their cards.
+
+GameView.vue
+- view for the game board when playing, it takes in a message to display as well as the cards and guess-buttons passed from the presenter. It also contains css styling.  
+
+ChoiceView.vue
+- view for the choice box where the player can choose to lock their loose cards or continue guessing. It takes in the functions draw and lock as props.
+
+**/components/MusicPlayer/...**
+
+MusicPlayerPresenter.vue
+- presenter for music player which uses Spotify API to play the song/currentHiddenCard. Passes on buttons to play, pause and connect to MusicPlayerView as well as a status message.
+
+MusicPlayerView.vue
+- view for music player that takes buttons from the presenter and displays them with styling.
 
 # Instructions
 ## Project setup
@@ -60,7 +112,7 @@ yarn serve
 localhost:8080
 ```
 
-### Part 2: Demo
+### Part 2: Demo deployed on Firebase 
 ```
 In browser https://heard-when-237e7.firebaseapp.com/firebase
 ```
