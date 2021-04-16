@@ -31,7 +31,7 @@
             class="guess-button"
             @click="guess(cards.length)"
           >
-            {{ `After ${cards[cards.length].year}` }}
+            {{ `After ${cards[cards.length - 1].year}` }}
           </button>
         </div>
       </GameView>
