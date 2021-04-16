@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { signIn } from "./GameDemo.vue"; // osäker om denna behövs
+
 
 export default {
   name: "Login",
@@ -20,14 +20,9 @@ export default {
     userClicked(){
       this.$emit('buttonClicked');
     }
-},
+}
+}
 
-  setup() { // osäker om denna behövs
-    const signInAct = signIn;
-
-    return { signInAct };
-  }
-};
 </script>
 
 <style scoped>

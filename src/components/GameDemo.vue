@@ -17,7 +17,7 @@
 
     <span v-if="game === undefined">
       <input type="text" placeholder="Game id" v-model="gameId" /> <!-- Need to understand v-model before putting inside DashBoardView.vue -->
-      <!--<button class="button" @click="join">Join game</button>-->
+      
     </span>
 
     <div v-if="game !== undefined">
@@ -85,6 +85,7 @@
                 game.currentHiddenCard !== undefined
             "
           >
+            <GamePresenter />
             <MusicPlayerPresenter
               class="music-player"
               :songId="game.currentHiddenCard.uri"
@@ -213,9 +214,14 @@ import Login from "@/components/Login.vue";
 import GameDetails from "@/components/GameDetails.vue";
 import DashBoardView from "@/components/DashBoardView.vue";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
+import GamePresenter from "@/components/Game/GamePresenter.vue";
 
 export default defineComponent({
+<<<<<<< Updated upstream
   components: { MusicPlayerPresenter, Login, GameDetails, DashBoardView },
+=======
+  components: { MusicPlayerPresenter, GamePresenter },
+>>>>>>> Stashed changes
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {

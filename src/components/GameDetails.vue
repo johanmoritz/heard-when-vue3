@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { defineComponent } from "./GameDemo.vue";
 
 export default ({
   name: "GameDetails",
