@@ -1,3 +1,5 @@
+https://heard-when-237e7.firebaseapp.com/firebase
+
 # Heard When: A board game for nostalgic music lovers
 **Game**
 
@@ -23,8 +25,6 @@ At this point we have a demo where the game logic and current data is visible th
 - "started": when the creator of the game starts the game and no more players can join.
 - "finished": when one of the players has reached the goal of collecting X cards. 
 
-Aside from the demo, we have also done some of the views with layouts, although they currently only provide print statements when interacting with. The BoardView include the collected cards with guess-buttons on both side of each card to guess "before song card X", "between song cards X and Y" or "after song card Y". BoardView uses a Board-component which displays the Card-components. ...ChoiceView...MusicPlayerView...JoinView...LoginView... In addition views have been added for login screen, dashboard and game details with basic layouts for the game.
-
 
 ## What we still plan to do
 - Improve the MVP structure and connect more Views to the game logic. 
@@ -32,11 +32,14 @@ Aside from the demo, we have also done some of the views with layouts, although 
 - Add more options for users, such as "How to play" and "Statistics".
 - Improve the UI
 - Get store and routing between paths in place
+- Squash some logic bugs 
+- Add loading and error states where needed
 
 ## Our project file structure
 
 ## Our project file structure 
 We only include description/purpose of the files in /src as the rest of them are only to do with configuration and running of the app.
+/firebase includes backend code which can be ignored in the scope of the course.
 
 **/auth/index.ts**
 - this is where the OAuth integration needed for connecting to Spotify API is set up.
@@ -114,16 +117,6 @@ yarn install
 ### Compiles and hot-reloads for development
 ```
 yarn serve
-```
-
-### Part 1: Layouts
-```
-localhost:8080
-```
-
-### Part 2: Demo deployed on Firebase 
-```
-In browser https://heard-when-237e7.firebaseapp.com/firebase
 ```
 
 
