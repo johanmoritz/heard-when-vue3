@@ -22,7 +22,12 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
   const displayName = data?.displayName as string | undefined;
   const deck = data?.deck as Array<Card> | undefined;
 
-  if (uid === undefined || displayName === undefined || deck === undefined || deck.length === 0) {
+  if (
+    uid === undefined ||
+    displayName === undefined ||
+    deck === undefined ||
+    deck.length === 0
+  ) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Needs to be authenticated. Needs: 'displayName', 'deck'. Needs at least one card in 'deck'."
@@ -64,7 +69,7 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
 
   const gameRef = db.collection("game").doc(gameId);
 
-  db.runTransaction(async (transaction) => {
+  return db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
       .then((result) => result.data())) as Game;
@@ -100,7 +105,7 @@ export const startGame = functions.https.onCall(async (data, context) => {
   }
 
   const gameRef = db.collection("game").doc(gameId);
-  db.runTransaction(async (transaction) => {
+  return db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
       .then((result) => result.data())) as Game;
@@ -161,8 +166,9 @@ export const runAction = functions.https.onCall(async (data, context) => {
     });
     if (newPhase === undefined) {
       throw new functions.https.HttpsError(
-        "failed-precondition", `The action '${action}' is not valid in the '${game.phase}' part of the game. ${newPhase}`
-      )
+        "failed-precondition",
+        `The action '${action}' is not valid in the '${game.phase}' part of the game. ${newPhase}`
+      );
     }
 
     const events = eventsFromAction({
@@ -173,7 +179,6 @@ export const runAction = functions.https.onCall(async (data, context) => {
       events: events,
       game: { ...game, phase: newPhase },
     });
-    console.log(gamePostEvents);
     transaction.set(gameRef, gamePostEvents);
   });
 

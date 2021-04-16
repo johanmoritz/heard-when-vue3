@@ -52,6 +52,7 @@
       <div v-if="game.status === 'started'">
         <p v-if="game.log.length === 0">Game has begun!</p>
         <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
+        <!--
         <div
           v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
         >
@@ -62,18 +63,57 @@
             Lock cards
           </button>
         </div>
-        <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-        <div
-          v-if="
-            game.phase === 'listen' &&
-              game.currentPlayer.id === user.uid &&
-              game.currentHiddenCard !== undefined
-          "
-        >
-          <!-- Imagine that we have spotify integration instead of this: -->
-          <p>
-            When is the song <b>'{{ game.currentHiddenCard.title }}'</b> by
-            {{ game.currentHiddenCard.artist }} from?
+        -->
+        <div v-if="game.status === 'started'">
+          <p v-if="game.log.length === 0">Game has begun!</p>
+          <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
+          <div
+            v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
+          >
+            <button class="button" @click="draw">
+              Draw card
+            </button>
+            <button class="button" @click="lock">
+              Lock cards
+            </button>
+          </div>
+          <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
+          <div
+            v-if="
+              game.phase === 'listen' &&
+                game.currentPlayer.id === user.uid &&
+                game.currentHiddenCard !== undefined
+            "
+          >
+            <MusicPlayerPresenter
+              class="music-player"
+              :songId="game.currentHiddenCard.uri"
+            />
+            <button
+              v-for="n in game.temporaryCards.length + 1"
+              :key="n"
+              @click="() => guess(n - 1)"
+            >
+              {{
+                game?.temporaryCards.length === 0
+                  ? "Guess"
+                  : n - 1 === game?.temporaryCards.length
+                  ? `After ${game?.temporaryCards[n - 2].year}`
+                  : n - 1 === 0
+                  ? `Before ${game?.temporaryCards[0].year}`
+                  : `Between ${game?.temporaryCards[n - 2].year} and ${
+                      game?.temporaryCards[n - 1].year
+                    }`
+              }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 6: Now the game is over. -->
+        <div v-if="game.status === 'finished'">
+          The score is
+          <p v-for="player in game.players" :key="player.displayName">
+            {{ player.displayName }} has {{ player.lockedCards.length }} cards
           </p>
           <button
             class="button"
@@ -172,9 +212,10 @@ import { fb } from "@/config/firebaseConfig";
 import Login from "@/components/Login.vue";
 import GameDetails from "@/components/GameDetails.vue";
 import DashBoardView from "@/components/DashBoardView.vue";
+import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 
 export default defineComponent({
-  components: { Login, GameDetails, DashBoardView },
+  components: { MusicPlayerPresenter, Login, GameDetails, DashBoardView },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
