@@ -114,10 +114,7 @@ export function eventsFromAction(args: {
 /**
  * Evaluates a new state based on the old state and an event.
  */
-export function handleEvent(args: {
-  event: GameEvent;
-  state: Game;
-}): Game {
+export function handleEvent(args: { event: GameEvent; state: Game }): Game {
   const { event, state } = args;
 
   const newPhase = stepGameStateMachine({ symbol: event, status: state.phase });
@@ -211,7 +208,7 @@ export function player(args: { id: PlayerId; displayName: string }): Player {
   return { id, displayName, lockedCards: [] };
 }
 
-export function winners(args: { game: Game }) {
+export function winners(args: { game: Game }): Array<Player> {
   const goal =
     args.game.deck.length === 0
       ? Math.max(
@@ -223,7 +220,7 @@ export function winners(args: { game: Game }) {
   );
 }
 
-export function hasWinner(args: { game: Game }) {
+export function hasWinner(args: { game: Game }): boolean {
   return winners({ game: args.game }).length > 0;
 }
 
@@ -258,16 +255,14 @@ function randomInt(args: { min: number; max: number }): number {
   return Math.floor(randomReal(args));
 }
 
-export function randomPlayer(args: { game: Game }) {
+export function randomPlayer(args: { game: Game }): Player {
   const players = args.game.players;
   const numberOfPlayers = players.length;
   const i = randomInt({ min: 0, max: numberOfPlayers });
   return players[i];
 }
 
-function evaluateState(args: {
-  state: Game;
-}): GameEvent | undefined {
+function evaluateState(args: { state: Game }): GameEvent | undefined {
   if (args.state.phase !== "newTurn" || args.state.status !== "started") {
     return undefined;
   }
@@ -278,7 +273,6 @@ function evaluateState(args: {
 
   const lastEvent: GameEvent | undefined =
     args.state.log[args.state.log.length - 1];
-  console.log("lastEvent", lastEvent);
   if (lastEvent?._tag === "correctEvent") {
     return nextEvent({
       from: args.state.currentPlayer,
@@ -300,7 +294,7 @@ function evaluateState(args: {
 export function executeEvents(args: {
   events: Array<GameEvent>;
   game: Game;
-}) {
+}): Game {
   // Note the mutability here
   let { events, game } = args;
 
