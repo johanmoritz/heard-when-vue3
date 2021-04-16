@@ -12,7 +12,7 @@
           </button>
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button class="guess-button" @click="guess(index - 1)">
-              {{ index }}
+              {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
             </button>
             <Card
               :title="card.title"
@@ -26,7 +26,7 @@
             class="guess-button"
             @click="guess(cards.length)"
           >
-            {{ cards.length }}
+            {{ "After" }}
           </button>
         </div>
       </GameView>
