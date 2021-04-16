@@ -61,33 +61,39 @@ Aside from the demo, we have also done some of the views with layouts, although 
 
 **/components/...**
 
-**Card.vue**
+Card.vue
 - a card component which makes up the layout for Card instances. Takes in the Card arguments id, title, artist, year and displays the necessary information in the card.
 
-**GameDemo.vue**
+GameDemo.vue
 - this is where the firebase app runs, by writing localhost:8080/firebase in the browser.
 
-**Login.vue**
+Login.vue
 - view for login screen, contains css for layout
 
-**DashBoardView.vue**
+DashBoardView.vue
 - view for setting up game and logging out, contains css for layout
 
-**GameDetails.vue**
+GameDetails.vue
 - view for game details including turn, phase, player(s), deck, contains css for layout
 
 **/components/Game/...**
 
-**GamePresenter.vue**
+GamePresenter.vue
 - presenter for the core game functionalities. The GamePresenter displays and passes on data to GameView and ChoiceView and contains methods such as guess, draw and lock. The guess method is triggered onClick in guee-buttons between the cards while draw and lock gives the player an option to keep playing or lock their cards.
 
-**GameView.vue**
+GameView.vue
 - view for the game board when playing, it takes in a message to display as well as the cards and guess-buttons passed from the presenter. It also contains css styling.  
 
-**ChoiceView.vue**
+ChoiceView.vue
 - view for the choice box where the player can choose to lock their loose cards or continue guessing. It takes in the functions draw and lock as props.
 
+**/components/MusicPlayer/...**
 
+MusicPlayerPresenter.vue
+- presenter for music player which uses Spotify API to play the song/currentHiddenCard. Passes on buttons to play, pause and connect to MusicPlayerView as well as a status message.
+
+MusicPlayerView.vue
+- view for music player that takes buttons from the presenter and displays them with styling.
 
 # Instructions
 ## Project setup
