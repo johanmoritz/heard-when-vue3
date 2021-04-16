@@ -41,11 +41,10 @@ export function successfulGuess(args: {
   }
 
   const isAfterBeforeCard =
-    cardBefore === undefined || cardBefore.year <= hidden.year;
+    cardBefore === undefined || cardBefore.year - hidden.year <= 0;
   const isBeforeAfterCard =
-    cardAfter === undefined || cardAfter.year >= hidden.year;
-
-  console.log("test", isAfterBeforeCard, isBeforeAfterCard);
+    cardAfter === undefined || cardAfter.year - hidden.year >= 0;
+    
   return isAfterBeforeCard && isBeforeAfterCard;
 }
 
