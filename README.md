@@ -30,7 +30,10 @@ Aside from the demo, we have also done some of the views with layouts, although 
 - Improve the MVP structure and connect more Views to the game logic. 
 - Move the model of the game logic to its own Vuex store.
 - Add more options for users, such as "How to play" and "Statistics".
-- Improve the UI. 
+- Improve the UI
+- Get store and routing between paths in place
+
+## Our project file structure
 
 ## Our project file structure 
 We only include description/purpose of the files in /src as the rest of them are only to do with configuration and running of the app.
