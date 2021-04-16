@@ -70,23 +70,6 @@
               class="music-player"
               :songId="game.currentHiddenCard.uri"
             />
-            <button
-              v-for="n in game.temporaryCards.length + 1"
-              :key="n"
-              @click="() => guess(n - 1)"
-            >
-              {{
-                game?.temporaryCards.length === 0
-                  ? "Guess"
-                  : n - 1 === game?.temporaryCards.length
-                  ? `After ${game?.temporaryCards[n - 2].year}`
-                  : n - 1 === 0
-                  ? `Before ${game?.temporaryCards[0].year}`
-                  : `Between ${game?.temporaryCards[n - 2].year} and ${
-                      game?.temporaryCards[n - 1].year
-                    }`
-              }}
-            </button>
           </div>
 
           <GamePresenter

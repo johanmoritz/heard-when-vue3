@@ -12,7 +12,6 @@
         <div class="cards-container">
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button class="guess-button" @click="guess(index - 1)">
-              {{ index }}
               {{
                 index === 0 || cards.length === 1
                   ? `Before ${cards[0].year}`
