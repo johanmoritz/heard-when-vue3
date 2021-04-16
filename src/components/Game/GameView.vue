@@ -25,4 +25,17 @@ export default defineComponent({
   margin: 0 auto;
   padding: 60px;
 }
+.cards-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.button-card {
+  display: flex;
+  flex-direction: row;
+}
+.guess-button {
+  opacity: 0;
+}
 </style>
