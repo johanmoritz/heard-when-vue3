@@ -33,7 +33,7 @@ At this point we have a demo where the game logic and current data is visible th
 - Add more options for users, such as "How to play" and "Statistics".
 - Improve the UI
 - Get store and routing between paths in place
-- Squash some logic bugs 
+- Squash some logic bugs (such as year order sometimes is wrong due to the way JS compares)
 - Add loading and error states where needed
 - CSS styling
 
