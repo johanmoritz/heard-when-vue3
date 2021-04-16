@@ -20,17 +20,74 @@ At this point we have a demo where the game logic and current data is visible th
 - "started": when the creator of the game starts the game and no more players can join.
 - "finished": when one of the players has reached the goal of collecting X cards. 
 
-Aside from the demo, we have also done some of the views with layouts, although they currently only provide print statements when interacting with. The BoardView include the collected cards with guess-buttons on both side of each card to guess "before song card X", "between song cards X and Y" or "after song card Y". BoardView uses a Board-component which displays the Card-components. ...ChoiceView...MusicPlayerView...JoinView...LoginView...
+Aside from the demo, we have also done some of the views with layouts, although they currently only provide print statements when interacting with. The BoardView include the collected cards with guess-buttons on both side of each card to guess "before song card X", "between song cards X and Y" or "after song card Y". BoardView uses a Board-component which displays the Card-components. ...ChoiceView...MusicPlayerView...JoinView...LoginView... In addition views have been added for login screen, dashboard and game details with basic layouts for the game.
 
 
 ## What we still plan to do
 - Improve the MVP structure and connect the Views to the game logic. 
 - Make a model for the data taken from the API.
 - Add more options for users, such as "How to play" and "Statistics".
+- Improve the UI 
 
 ## Our project file structure
 
 (short description/purpose of each file)
+
+**/auth/index.ts**
+- this is where the OAuth integration needed for connecting to Spotify API is set up.
+
+**/config/...**
+
+**firebaseConfig.ts**
+- firebase and firestore is configured and setup.
+
+**index.ts**
+- makes sure the environment is correct for integrated APIs.
+
+**/domain/actions.ts**
+- creates custom action for all user actions in the game; guessAction, drawAction, passAction (aka. lock cards)
+
+**/router/index.ts**
+- this is where the routing is created for navigating between different pages. The routing to FirebaseDemo is: localhost:8080/firebase
+
+**/pages/FirebaseDemo.vue**
+-  this is where the GameDemo is mounted. It is also where the mock data (songs) comes from right now, when the model is not in place.
+
+**/service/...**
+- Both files in this directory has to do with setup of authorization for Spotify
+
+**/store/...**
+- TODO!
+
+**/components/...**
+
+**Card.vue**
+- a card component which makes up the layout for Card instances. Takes in the Card arguments id, title, artist, year and displays the necessary information in the card.
+
+**GameDemo.vue**
+- this is where the firebase app runs, by writing localhost:8080/firebase in the browser.
+
+**Login.vue**
+- view for login screen, contains css for layout
+
+**DashBoardView.vue**
+- view for setting up game and logging out, contains css for layout
+
+**GameDetails.vue**
+- view for game details including turn, phase, player(s), deck, contains css for layout
+
+**/components/Game/...**
+
+**GamePresenter.vue**
+- presenter for the core game functionalities. The GamePresenter displays and passes on data to GameView and ChoiceView and contains methods such as guess, draw and lock. The guess method is triggered onClick in guee-buttons between the cards while draw and lock gives the player an option to keep playing or lock their cards.
+
+**GameView.vue**
+- view for the game board when playing, it takes in a message to display as well as the cards and guess-buttons passed from the presenter. It also contains css styling.  
+
+**ChoiceView.vue**
+- view for the choice box where the player can choose to lock their loose cards or continue guessing. It takes in the functions draw and lock as props.
+
+
 
 # Instructions
 ## Project setup
@@ -48,7 +105,7 @@ yarn serve
 localhost:8080
 ```
 
-### Part 2: Demo
+### Part 2: Demo deployed on Firebase 
 ```
 In browser https://heard-when-237e7.firebaseapp.com/firebase
 ```
