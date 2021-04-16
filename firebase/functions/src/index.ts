@@ -69,7 +69,7 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
 
   const gameRef = db.collection("game").doc(gameId);
 
-  db.runTransaction(async (transaction) => {
+  return db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
       .then((result) => result.data())) as Game;
@@ -105,7 +105,7 @@ export const startGame = functions.https.onCall(async (data, context) => {
   }
 
   const gameRef = db.collection("game").doc(gameId);
-  db.runTransaction(async (transaction) => {
+  return db.runTransaction(async (transaction) => {
     const game = (await transaction
       .get(gameRef)
       .then((result) => result.data())) as Game;
