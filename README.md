@@ -35,11 +35,11 @@ At this point we have a demo where the game logic and current data is visible th
 - Squash some logic bugs 
 - Add loading and error states where needed
 
-## Our project file structure
-
 ## Our project file structure 
 We only include description/purpose of the files in /src as the rest of them are only to do with configuration and running of the app.
 /firebase includes backend code which can be ignored in the scope of the course.
+
+**Ignore:** /assets, components/HelloWorld.vue, pages/About.vue, pages/Home.vue
 
 **/auth/index.ts**
 - this is where the OAuth integration needed for connecting to Spotify API is set up.
