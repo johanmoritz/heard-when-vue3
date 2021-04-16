@@ -66,28 +66,28 @@ export default defineComponent({
         title: "Coming True",
         artist: "Daniel Lindström",
         year: 2004,
-        uri: "spotify:track:0ScrGnhCu5opMmZ9mLBSkO"
+        uri: "spotify:album:6dpsjlCCaRJe4uVq1WJiXb"
       },
       {
         id: 5,
         title: "Right Here Right Now",
         artist: "Agnes",
         year: 2005,
-        uri: "spotify:track:0qnqsfFYgBo0sPHM2JmfTq"
+        uri: "spotify:track:5mKLRZYKn8eT8uefTdmy8A"
       },
       {
         id: 6,
         title: "Who's Da Man",
         artist: "Elias Feat Frans",
         year: 2006,
-        uri: "spotify:track:4w6cGuUx853Pk3KyVb6QO9"
+        uri: "spotify:track:3LYpxjR3e1wlVwuqTKuWHp"
       },
       {
         id: 7,
         title: "The Worrying Kind",
         artist: "The Ark",
         year: 2007,
-        uri: "spotify:track:45DP2cidC1BdeIU0WmjIYY"
+        uri: "spotify:track:5zIxRPGxiOBNRDBu2Upk4i"
       },
       {
         id: 8,
@@ -122,7 +122,7 @@ export default defineComponent({
         title: "Euphoria",
         artist: "Loreen",
         year: 2012,
-        uri: "spotify:show:72daz879qRFZEg38LAH6Mh"
+        uri: "spotify:track:2knr7ikPt4l7bk92qS4ZXW"
       },
       {
         id: 13,
