@@ -9,10 +9,9 @@
       </button>
       or
       <span v-if="gameSession === undefined">
-      <!-- <input type="text" placeholder="Game id" v-model="gameId" /> -->
-      <button class="button" @click="joinGameClicked">Join game</button>
-    </span>
-    
+        <input type="text" placeholder="Game id"  /> 
+        <button class="button" @click="joinGameClicked">Join game</button>
+      </span>
     </div>
   </div>
 </template>
