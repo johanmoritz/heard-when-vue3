@@ -20,17 +20,29 @@ At this point we have a demo where the game logic and current data is visible th
 - "started": when the creator of the game starts the game and no more players can join.
 - "finished": when one of the players has reached the goal of collecting X cards. 
 
-Aside from the demo, we have also done some of the views with layouts, although they currently only provide print statements when interacting with. The BoardView include the collected cards with guess-buttons on both side of each card to guess "before song card X", "between song cards X and Y" or "after song card Y". BoardView uses a Board-component which displays the Card-components. ...ChoiceView...MusicPlayerView...JoinView...LoginView...
+Aside from the demo, we have also done some of the views with layouts, although they currently only provide print statements when interacting with. The BoardView include the collected cards with guess-buttons on both side of each card to guess "before song card X", "between song cards X and Y" or "after song card Y". BoardView uses a Board-component which displays the Card-components. ...ChoiceView...MusicPlayerView...JoinView...LoginView... In addition views have been added for login screen, dashboard and game details with basic layouts for the game.
 
 
 ## What we still plan to do
 - Improve the MVP structure and connect the Views to the game logic. 
 - Make a model for the data taken from the API.
 - Add more options for users, such as "How to play" and "Statistics".
+- Improve the UI 
 
 ## Our project file structure
 
 (short description/purpose of each file)
+
+/components
+
+Login.vue
+- view for login screen, contains css for layout
+
+DashBoardView.vue
+- view for setting up game and logging out, contains css for layout
+
+GameDetails.vue
+- view for game details including turn, phase, player(s), deck, contains css for layout
 
 # Instructions
 ## Project setup
