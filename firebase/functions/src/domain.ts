@@ -44,7 +44,7 @@ export function successfulGuess(args: {
     cardBefore === undefined || cardBefore.year - hidden.year <= 0;
   const isBeforeAfterCard =
     cardAfter === undefined || cardAfter.year - hidden.year >= 0;
-    
+
   return isAfterBeforeCard && isBeforeAfterCard;
 }
 
@@ -183,7 +183,7 @@ export function handleEvent(args: {
       };
     }
     case "wrongEvent": {
-      return { ...state, phase: newPhase, log: newLog };
+      return { ...state, temporaryCards: [], phase: newPhase, log: newLog };
     }
     case "finnishEvent": {
       const currentPlayerIndex = state.players.findIndex(
