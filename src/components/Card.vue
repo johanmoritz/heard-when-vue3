@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <p class="year">{{ year }}</p>
-    <p class="details">{{ title }}</p>
-    <p class="details">{{ artist }}</p>
+    <p>{{ title }}</p>
+    <p>{{ artist }}</p>
   </div>
 </template>
 
@@ -26,13 +26,10 @@ export default defineComponent({
   width: 100px;
   height: 150px;
   overflow-wrap: break-word;
-}
-.details {
   text-align: center;
 }
 .year {
   font-size: 150%;
-  text-align: center;
-  font: bold;
+  font-weight: bold;
 }
 </style>

@@ -9,12 +9,7 @@
     <div class="cards-container">
       <div class="button-card" v-for="(card, index) in cards" :key="index">
         <button class="guess-button" @click="guess(index)">{{ index }}</button>
-        <Card
-          :id="card.id"
-          :title="card.title"
-          :artist="card.artist"
-          :year="card.year"
-        />
+        <Card :title="card.title" :artist="card.artist" :year="card.year" />
       </div>
       <button class="guess-button" @click="guess(numberOfCards)">
         {{ numberOfCards }}
