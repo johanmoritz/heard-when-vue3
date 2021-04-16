@@ -1,25 +1,16 @@
 <template>
   <div id="board-view" class="board">
     <h1>{{ msg }}</h1>
-    <Board :song="song" :cards="cards" />
+    <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Board from "@/components/Board.vue";
 export default defineComponent({
   name: "GameView",
   props: {
-    song: Object,
-    cards: Array,
-    msg: String
-  },
-  components: { Board },
-  methods: {
-    guess(index: number) {
-      console.log("You guessed: " + index);
-    }
+    msg: { type: String, required: true }
   }
 });
 </script>

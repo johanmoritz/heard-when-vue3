@@ -7,19 +7,20 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue";
-// import draw and lock functions
+
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
 export default defineComponent({
   name: "Choice",
-  methods: {
-    draw() {
-      console.log("You chose to continue");
-      // Set phase to "listen"
+  props: {
+    draw: {
+      type: Function as PropType<() => void>,
+      required: true
     },
-    lock() {
-      console.log("You chose to lock your cards");
-      // Set currentPlayer to next and set phase to "listen"
+    lock: {
+      type: Function as PropType<() => void>,
+      required: true
     }
   }
 });

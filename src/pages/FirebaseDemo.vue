@@ -133,8 +133,6 @@ export default defineComponent({
       }
     ];
 
-    Math.random;
-
     return {
       functions,
       auth,

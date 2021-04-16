@@ -70,7 +70,6 @@
               class="music-player"
               :songId="game.currentHiddenCard.uri"
             />
-            <GamePresenter />
             <button
               v-for="n in game.temporaryCards.length + 1"
               :key="n"
@@ -89,6 +88,13 @@
               }}
             </button>
           </div>
+
+          <GamePresenter
+            :game="game"
+            :guess="guess"
+            :draw="draw"
+            :lock="lock"
+          />
         </div>
 
         <!-- Step 6: Now the game is over. -->

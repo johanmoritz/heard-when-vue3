@@ -11,10 +11,10 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "Card",
   props: {
-    id: Number,
-    title: String,
-    artist: String,
-    year: Number
+    id: { type: Number, required: true },
+    title: { type: String, required: true },
+    artist: { type: String, required: true },
+    year: { type: Number, required: true }
   }
 });
 </script>

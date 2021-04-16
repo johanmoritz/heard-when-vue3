@@ -1,38 +1,71 @@
 <template>
-  <div v-if="game.phase === 'listen' && game.currentHiddenCard !== undefined">
-    <GameView>
-      <template v-slot:board>
+  <div>
+    <div v-if="game.phase === 'listen' && song !== undefined">
+      <GameView :msg="msg">
+        <button
+          v-if="cards.length === 0"
+          class="guess-button"
+          @click="guess(0)"
+        >
+          First guess is free!
+        </button>
         <div class="cards-container">
           <div class="button-card" v-for="(card, index) in cards" :key="index">
-            <button class="guess-button" @click="guess(index)">{{ index }}</button>
-            <Card :title="card.title" :artist="card.artist" :year="card.year" />
+            <button class="guess-button" @click="guess(index - 1)">
+              {{ index }}
+              {{
+                index === 0 || cards.length === 1
+                  ? `Before ${cards[0].year}`
+                  : `Between ${cards[index - 1].year} and ${cards[index].year}`
+              }}
+            </button>
+            <Card
+              :title="card.title"
+              :artist="card.artist"
+              :year="card.year"
+              :id="card.id"
+            />
           </div>
-          <button class="guess-button" @click="guess(numberOfCards)">
-            {{ numberOfCards }}
+          <button
+            v-if="cards.length > 0"
+            class="guess-button"
+            @click="guess(cards.length)"
+          >
+            {{ `After ${cards[cards.length].year}` }}
           </button>
         </div>
-      </template> 
-    </GameView>
-  </div>
-  <div v-else-if="game.phase === 'choice'">
-    <ChoiceView />
+      </GameView>
+    </div>
+    <div v-if="game.phase === 'choice'">
+      <ChoiceView :draw="draw" :lock="lock" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from "vue";
+import { defineComponent, toRefs, computed, PropType } from "vue";
 import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
 import { Game } from "../../../firebase/functions/src/types";
-
-// Change phase for different views
-game.phase = "listen";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
-  components: { GameView, ChoiceView },
+  components: { GameView, ChoiceView, Card },
   props: {
     game: {
-      type: Game,
+      type: Object as PropType<Game>,
+      required: true
+    },
+    guess: {
+      type: Function as PropType<(n: number) => void>,
+      required: true
+    },
+    draw: {
+      type: Function as PropType<() => void>,
+      required: true
+    },
+    lock: {
+      type: Function as PropType<() => void>,
       required: true
     }
   },
@@ -40,18 +73,30 @@ export default defineComponent({
     const { game } = toRefs(props);
 
     const msg = computed(() => {
-      return game.phase === "listen"
-      ? "It's "+game.currentPlayer.id + "'s turn.\n When is the song from?"
-      : game.phase === "choice"
-      ? "Correct, "+game.currentPlayer.id+", do you want to lock you cards or continue guessing?"; 
+      return game.value.phase === "listen"
+        ? "It's " +
+            game.value.currentPlayer.displayName +
+            "'s turn.\n When is the song from?"
+        : game.value.phase === "choice"
+        ? "Correct, " +
+          game.value.currentPlayer.displayName +
+          ", do you want to lock you cards or continue guessing?"
+        : "";
     });
 
     const song = computed(() => {
-      return game.currentHiddenCard
+      return game.value.currentHiddenCard;
     });
 
-    const  
-  },
-  
+    const cards = computed(() => {
+      return game.value.temporaryCards;
+    });
+
+    return {
+      msg,
+      song,
+      cards
+    };
+  }
 });
 </script>
