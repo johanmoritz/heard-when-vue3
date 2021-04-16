@@ -17,7 +17,7 @@ export default defineComponent({
 
 <style scoped>
 .board {
-  background: rgba(151, 139, 141, 0.8);
+  background: rgba(194, 155, 163, 0.8);
   width: fill;
   height: fill;
   display: flex;

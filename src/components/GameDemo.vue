@@ -48,16 +48,6 @@
         <div v-if="game.status === 'started'">
           <p v-if="game.log.length === 0">Game has begun!</p>
           <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
-          <div
-            v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
-          >
-            <button @click="draw">
-              Draw card
-            </button>
-            <button @click="lock">
-              Lock cards
-            </button>
-          </div>
           <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
           <div
             v-if="
