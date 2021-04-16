@@ -41,7 +41,6 @@ export default defineComponent({
   justify-content: center;
 }
 .guess-button {
-  opacity: 0;
-  width: 30px;
+  opacity: 10%;
 }
 </style>
