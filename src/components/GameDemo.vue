@@ -1,85 +1,77 @@
 <template>
   <main>
     <!-- Step 1: Login -->
-    <div v-if="user === undefined">
-      <button @click="signIn">Sign in</button>
-    </div>
 
+    <Login @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
     <!-- Step 2: Create or join a game -->
-    <div v-if="user !== undefined">
-      <button @click="signOut">Sign out {{ username }}</button>
+    <DashBoardView
+      @buttonClicked="signOut"
+      :gameUser="user"
+      @createClicked="initialize"
+      :userName="username"
+      :gameSession="game"
+      :gameID="gameId"
+      @joinClicked="join"
+    />
+    
+    <!-- Need to understand v-model before putting inside DashBoardView.vue 
+    <span v-if="game === undefined">
+      <input type="text" placeholder="Game id" v-model="gameId" /> skapar dubbelt inputfält atm
+    </span> -->
+    
+    <div v-if="game !== undefined">
+      <p>
+        Game <b> {{ gameId }} </b>
+      </p>
+      <p>Status: {{ game.status }}</p>
+      <p>Phase: {{ game.phase }}</p>
+      <p>{{ game.currentPlayer.displayName }}s turn</p>
+      <p>
+        Players:
+        {{ game.players.map(({ displayName }) => displayName).join(", ") }},
+      </p>
+      <p>
+        Player {{ game.currentPlayer.displayName }}s deck:
+        {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+      </p>
 
-      <div v-if="game === undefined">
-        Click to
-        <button @click="initialize">
-          Create new game
+      <!-- Step 3: Wait for players to join and then start the game. -->
+      <div v-if="game.status === 'initialized' && user !== undefined">
+        <p>Waiting for players to join...</p>
+        <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
+          Start game
         </button>
-        or
-        <span v-if="game === undefined">
-          <input type="text" placeholder="Game id" v-model="gameId" />
-          <button @click="join">Join game</button>
-        </span>
       </div>
 
-      <div v-if="game !== undefined">
-        <p>
-          Game <b> {{ gameId }} </b>
-        </p>
-        <p>Status: {{ game.status }}</p>
-        <p>Phase: {{ game.phase }}</p>
-        <p>{{ game.currentPlayer.displayName }}s turn</p>
-        <p>
-          Players:
-          {{ game.players.map(({ displayName }) => displayName).join(", ") }},
-        </p>
-        <p>
-          Player {{ game.currentPlayer.displayName }}s deck:
-          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
-        </p>
-
-        <!-- Step 3: Wait for players to join and then start the game. -->
-        <div v-if="game.status === 'initialized' && user !== undefined">
-          <p>Waiting for players to join...</p>
-          <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
-            Start game
-          </button>
-        </div>
-
-        <div v-if="game.status === 'started'">
-          <p v-if="game.log.length === 0">Game has begun!</p>
-          <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
-          <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-          <div
-            v-if="
-              game.phase === 'listen' &&
-                game.currentPlayer.id === user.uid &&
-                game.currentHiddenCard !== undefined
-            "
-          >
-            <MusicPlayerPresenter
-              class="music-player"
-              :songId="game.currentHiddenCard.uri"
-            />
-          </div>
-
-          <GamePresenter
-            :game="game"
-            :guess="guess"
-            :draw="draw"
-            :lock="lock"
+      <div v-if="game.status === 'started'">
+        <p v-if="game.log.length === 0">Game has begun!</p>
+        <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
+        <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
+        <div
+          v-if="
+            game.phase === 'listen' &&
+              game.currentPlayer.id === user.uid &&
+              game.currentHiddenCard !== undefined
+          "
+        >
+          <MusicPlayerPresenter
+            class="music-player"
+            :songId="game.currentHiddenCard.uri"
           />
         </div>
 
-        <!-- Step 6: Now the game is over. -->
-        <div v-if="game.status === 'finished'">
-          The score is
-          <p v-for="player in game.players" :key="player.displayName">
-            {{ player.displayName }} has {{ player.lockedCards.length }} cards
-          </p>
-        </div>
-
-        <button @click="quit">End game</button>
+        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock" />
       </div>
+
+      <!-- Step 6: Now the game is over. -->
+      <div v-if="game.status === 'finished'">
+        The score is
+        <p v-for="player in game.players" :key="player.displayName">
+          {{ player.displayName }} has {{ player.lockedCards.length }} cards
+        </p>
+      </div>
+
+      <button @click="quit">End game</button>
     </div>
   </main>
 
@@ -111,9 +103,11 @@ import * as action from "@/domain/action";
 import { fb } from "@/config/firebaseConfig";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
+import Login from "@/components/Login.vue";
+import DashBoardView from "@/components/DashBoardView.vue";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter, GamePresenter },
+  components: { MusicPlayerPresenter, GamePresenter, Login, DashBoardView },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
