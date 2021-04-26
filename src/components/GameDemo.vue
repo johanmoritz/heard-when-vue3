@@ -9,20 +9,17 @@
       <button class="button" @click="signIn">Sign in</button>
     </div>
 
+    <Login @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
     <!-- Step 2: Create or join a game -->
-    <div v-if="user !== undefined">
-      <div v-if="game === undefined">
-        <h1>Heard When</h1>
-        Click to
-        <button @click="initialize">
-          Create new game
-        </button>
-        or
-        <span v-if="game === undefined">
-          <input type="text" placeholder="Game id" v-model="gameId" />
-          <button @click="join">Join game</button>
-        </span>
-      </div>
+    <DashBoardView
+      @buttonClicked="signOut"
+      :gameUser="user"
+      @createClicked="initialize"
+      :userName="username"
+      :gameSession="game"
+      :gameID="gameId"
+      @joinClicked="join"
+    />
 
       <div v-if="game !== undefined">
         <!-- Step 3: Wait for players to join and then start the game. -->
@@ -112,9 +109,11 @@ import { fb } from "@/config/firebaseConfig";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
 import { useStore } from "vuex";
+import Login from "@/components/Login.vue";
+import DashBoardView from "@/components/DashBoardView.vue";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter, GamePresenter },
+  components: { MusicPlayerPresenter, GamePresenter, Login, DashBoardView },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
