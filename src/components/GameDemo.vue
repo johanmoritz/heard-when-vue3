@@ -48,16 +48,6 @@
         <div v-if="game.status === 'started'">
           <p v-if="game.log.length === 0">Game has begun!</p>
           <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
-          <div
-            v-if="game.phase === 'choice' && game.currentPlayer.id === user.uid"
-          >
-            <button @click="draw">
-              Draw card
-            </button>
-            <button @click="lock">
-              Lock cards
-            </button>
-          </div>
           <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
           <div
             v-if="
@@ -70,24 +60,14 @@
               class="music-player"
               :songId="game.currentHiddenCard.uri"
             />
-            <button
-              v-for="n in game.temporaryCards.length + 1"
-              :key="n"
-              @click="() => guess(n - 1)"
-            >
-              {{
-                game?.temporaryCards.length === 0
-                  ? "Guess"
-                  : n - 1 === game?.temporaryCards.length
-                  ? `After ${game?.temporaryCards[n - 2].year}`
-                  : n - 1 === 0
-                  ? `Before ${game?.temporaryCards[0].year}`
-                  : `Between ${game?.temporaryCards[n - 2].year} and ${
-                      game?.temporaryCards[n - 1].year
-                    }`
-              }}
-            </button>
           </div>
+
+          <GamePresenter
+            :game="game"
+            :guess="guess"
+            :draw="draw"
+            :lock="lock"
+          />
         </div>
 
         <!-- Step 6: Now the game is over. -->
@@ -130,9 +110,10 @@ import { Game, Card } from "../../firebase/functions/src/types";
 import * as action from "@/domain/action";
 import { fb } from "@/config/firebaseConfig";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
+import GamePresenter from "@/components/Game/GamePresenter.vue";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter },
+  components: { MusicPlayerPresenter, GamePresenter },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
