@@ -34,7 +34,12 @@
         </p>
         <p>
           Player {{ game.currentPlayer.displayName }}s deck:
-          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+          {{
+            game.temporaryCards
+              .map(({ year }) => year)
+              .sort((a, b) => a - b)
+              .join(", ")
+          }}
         </p>
 
         <!-- Step 3: Wait for players to join and then start the game. -->
