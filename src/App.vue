@@ -22,11 +22,10 @@
   overflow: auto;
 }
 
-#button {
+.button {
   background: rgba(243, 215, 220, 0.8);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: none;
-  font-weight: bold;
   color: #2c3e50;
   padding: 15px 32px;
   text-align: center;
@@ -35,6 +34,19 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
 }
 
 #nav {

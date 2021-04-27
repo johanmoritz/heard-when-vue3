@@ -2,14 +2,14 @@
   <main>
     <!-- Step 1: Login -->
     <div v-if="user === undefined">
-      <button @click="signIn">Sign in</button>
+      <h1>Heard When</h1>
+      <button class="button" @click="signIn">Sign in</button>
     </div>
 
     <!-- Step 2: Create or join a game -->
     <div v-if="user !== undefined">
-      <button @click="signOut">Sign out {{ username }}</button>
-
       <div v-if="game === undefined">
+        <h1>Heard When</h1>
         Click to
         <button @click="initialize">
           Create new game
@@ -39,7 +39,11 @@
             {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
           </p>
           <p>Waiting for players to join...</p>
-          <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
+          <button
+            class="button"
+            :disabled="game.currentPlayer.id !== user.uid"
+            @click="start"
+          >
             Start game
           </button>
         </div>
@@ -72,20 +76,12 @@
           </p>
         </div>
         <div>
-          <button id="button" @click="quit">End game</button>
+          <button class="button" @click="quit">End game</button>
         </div>
       </div>
+      <button class="button" @click="signOut">Sign out {{ username }}</button>
     </div>
   </main>
-
-  <aside class="log" v-if="game !== undefined">
-    <span>Event log:</span>
-    <ol>
-      <li v-for="(event, i) in game.log" :key="i">
-        {{ event._tag }}
-      </li>
-    </ol>
-  </aside>
 </template>
 
 <style scoped>
