@@ -48,25 +48,20 @@
           <p v-if="game.log.length === 0">Game has begun!</p>
           <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
           <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-          <div
-            v-if="
-              game.phase === 'listen' &&
-                game.currentPlayer.id === user.uid &&
-                game.currentHiddenCard !== undefined
-            "
-          >
-            <MusicPlayerPresenter
-              class="music-player"
-              :songId="game.currentHiddenCard.uri"
-            />
-          </div>
-
-          <GamePresenter
-            :game="game"
-            :guess="guess"
-            :draw="draw"
-            :lock="lock"
-          />
+          <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
+            <div
+              v-if="
+                game.phase === 'listen' &&
+                  game.currentPlayer.id === user.uid &&
+                  game.currentHiddenCard !== undefined
+              "
+            >
+              <MusicPlayerPresenter
+                class="music-player"
+                :songId="game.currentHiddenCard.uri"
+              />
+            </div>
+          </GamePresenter>
         </div>
 
         <!-- Step 6: Now the game is over. -->

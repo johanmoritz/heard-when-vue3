@@ -31,6 +31,9 @@
         </div>
       </GameView>
     </div>
+    <div>
+      <slot></slot>
+    </div>
     <div v-if="game.phase === 'choice'">
       <ChoiceView :draw="draw" :lock="lock" />
     </div>
