@@ -32,7 +32,7 @@ export function successfulGuess(args: {
   const { hiddenCardPosition, state } = args;
 
   const cardBefore = state.temporaryCards[hiddenCardPosition - 1];
-  const cardAfter = state.temporaryCards[hiddenCardPosition + 1];
+  const cardAfter = state.temporaryCards[hiddenCardPosition];
 
   const hidden = state.currentHiddenCard;
   if (hidden === undefined) {
