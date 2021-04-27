@@ -71,8 +71,9 @@
             {{ player.displayName }} has {{ player.lockedCards.length }} cards
           </p>
         </div>
-
-        <button @click="quit">End game</button>
+        <div>
+          <button id="button" @click="quit">End game</button>
+        </div>
       </div>
     </div>
   </main>
