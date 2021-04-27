@@ -10,7 +10,11 @@
           >
             First guess is free!
           </button>
-          <div class="button-card" v-for="(card, index) in cards" :key="index">
+          <div
+            class="button-card"
+            v-for="(card, index) in cards.sort((a, b) => a.year - b.year)"
+            :key="index"
+          >
             <button class="guess-button" @click="guess(index - 1)">
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
             </button>
