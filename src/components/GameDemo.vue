@@ -22,23 +22,22 @@
       </div>
 
       <div v-if="game !== undefined">
-        <p>
-          Game <b> {{ gameId }} </b>
-        </p>
-        <p>Status: {{ game.status }}</p>
-        <p>Phase: {{ game.phase }}</p>
-        <p>{{ game.currentPlayer.displayName }}s turn</p>
-        <p>
-          Players:
-          {{ game.players.map(({ displayName }) => displayName).join(", ") }},
-        </p>
-        <p>
-          Player {{ game.currentPlayer.displayName }}s deck:
-          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
-        </p>
-
         <!-- Step 3: Wait for players to join and then start the game. -->
         <div v-if="game.status === 'initialized' && user !== undefined">
+          <p>
+            Game <b> {{ gameId }} </b>
+          </p>
+          <p>Status: {{ game.status }}</p>
+          <p>Phase: {{ game.phase }}</p>
+          <p>{{ game.currentPlayer.displayName }}s turn</p>
+          <p>
+            Players:
+            {{ game.players.map(({ displayName }) => displayName).join(", ") }},
+          </p>
+          <p>
+            Player {{ game.currentPlayer.displayName }}s deck:
+            {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+          </p>
           <p>Waiting for players to join...</p>
           <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
             Start game
