@@ -11,15 +11,16 @@
       :userName="username"
       :gameSession="game"
       :gameID="gameId"
+      v-model="gameId"
       @joinClicked="join"
     />
     
-    
+    <!--
     <span v-if="game === undefined">
-      <input type="text" placeholder="Game id" v-model="gameId" /> <!-- skapar dubbelt inputfält atm-->
-      <!-- Need to understand v-model before putting inside DashBoardView.vue -->
+      <input type="text" placeholder="Game id" v-model="gameId" /> skapar dubbelt inputfält atm-->
+      <!-- Need to understand v-model before putting inside DashBoardView.vue 
     </span>
-    
+    -->
     <div v-if="game !== undefined">
       <p>
         Game <b> {{ gameId }} </b>
