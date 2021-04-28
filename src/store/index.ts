@@ -1,6 +1,6 @@
 import { firestore, functions } from "@/config/firebaseConfig";
 import * as gameAction from "@/domain/action";
-import { createStore } from "vuex";
+import { Commit, createStore } from "vuex";
 import { Game, Card } from "../../firebase/functions/src/types";
 
 interface State {
@@ -28,6 +28,13 @@ const subscribeToGameChanges = (args: {
       }
     }, onError);
 };
+
+function runAsync<T>(commit: Commit, fn: () => Promise<T>): Promise<T | void> {
+  commit("wait");
+  return fn()
+    .catch(() => commit("setError", "Something went wrong"))
+    .finally(() => commit("stopWait"));
+}
 
 const store = createStore<State>({
   strict: process.env.NODE_ENV !== "production",
@@ -66,82 +73,72 @@ const store = createStore<State>({
       commit("setCleanup", unsubscribe);
     },
     initializeGame({ state, commit }, deck: Array<Card>) {
-      commit("wait");
-      return functions
-        .httpsCallable("initializeGame")({
-          displayName: state.username,
-          deck
-        })
-        .then(response => {
-          const gameId = response.data;
-          commit("setGameId", gameId);
-          const unsubscribe = subscribeToGameChanges({
-            gameId,
-            onData: g => commit("setGame", g),
-            onError: () => commit("setError", "Something went wrong.")
-          });
-          commit("setCleanup", unsubscribe);
-        })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+      runAsync(commit, () =>
+        functions
+          .httpsCallable("initializeGame")({
+            displayName: state.username,
+            deck
+          })
+          .then(response => {
+            const gameId = response.data;
+            commit("setGameId", gameId);
+            const unsubscribe = subscribeToGameChanges({
+              gameId,
+              onData: g => commit("setGame", g),
+              onError: () => commit("setError", "Something went wrong.")
+            });
+            commit("setCleanup", unsubscribe);
+          })
+      );
     },
     startGame({ state, commit }) {
       if (state.gameId === undefined) {
         throw new Error("Game must be initialized");
       }
-      commit("wait");
-      return functions
-        .httpsCallable("startGame")({ gameId: state.gameId })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+      runAsync(commit, () =>
+        functions.httpsCallable("startGame")({ gameId: state.gameId })
+      );
     },
     joinGame({ state, commit }, gameId: string) {
-      commit("wait");
-      return functions
-        .httpsCallable("connectToGame")({
-          gameId,
-          displayName: state.username
-        })
-        .then(() => {
-          const unsubscribe = subscribeToGameChanges({
+      runAsync(commit, () =>
+        functions
+          .httpsCallable("connectToGame")({
             gameId,
-            onData: g => commit("setGame", g),
-            onError: () => commit("setError", "Something went wrong.")
-          });
-          commit("setCleanup", unsubscribe);
-        })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+            displayName: state.username
+          })
+          .then(() => {
+            const unsubscribe = subscribeToGameChanges({
+              gameId,
+              onData: g => commit("setGame", g),
+              onError: () => commit("setError", "Something went wrong.")
+            });
+            commit("setCleanup", unsubscribe);
+          })
+      );
     },
     drawCard({ state, commit }) {
-      commit("wait");
-      return functions
-        .httpsCallable("runAction")({
+      runAsync(commit, () =>
+        functions.httpsCallable("runAction")({
           gameId: state.gameId,
           action: gameAction.drawAction()
         })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+      );
     },
     lockCards({ state, commit }) {
-      commit("wait");
-      return functions
-        .httpsCallable("runAction")({
+      runAsync(commit, () =>
+        functions.httpsCallable("runAction")({
           gameId: state.gameId,
           action: gameAction.passAction()
         })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+      );
     },
     guessCard({ state, commit }, guess: number) {
-      commit("wait");
-      return functions
-        .httpsCallable("runAction")({
+      runAsync(commit, () =>
+        functions.httpsCallable("runAction")({
           gameId: state.gameId,
           action: gameAction.guessAction({ hiddenCardPosition: guess })
         })
-        .catch(() => commit("setError", "Something went wrong"))
-        .finally(() => commit("stopWait"));
+      );
     }
   },
   modules: {}
