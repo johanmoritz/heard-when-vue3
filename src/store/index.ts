@@ -66,9 +66,6 @@ const store = createStore<State>({
       commit("setCleanup", unsubscribe);
     },
     initializeGame({ state, commit }, deck: Array<Card>) {
-      if (state.username?.length ?? 0 === 0) {
-        return;
-      }
       commit("wait");
       return functions
         .httpsCallable("initializeGame")({
