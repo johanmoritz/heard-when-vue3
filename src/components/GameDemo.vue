@@ -1,6 +1,9 @@
 <template>
   <main>
     <!-- Step 1: Login -->
+    <div v-if="loading">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
     <div v-if="user === undefined">
       <h1>Heard When</h1>
       <button class="button" @click="signIn">Sign in</button>
