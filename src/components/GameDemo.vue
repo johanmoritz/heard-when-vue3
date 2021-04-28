@@ -14,10 +14,11 @@
       @joinClicked="join"
     />
     
-    <!-- Need to understand v-model before putting inside DashBoardView.vue 
+    
     <span v-if="game === undefined">
-      <input type="text" placeholder="Game id" v-model="gameId" /> skapar dubbelt inputfält atm
-    </span> -->
+      <input type="text" placeholder="Game id" v-model="gameId" /> <!-- skapar dubbelt inputfält atm-->
+      <!-- Need to understand v-model before putting inside DashBoardView.vue -->
+    </span>
     
     <div v-if="game !== undefined">
       <p>
