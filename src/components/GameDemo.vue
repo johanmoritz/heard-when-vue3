@@ -2,14 +2,14 @@
   <main>
     <!-- Step 1: Login -->
     <div v-if="user === undefined">
-      <button @click="signIn">Sign in</button>
+      <h1>Heard When</h1>
+      <button class="button" @click="signIn">Sign in</button>
     </div>
 
     <!-- Step 2: Create or join a game -->
     <div v-if="user !== undefined">
-      <button @click="signOut">Sign out {{ username }}</button>
-
       <div v-if="game === undefined">
+        <h1>Heard When</h1>
         Click to
         <button @click="initialize">
           Create new game
@@ -22,25 +22,28 @@
       </div>
 
       <div v-if="game !== undefined">
-        <p>
-          Game <b> {{ gameId }} </b>
-        </p>
-        <p>Status: {{ game.status }}</p>
-        <p>Phase: {{ game.phase }}</p>
-        <p>{{ game.currentPlayer.displayName }}s turn</p>
-        <p>
-          Players:
-          {{ game.players.map(({ displayName }) => displayName).join(", ") }},
-        </p>
-        <p>
-          Player {{ game.currentPlayer.displayName }}s deck:
-          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
-        </p>
-
         <!-- Step 3: Wait for players to join and then start the game. -->
         <div v-if="game.status === 'initialized' && user !== undefined">
+          <p>
+            Game <b> {{ gameId }} </b>
+          </p>
+          <p>Status: {{ game.status }}</p>
+          <p>Phase: {{ game.phase }}</p>
+          <p>{{ game.currentPlayer.displayName }}s turn</p>
+          <p>
+            Players:
+            {{ game.players.map(({ displayName }) => displayName).join(", ") }},
+          </p>
+          <p>
+            Player {{ game.currentPlayer.displayName }}s deck:
+            {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+          </p>
           <p>Waiting for players to join...</p>
-          <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
+          <button
+            class="button"
+            :disabled="game.currentPlayer.id !== user.uid"
+            @click="start"
+          >
             Start game
           </button>
         </div>
@@ -49,25 +52,20 @@
           <p v-if="game.log.length === 0">Game has begun!</p>
           <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
           <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-          <div
-            v-if="
-              game.phase === 'listen' &&
-                game.currentPlayer.id === user.uid &&
-                game.currentHiddenCard !== undefined
-            "
-          >
-            <MusicPlayerPresenter
-              class="music-player"
-              :songId="game.currentHiddenCard.uri"
-            />
-          </div>
-
-          <GamePresenter
-            :game="game"
-            :guess="guess"
-            :draw="draw"
-            :lock="lock"
-          />
+          <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
+            <div
+              v-if="
+                game.phase === 'listen' &&
+                  game.currentPlayer.id === user.uid &&
+                  game.currentHiddenCard !== undefined
+              "
+            >
+              <MusicPlayerPresenter
+                class="music-player"
+                :songId="game.currentHiddenCard.uri"
+              />
+            </div>
+          </GamePresenter>
         </div>
 
         <!-- Step 6: Now the game is over. -->
@@ -77,20 +75,13 @@
             {{ player.displayName }} has {{ player.lockedCards.length }} cards
           </p>
         </div>
-
-        <button @click="quit">End game</button>
+        <div>
+          <button class="button" @click="quit">End game</button>
+        </div>
       </div>
+      <button class="button" @click="signOut">Sign out {{ username }}</button>
     </div>
   </main>
-
-  <aside class="log" v-if="game !== undefined">
-    <span>Event log:</span>
-    <ol>
-      <li v-for="(event, i) in game.log" :key="i">
-        {{ event._tag }}
-      </li>
-    </ol>
-  </aside>
 </template>
 
 <style scoped>

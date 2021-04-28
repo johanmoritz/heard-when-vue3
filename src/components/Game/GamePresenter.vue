@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="game.phase === 'listen' && song !== undefined">
+    <div>
       <GameView :msg="msg">
         <div class="cards-container">
           <button
@@ -31,8 +31,13 @@
         </div>
       </GameView>
     </div>
+    <div>
+      <slot></slot>
+    </div>
     <div v-if="game.phase === 'choice'">
-      <ChoiceView :draw="draw" :lock="lock" />
+      <div class="overlay">
+        <ChoiceView :draw="draw" :lock="lock" />
+      </div>
     </div>
   </div>
 </template>
@@ -72,10 +77,10 @@ export default defineComponent({
         ? "It's " +
             game.value.currentPlayer.displayName +
             "'s turn.\n When is the song from?"
-        : game.value.phase === "choice"
-        ? "Correct, " +
-          game.value.currentPlayer.displayName +
-          ", do you want to lock you cards or continue guessing?"
+        : game.value.phase === "choice" 
+        ? "It's " +
+            game.value.currentPlayer.displayName +
+            "'s turn.\n Want to continue?"
         : "";
     });
 
