@@ -1,32 +1,32 @@
 <template>
   <div v-if="gameUser === undefined">
     <div class="container">
-    <p class="info">Sign in using your Google account</p>
-    <button class="button" @click="userClicked">Sign in</button>
+      <p class="info">Sign in using your Google account</p>
+      <Btn>
+        <button class="btn" @click="userClicked">Sign in</button>
+      </Btn>
     </div>
-</div>
- 
+  </div>
 </template>
 
 <script>
-
+import Btn from "./Btn";
 
 export default {
   name: "Login",
+  components: Btn,
   props: {
     gameUser: Object
-},
-  methods:  {
-    userClicked(){
-      this.$emit('buttonClicked');
+  },
+  methods: {
+    userClicked() {
+      this.$emit("buttonClicked");
     }
-}
-}
-
+  }
+};
 </script>
 
 <style scoped>
-
 .container {
   background-color: rgb(156, 151, 151);
   border-radius: 25px;
@@ -40,30 +40,4 @@ export default {
   padding: 15px 32px;
   font-size: large;
 }
-
-.button {
-  background-color: rgb(196, 196, 196);
-  border: none;
-  box-shadow: 1px 3px 3px rgb(133, 128, 128);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 50px;
-  transition-duration: 0.3s;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-}
-
-.button:hover {
-  background-color: #4CAF50; /* Green */
-  color: rgba(255, 255, 255, 0.966);
-}
-
 </style>
