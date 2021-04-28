@@ -34,7 +34,11 @@
     <div>
       <slot></slot>
     </div>
-    <div v-if="game.phase === 'choice'">
+    <div
+      v-if="
+        game.phase === 'choice' && game.currentPlayer.lockedCards.length !== 0
+      "
+    >
       <div class="overlay">
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
