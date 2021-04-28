@@ -18,6 +18,7 @@
       :userName="username"
       :gameSession="game"
       :gameID="gameId"
+      v-model="gameId"
       @joinClicked="join"
     />
 

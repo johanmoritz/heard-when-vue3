@@ -12,8 +12,14 @@
         </button>
         or
         <span v-if="gameSession === undefined">
-          <input type="text" placeholder="Game id" />
+          <input
+            :value="gameID"
+            placeholder="Game id"
+            type="text"
+            @input="$emit('update:gameID', $event.target.value)"
+          />
           <button class="btn" @click="joinGameClicked">Join game</button>
+          <!-- fix -->
         </span>
       </div>
     </Btn>
@@ -30,7 +36,7 @@ export default {
     gameUser: Object,
     userName: String,
     gameSession: Object,
-    gameID: String
+    gameID: { type: String, default: "" }
   },
   methods: {
     userClicked() {
@@ -40,7 +46,8 @@ export default {
       this.$emit("createClicked");
     },
     joinGameClicked() {
-      this.$emit("joinClicked");
+      //this.$emit("joinClicked");
+      console.log(this.gameID);
     }
   }
 };
