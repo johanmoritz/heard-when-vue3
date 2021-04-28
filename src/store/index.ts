@@ -1,5 +1,6 @@
-import { firestore, functions } from "@/config/firebaseConfig";
+import { firestore } from "@/config/firebaseConfig";
 import * as gameAction from "@/domain/action";
+import * as gameApi from "@/services/game";
 import { Commit, createStore } from "vuex";
 import { Game, Card } from "../../firebase/functions/src/types";
 
@@ -28,6 +29,8 @@ const subscribeToGameChanges = (args: {
       }
     }, onError);
 };
+
+const UnspecifiedErrorMsg = "Try reloading the window.";
 
 function runAsync<T>(commit: Commit, fn: () => Promise<T>): Promise<T | void> {
   commit("wait");
@@ -64,6 +67,7 @@ const store = createStore<State>({
   },
   actions: {
     rejoinGame({ commit }, gameId) {
+      commit("setError", undefined);
       commit("setGameId", gameId);
       const unsubscribe = subscribeToGameChanges({
         gameId,
@@ -73,69 +77,83 @@ const store = createStore<State>({
       commit("setCleanup", unsubscribe);
     },
     initializeGame({ state, commit }, deck: Array<Card>) {
+      commit("setError", undefined);
+      const username = state.username;
+      if (username === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
+      }
       runAsync(commit, () =>
-        functions
-          .httpsCallable("initializeGame")({
-            displayName: state.username,
-            deck
-          })
-          .then(response => {
-            const gameId = response.data;
-            commit("setGameId", gameId);
-            const unsubscribe = subscribeToGameChanges({
-              gameId,
-              onData: g => commit("setGame", g),
-              onError: () => commit("setError", "Something went wrong.")
-            });
-            commit("setCleanup", unsubscribe);
-          })
+        gameApi.initialize({ displayName: username, deck }).then(gameId => {
+          commit("setGameId", gameId);
+          const unsubscribe = subscribeToGameChanges({
+            gameId,
+            onData: g => commit("setGame", g),
+            onError: () => commit("setError", "Something went wrong.")
+          });
+          commit("setCleanup", unsubscribe);
+        })
       );
     },
     startGame({ state, commit }) {
-      if (state.gameId === undefined) {
-        throw new Error("Game must be initialized");
+      commit("setError", undefined);
+      const gameId = state.gameId;
+      if (gameId === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
       }
-      runAsync(commit, () =>
-        functions.httpsCallable("startGame")({ gameId: state.gameId })
-      );
+      runAsync(commit, () => gameApi.start({ gameId }));
     },
     joinGame({ state, commit }, gameId: string) {
+      commit("setError", undefined);
+      const username = state.username;
+      if (username === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
+      }
       runAsync(commit, () =>
-        functions
-          .httpsCallable("connectToGame")({
+        gameApi.join({ gameId, displayName: username }).then(() => {
+          const unsubscribe = subscribeToGameChanges({
             gameId,
-            displayName: state.username
-          })
-          .then(() => {
-            const unsubscribe = subscribeToGameChanges({
-              gameId,
-              onData: g => commit("setGame", g),
-              onError: () => commit("setError", "Something went wrong.")
-            });
-            commit("setCleanup", unsubscribe);
-          })
+            onData: g => commit("setGame", g),
+            onError: () => commit("setError", "Something went wrong.")
+          });
+          commit("setCleanup", unsubscribe);
+        })
       );
     },
     drawCard({ state, commit }) {
+      commit("setError", undefined);
+      const gameId = state.gameId;
+      if (gameId === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
+      }
       runAsync(commit, () =>
-        functions.httpsCallable("runAction")({
-          gameId: state.gameId,
-          action: gameAction.drawAction()
-        })
+        gameApi.runAction({ gameId, action: gameAction.drawAction() })
       );
     },
     lockCards({ state, commit }) {
+      commit("setError", undefined);
+      const gameId = state.gameId;
+      if (gameId === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
+      }
       runAsync(commit, () =>
-        functions.httpsCallable("runAction")({
-          gameId: state.gameId,
-          action: gameAction.passAction()
-        })
+        gameApi.runAction({ gameId, action: gameAction.passAction() })
       );
     },
     guessCard({ state, commit }, guess: number) {
+      commit("setError", undefined);
+      const gameId = state.gameId;
+      if (gameId === undefined) {
+        commit("setError", UnspecifiedErrorMsg);
+        return;
+      }
       runAsync(commit, () =>
-        functions.httpsCallable("runAction")({
-          gameId: state.gameId,
+        gameApi.runAction({
+          gameId,
           action: gameAction.guessAction({ hiddenCardPosition: guess })
         })
       );
