@@ -9,7 +9,7 @@
       <!--<button class="button" @click="signIn">Sign in</button>-->
     </div>
 
-    <Login @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
+    <LoginView @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
     <!-- Step 2: Create or join a game -->
     <DashBoardView
       @buttonClicked="signOut"
@@ -109,11 +109,11 @@ import { fb } from "@/config/firebaseConfig";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
 import { useStore } from "vuex";
-import Login from "@/components/Login.vue";
+import LoginView from "@/components/LoginView.vue";
 import DashBoardView from "@/components/DashBoardView.vue";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter, GamePresenter, Login, DashBoardView },
+  components: { MusicPlayerPresenter, GamePresenter, LoginView, DashBoardView },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {

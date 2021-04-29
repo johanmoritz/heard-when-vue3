@@ -13,7 +13,7 @@
 import Btn from "./Btn";
 
 export default {
-  name: "Login",
+  name: "LoginView",
   components: Btn,
   props: {
     gameUser: Object

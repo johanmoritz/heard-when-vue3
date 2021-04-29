@@ -39,7 +39,6 @@ export default {
     gameID: { type: String, default: "" },
     modelValue: String
   },
-  
   methods: {
     userClicked() {
       this.$emit("buttonClicked");
