@@ -11,14 +11,13 @@
       :userName="username"
       :gameSession="game"
       :gameID="gameId"
-      v-model="gameId"
       @joinClicked="join"
+      v-model="gameId"
     />
     
     <!--
     <span v-if="game === undefined">
-      <input type="text" placeholder="Game id" v-model="gameId" /> skapar dubbelt inputfält atm-->
-      <!-- Need to understand v-model before putting inside DashBoardView.vue 
+      <input type="text" placeholder="Game id" v-model="gameId" /> 
     </span>
     -->
     <div v-if="game !== undefined">
@@ -287,7 +286,7 @@ export default defineComponent({
         data.game = undefined;
       }
     });
-
+    
     // This is a cool 'vue' function
     onUnmounted(() => {
       unsubscribeFromFirestore();

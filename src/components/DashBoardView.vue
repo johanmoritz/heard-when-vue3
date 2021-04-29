@@ -13,10 +13,10 @@
         or
         <span v-if="gameSession === undefined">
           <input
-            :value="gameID"
+            :value="modelValue"
             placeholder="Game id"
             type="text"
-            @input="$emit('update:gameID', $event.target.value)"
+            @input="$emit('update:modelValue', $event.target.value)"
           />
           <button class="btn" @click="joinGameClicked">Join game</button>
           <!-- fix -->
@@ -36,8 +36,10 @@ export default {
     gameUser: Object,
     userName: String,
     gameSession: Object,
-    gameID: { type: String, default: "" }
+    gameID: { type: String, default: "" },
+    modelValue: String
   },
+  
   methods: {
     userClicked() {
       this.$emit("buttonClicked");
