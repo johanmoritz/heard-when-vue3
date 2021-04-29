@@ -18,8 +18,8 @@
       :userName="username"
       :gameSession="game"
       :gameID="gameId"
-      v-model="gameId"
       @joinClicked="join"
+      v-model="gameId"
     />
 
       <div v-if="game !== undefined">
@@ -237,7 +237,7 @@ export default defineComponent({
         data.game = undefined;
       }
     });
-
+    
     // This is a cool 'vue' function
     onUnmounted(() => {
       stopWatchingGameChanges();
