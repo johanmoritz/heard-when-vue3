@@ -1,15 +1,18 @@
 <template>
   <main>
     <!-- Step 1: Login -->
+    <div v-if="loading">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
     <div v-if="user === undefined">
-      <button @click="signIn">Sign in</button>
+      <h1>Heard When</h1>
+      <button class="button" @click="signIn">Sign in</button>
     </div>
 
     <!-- Step 2: Create or join a game -->
     <div v-if="user !== undefined">
-      <button @click="signOut">Sign out {{ username }}</button>
-
       <div v-if="game === undefined">
+        <h1>Heard When</h1>
         Click to
         <button @click="initialize">
           Create new game
@@ -22,25 +25,28 @@
       </div>
 
       <div v-if="game !== undefined">
-        <p>
-          Game <b> {{ gameId }} </b>
-        </p>
-        <p>Status: {{ game.status }}</p>
-        <p>Phase: {{ game.phase }}</p>
-        <p>{{ game.currentPlayer.displayName }}s turn</p>
-        <p>
-          Players:
-          {{ game.players.map(({ displayName }) => displayName).join(", ") }},
-        </p>
-        <p>
-          Player {{ game.currentPlayer.displayName }}s deck:
-          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
-        </p>
-
         <!-- Step 3: Wait for players to join and then start the game. -->
         <div v-if="game.status === 'initialized' && user !== undefined">
+          <p>
+            Game <b> {{ gameId }} </b>
+          </p>
+          <p>Status: {{ game.status }}</p>
+          <p>Phase: {{ game.phase }}</p>
+          <p>{{ game.currentPlayer.displayName }}s turn</p>
+          <p>
+            Players:
+            {{ game.players.map(({ displayName }) => displayName).join(", ") }},
+          </p>
+          <p>
+            Player {{ game.currentPlayer.displayName }}s deck:
+            {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+          </p>
           <p>Waiting for players to join...</p>
-          <button :disabled="game.currentPlayer.id !== user.uid" @click="start">
+          <button
+            class="button"
+            :disabled="game.currentPlayer.id !== user.uid"
+            @click="start"
+          >
             Start game
           </button>
         </div>
@@ -49,25 +55,20 @@
           <p v-if="game.log.length === 0">Game has begun!</p>
           <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
           <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-          <div
-            v-if="
-              game.phase === 'listen' &&
-                game.currentPlayer.id === user.uid &&
-                game.currentHiddenCard !== undefined
-            "
-          >
-            <MusicPlayerPresenter
-              class="music-player"
-              :songId="game.currentHiddenCard.uri"
-            />
-          </div>
-
-          <GamePresenter
-            :game="game"
-            :guess="guess"
-            :draw="draw"
-            :lock="lock"
-          />
+          <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
+            <div
+              v-if="
+                game.phase === 'listen' &&
+                  game.currentPlayer.id === user.uid &&
+                  game.currentHiddenCard !== undefined
+              "
+            >
+              <MusicPlayerPresenter
+                class="music-player"
+                :songId="game.currentHiddenCard.uri"
+              />
+            </div>
+          </GamePresenter>
         </div>
 
         <!-- Step 6: Now the game is over. -->
@@ -77,20 +78,13 @@
             {{ player.displayName }} has {{ player.lockedCards.length }} cards
           </p>
         </div>
-
-        <button @click="quit">End game</button>
+        <div>
+          <button class="button" @click="quit">End game</button>
+        </div>
       </div>
+      <button class="button" @click="signOut">Sign out {{ username }}</button>
     </div>
   </main>
-
-  <aside class="log" v-if="game !== undefined">
-    <span>Event log:</span>
-    <ol>
-      <li v-for="(event, i) in game.log" :key="i">
-        {{ event._tag }}
-      </li>
-    </ol>
-  </aside>
 </template>
 
 <style scoped>
@@ -104,13 +98,20 @@ aside {
 </style>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onUnmounted, PropType } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  onUnmounted,
+  PropType,
+  computed
+} from "vue";
 import firebase from "firebase/app";
 import { Game, Card } from "../../firebase/functions/src/types";
-import * as action from "@/domain/action";
 import { fb } from "@/config/firebaseConfig";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { MusicPlayerPresenter, GamePresenter },
@@ -130,35 +131,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const username = ref("");
-    const user = ref<firebase.User | undefined>(undefined);
-    const game = ref<Game | undefined>(undefined);
-    const gameId = ref("");
-    const data = reactive({ username, user, game, gameId });
-
-    let unsubscribeFromFirestore = () => {
-      /* See below. */
-    };
-
-    const setUser = (user: firebase.User | null) => {
-      if (user !== null) {
-        data.user = user;
-        data.username = user.email?.split("@")[0] ?? user.uid;
-      }
-    };
-
-    const subscribeToGameChanges = (args: { gameId: string }) => {
-      const { gameId } = args;
-      return props.firestore
-        .collection("game")
-        .doc(gameId)
-        .onSnapshot(s => {
-          const gameData = s.data() as Game | undefined;
-          if (gameData !== undefined) {
-            data.game = gameData;
-          }
-        });
-    };
+    const model = useStore();
 
     const storeCurrentGame = async (args: {
       userId: string;
@@ -172,6 +145,39 @@ export default defineComponent({
         .set({ currentGame: gameId });
     };
 
+    const username = ref("");
+    const user = ref<firebase.User | undefined>(undefined);
+
+    const gameId = computed(() => model.state.gameId as string | undefined);
+    const game = computed(() => model.state.game as Game | undefined);
+    const loading = computed(() => model.state.loading as boolean);
+    const error = computed(() => model.state.error as string);
+    const data = reactive({ username, user, game, gameId, loading, error });
+
+    const stopWatchingGameChanges = model.watch(
+      state => state.game,
+      (game: Game | undefined) => {
+        if (
+          game !== undefined &&
+          data.gameId !== undefined &&
+          data.user?.uid !== undefined
+        ) {
+          return storeCurrentGame({
+            gameId: data.gameId,
+            userId: data.user.uid
+          });
+        }
+      }
+    );
+
+    const setUser = (user: firebase.User | null) => {
+      if (user !== null) {
+        data.user = user;
+        data.username = user.email?.split("@")[0] ?? user.uid;
+        model.commit("setUsername", data.username);
+      }
+    };
+
     const loadCurrentGame = async (args: { userId: string }) => {
       const { userId } = args;
 
@@ -183,16 +189,13 @@ export default defineComponent({
         .then(result => {
           if (result && result["currentGame"] !== undefined) {
             const gameId = result["currentGame"];
-            data.gameId = gameId;
-            unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
+            model.dispatch("rejoinGame", gameId);
           }
         });
     };
 
     const quit = async () => {
-      data.gameId = "";
-      data.game = undefined;
-      unsubscribeFromFirestore();
+      model.replaceState({});
 
       if (data.user) {
         props.firestore
@@ -222,65 +225,8 @@ export default defineComponent({
         .signOut()
         .then(() => {
           data.user = undefined;
+          model.replaceState({});
         });
-
-    const initialize = async () => {
-      props.functions
-        .httpsCallable("initializeGame")({
-          displayName: data.username,
-          // Imagine we had som real songs to add :)
-          deck: props.deck
-        })
-        .then(response => {
-          const gameId = response.data;
-          data.gameId = gameId;
-          unsubscribeFromFirestore = subscribeToGameChanges({ gameId });
-          if (data.user) {
-            storeCurrentGame({ gameId, userId: data.user.uid });
-          }
-        });
-    };
-
-    const start = async () => {
-      props.functions.httpsCallable("startGame")({ gameId: data.gameId });
-    };
-
-    const join = async () => {
-      props.functions
-        .httpsCallable("connectToGame")({
-          gameId: data.gameId,
-          displayName: data.username
-        })
-        .then(() => {
-          unsubscribeFromFirestore = subscribeToGameChanges({
-            gameId: data.gameId
-          });
-          if (data.user) {
-            storeCurrentGame({ gameId: data.gameId, userId: data.user.uid });
-          }
-        });
-    };
-
-    const draw = async () => {
-      props.functions.httpsCallable("runAction")({
-        gameId: data.gameId,
-        action: action.drawAction()
-      });
-    };
-
-    const lock = async () => {
-      props.functions.httpsCallable("runAction")({
-        gameId: data.gameId,
-        action: action.passAction()
-      });
-    };
-
-    const guess = async (pos: number) => {
-      props.functions.httpsCallable("runAction")({
-        gameId: data.gameId,
-        action: action.guessAction({ hiddenCardPosition: pos })
-      });
-    };
 
     // Load the state when auth picks up the user
     props.auth.onIdTokenChanged(user => {
@@ -294,14 +240,22 @@ export default defineComponent({
 
     // This is a cool 'vue' function
     onUnmounted(() => {
-      unsubscribeFromFirestore();
+      stopWatchingGameChanges();
     });
+
+    const initialize = () => model.dispatch("initializeGame", props.deck);
+    const start = () => model.dispatch("startGame");
+    const join = (id: string) => model.dispatch("joinGame", id);
+    const draw = () => model.dispatch("drawCard");
+    const lock = () => model.dispatch("lockCards");
+    const guess = (pos: number) => model.dispatch("guessCard", pos);
 
     return {
       username,
       user,
       game,
       gameId,
+      loading,
       signIn: onSignIn,
       signOut: onSignOut,
       initialize,

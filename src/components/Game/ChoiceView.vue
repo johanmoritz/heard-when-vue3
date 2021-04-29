@@ -29,7 +29,7 @@ export default defineComponent({
 <style scoped>
 .choice-container {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background: rgba(194, 155, 163, 0.8);
+  background: rgba(194, 155, 163);
   top: 0;
   display: inline-block;
   flex-direction: column;
@@ -37,20 +37,11 @@ export default defineComponent({
   width: 35%;
   margin: 20px;
   padding: 50px;
-}
-.button {
-  background: rgba(243, 215, 220, 0.8);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  border: none;
-  font-weight: bold;
-  color: #2c3e50;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%, -50%);
 }
 .text {
   text-align: center;

@@ -2,7 +2,7 @@
   <div class="music-player">
     <b><slot name="status"></slot></b>
     <div>
-      <slot> </slot>
+      <slot></slot>
     </div>
   </div>
 </template>
