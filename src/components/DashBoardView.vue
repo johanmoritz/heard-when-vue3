@@ -1,28 +1,26 @@
 <template>
   <div v-if="gameUser !== undefined">
-    <Btn>
-      <button class="btn btn-exit" @click="userClicked">
-        Sign out {{ userName }}
-      </button>
-      <div v-if="gameSession === undefined">
-        <!-- What type do I send game prop as?-->
-        Click to
-        <button class="btn" @click="createGameClicked">
-          Create new game
-        </button>
-        or
-        <span v-if="gameSession === undefined">
-          <input
-            :value="modelValue"
-            placeholder="Game id"
-            type="text"
-            @input="$emit('update:modelValue', $event.target.value)"
-          />
-          <button class="btn" @click="joinGameClicked">Join game</button>
-          <!-- fix -->
-        </span>
-      </div>
+    <Btn class="btn btn-exit" @click="userClicked">
+      Sign out {{ userName }}
     </Btn>
+    <div v-if="gameSession === undefined">
+      <!-- What type do I send game prop as?-->
+      Click to
+      <Btn class="btn" @click="createGameClicked">
+        Create new game
+      </Btn>
+      or
+      <span v-if="gameSession === undefined">
+        <input
+          :value="modelValue"
+          placeholder="Game id"
+          type="text"
+          @input="$emit('update:modelValue', $event.target.value)"
+        />
+        <Btn class="btn" @click="joinGameClicked">Join game</Btn>
+        <!-- fix -->
+      </span>
+    </div>
   </div>
 </template>
 

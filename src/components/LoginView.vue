@@ -2,9 +2,7 @@
   <div v-if="gameUser === undefined">
     <div class="container">
       <p class="info">Sign in using your Google account</p>
-      <Btn>
-        <button class="btn" @click="userClicked">Sign in</button>
-      </Btn>
+      <Btn class="btn" @click="userClicked">Sign in</Btn>
     </div>
   </div>
 </template>
@@ -28,7 +26,6 @@ export default {
 
 <style scoped>
 .container {
-  background-color: rgb(156, 151, 151);
   border-radius: 25px;
   position: relative;
   height: 175px;
