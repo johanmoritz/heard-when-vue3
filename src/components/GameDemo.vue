@@ -6,7 +6,7 @@
     </div>
     <div v-if="user === undefined">
       <h1>Heard When</h1>
-      <button class="button" @click="signIn">Sign in</button>
+      <!--<button class="button" @click="signIn">Sign in</button>-->
     </div>
 
     <Login @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
@@ -22,66 +22,65 @@
       v-model="gameId"
     />
 
-      <div v-if="game !== undefined">
-        <!-- Step 3: Wait for players to join and then start the game. -->
-        <div v-if="game.status === 'initialized' && user !== undefined">
-          <p>
-            Game <b> {{ gameId }} </b>
-          </p>
-          <p>Status: {{ game.status }}</p>
-          <p>Phase: {{ game.phase }}</p>
-          <p>{{ game.currentPlayer.displayName }}s turn</p>
-          <p>
-            Players:
-            {{ game.players.map(({ displayName }) => displayName).join(", ") }},
-          </p>
-          <p>
-            Player {{ game.currentPlayer.displayName }}s deck:
-            {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
-          </p>
-          <p>Waiting for players to join...</p>
-          <button
-            class="button"
-            :disabled="game.currentPlayer.id !== user.uid"
-            @click="start"
-          >
-            Start game
-          </button>
-        </div>
-
-        <div v-if="game.status === 'started'">
-          <p v-if="game.log.length === 0">Game has begun!</p>
-          <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
-          <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
-          <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
-            <div
-              v-if="
-                game.phase === 'listen' &&
-                  game.currentPlayer.id === user.uid &&
-                  game.currentHiddenCard !== undefined
-              "
-            >
-              <MusicPlayerPresenter
-                class="music-player"
-                :songId="game.currentHiddenCard.uri"
-              />
-            </div>
-          </GamePresenter>
-        </div>
-
-        <!-- Step 6: Now the game is over. -->
-        <div v-if="game.status === 'finished'">
-          The score is
-          <p v-for="player in game.players" :key="player.displayName">
-            {{ player.displayName }} has {{ player.lockedCards.length }} cards
-          </p>
-        </div>
-        <div>
-          <button class="button" @click="quit">End game</button>
-        </div>
+    <div v-if="game !== undefined">
+      <!-- Step 3: Wait for players to join and then start the game. -->
+      <div v-if="game.status === 'initialized' && user !== undefined">
+        <p>
+          Game <b> {{ gameId }} </b>
+        </p>
+        <p>Status: {{ game.status }}</p>
+        <p>Phase: {{ game.phase }}</p>
+        <p>{{ game.currentPlayer.displayName }}s turn</p>
+        <p>
+          Players:
+          {{ game.players.map(({ displayName }) => displayName).join(", ") }},
+        </p>
+        <p>
+          Player {{ game.currentPlayer.displayName }}s deck:
+          {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
+        </p>
+        <p>Waiting for players to join...</p>
+        <button
+          class="button"
+          :disabled="game.currentPlayer.id !== user.uid"
+          @click="start"
+        >
+          Start game
+        </button>
       </div>
-      <button class="button" @click="signOut">Sign out {{ username }}</button>
+
+      <div v-if="game.status === 'started'">
+        <p v-if="game.log.length === 0">Game has begun!</p>
+        <!-- Step 4: Wait for your turn and then draw a card or end your turn. -->
+        <!-- Step 5: Take a guess. (This is when you should listen to the song) -->
+        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
+          <div
+            v-if="
+              game.phase === 'listen' &&
+                game.currentPlayer.id === user.uid &&
+                game.currentHiddenCard !== undefined
+            "
+          >
+            <MusicPlayerPresenter
+              class="music-player"
+              :songId="game.currentHiddenCard.uri"
+            />
+          </div>
+        </GamePresenter>
+      </div>
+
+      <!-- Step 6: Now the game is over. -->
+      <div v-if="game.status === 'finished'">
+        The score is
+        <p v-for="player in game.players" :key="player.displayName">
+          {{ player.displayName }} has {{ player.lockedCards.length }} cards
+        </p>
+      </div>
+      <div>
+        <button class="button" @click="quit">End game</button>
+      </div>
     </div>
+    <!--<button class="button" @click="signOut">Sign out {{ username }}</button>-->
   </main>
 </template>
 
@@ -237,7 +236,7 @@ export default defineComponent({
         data.game = undefined;
       }
     });
-    
+
     // This is a cool 'vue' function
     onUnmounted(() => {
       stopWatchingGameChanges();
