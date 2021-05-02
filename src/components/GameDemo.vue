@@ -1,14 +1,10 @@
 <template>
   <main>
-    <!-- Step 1: Login -->
-    <div v-if="loading">
-      <span class="loader"><span class="loader-inner"></span></span>
-    </div>
-    <div v-if="user === undefined">
-      <h1>Heard When</h1>
-      <!--<button class="button" @click="signIn">Sign in</button>-->
+    <div id="loading-space">
+      <Loader v-if="loading" />
     </div>
 
+    <!-- Step 1: Login -->
     <LoginView @buttonClicked="signIn" :gameUser="user" /><!-- @signin -->
     <!-- Step 2: Create or join a game -->
     <DashBoardView
@@ -111,9 +107,16 @@ import GamePresenter from "@/components/Game/GamePresenter.vue";
 import { useStore } from "vuex";
 import LoginView from "@/components/LoginView.vue";
 import DashBoardView from "@/components/DashBoardView.vue";
+import Loader from "@/components/Loader.vue";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter, GamePresenter, LoginView, DashBoardView },
+  components: {
+    MusicPlayerPresenter,
+    GamePresenter,
+    LoginView,
+    DashBoardView,
+    Loader
+  },
   props: {
     deck: { type: Array as PropType<Array<Card>>, required: true },
     functions: {
