@@ -22,7 +22,7 @@
       v-model="gameId"
     />
 
-    <div v-if="game !== undefined">
+    <div v-if="game !== undefined && user !== undefined">
       <!-- Step 3: Wait for players to join and then start the game. -->
       <div v-if="game.status === 'initialized' && user !== undefined">
         <p>
