@@ -21,19 +21,19 @@
   transition-timing-function: ease-in-out;
 }
 
-.btn:hover *,
-.btn:active * {
+.btn:hover *:not(:disabled),
+.btn:active *:not(:disabled) {
   background-color: #4caf50; /* Green */
   color: rgba(255, 255, 255, 0.966);
 }
 
-.btn:active * {
+.btn:active *:not(:disabled) {
   box-shadow: 0 2px rgb(43, 42, 42);
   transform: translateY(2px);
 }
 
-.btn-exit:hover *,
-.btn-exit:active * {
+.btn-exit:hover *:not(:disabled),
+.btn-exit:active *:not(:disabled) {
   background-color: #af4c4c;
 }
 </style>
