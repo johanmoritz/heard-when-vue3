@@ -1,0 +1,58 @@
+<template>
+  <span class="loader2"><span class="loader2-inner"></span></span>
+</template>
+
+<style>
+/** Loader from: https://codepen.io/tashfene/pen/raEqrJ */
+.loader2 {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 4px solid #fff;
+  animation: loader 2s infinite ease;
+}
+
+.loader2-inner {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  animation: loader-inner 2s infinite ease-in;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-inner {
+  0% {
+    height: 0%;
+  }
+  25% {
+    height: 0%;
+  }
+  50% {
+    height: 100%;
+  }
+  75% {
+    height: 100%;
+  }
+  100% {
+    height: 0%;
+  }
+}
+</style>

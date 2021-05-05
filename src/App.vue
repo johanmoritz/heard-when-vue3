@@ -4,19 +4,27 @@
     <router-link to="/about">About</router-link> -->
   </div>
   <router-view />
+
+  <Loader id="loading" v-if="loading" />
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted } from "vue";
+import { computed, defineComponent, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import userApi from "@/store/user";
 import { useRouter } from "vue-router";
+import Loader from "@/components/Loader.vue";
 
 export default defineComponent({
+  components: { Loader },
   setup() {
     const model = useStore();
     const router = useRouter();
     const { handleGameUpdates, handleAuthState } = userApi({ model, router });
+
+    const loading = computed(() => model.state.loading as boolean);
+    const error = computed(() => model.state.error as string);
+
     const unsubModel = handleGameUpdates();
     const unsubFb = handleAuthState();
 
@@ -24,6 +32,8 @@ export default defineComponent({
       unsubModel();
       unsubFb();
     });
+
+    return { loading, error };
   }
 });
 </script>
@@ -41,7 +51,6 @@ export default defineComponent({
   left: 0;
   bottom: 0;
   right: 0;
-  overflow: auto;
 }
 
 .button {
@@ -83,58 +92,10 @@ export default defineComponent({
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-/** Loader from: https://codepen.io/tashfene/pen/raEqrJ */
-.loader {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  position: relative;
-  border: 4px solid #fff;
-  top: 50%;
-  animation: loader 2s infinite ease;
-}
 
-.loader-inner {
-  vertical-align: top;
-  display: inline-block;
-  width: 100%;
-  background-color: #fff;
-  animation: loader-inner 2s infinite ease-in;
-}
-
-@keyframes loader {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(180deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  75% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes loader-inner {
-  0% {
-    height: 0%;
-  }
-  25% {
-    height: 0%;
-  }
-  50% {
-    height: 100%;
-  }
-  75% {
-    height: 100%;
-  }
-  100% {
-    height: 0%;
-  }
+#loading {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
 }
 </style>

@@ -1,8 +1,5 @@
 <template>
   <main>
-    <div v-if="loading">
-      <span class="loader"><span class="loader-inner"></span></span>
-    </div>
     <div v-if="game !== undefined && user !== undefined">
       <div v-if="game.status === 'initialized'">
         <WaitingAreaPresenter />
@@ -60,7 +57,6 @@ export default defineComponent({
 
     const gameId = computed(() => model.state.gameId as string | undefined);
     const game = computed(() => model.state.game as Game | undefined);
-    const loading = computed(() => model.state.loading as boolean);
     const error = computed(() => model.state.error as string);
 
     const { quit } = userApi({ model, router });
@@ -74,7 +70,6 @@ export default defineComponent({
       user,
       game,
       gameId,
-      loading,
       draw,
       lock,
       guess,
