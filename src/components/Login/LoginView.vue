@@ -3,7 +3,7 @@
     <div class="container">
       <p class="info">Sign in using your Google account</p>
       <Btn>
-        <button @click="userClicked">Sign in</button>
+        <button :disabled="loading" @click="userClicked">Sign in</button>
       </Btn>
     </div>
   </div>
@@ -16,7 +16,8 @@ export default {
   name: "LoginView",
   components: { Btn },
   props: {
-    gameUser: Object
+    gameUser: Object,
+    loading: { type: Boolean, default: false }
   },
   methods: {
     userClicked() {

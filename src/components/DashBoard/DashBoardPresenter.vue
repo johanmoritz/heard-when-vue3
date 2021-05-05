@@ -6,6 +6,7 @@
     :userName="username"
     :gameSession="game"
     @joinClicked="join"
+    :loading="loading"
     v-model="gameIdRaw"
   />
 </template>
@@ -13,7 +14,7 @@
 <script lang="ts">
 import DashBoardView from "./DashBoardView.vue";
 import userApi, { data } from "@/store/user";
-import { PropType, toRefs, ref } from "vue";
+import { PropType, toRefs, ref, computed } from "vue";
 import { Card } from "firebase/functions/src/types";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -35,6 +36,8 @@ export default {
 
     const { signOut } = userApi({ model, router });
 
+    const loading = computed(() => model.state.loading as boolean);
+
     const initialize = () => model.dispatch("initializeGame", props.deck);
     const join = () => model.dispatch("joinGame", gameIdRaw.value);
 
@@ -45,7 +48,8 @@ export default {
       username,
       game,
       gameIdRaw,
-      join
+      join,
+      loading
     };
   }
 };

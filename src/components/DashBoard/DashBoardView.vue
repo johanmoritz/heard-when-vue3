@@ -1,25 +1,30 @@
 <template>
   <div v-if="gameUser !== undefined">
     <Btn :theme="'alert'">
-      <button @click="userClicked">Sign out {{ userName }}</button>
+      <button :disabled="loading" @click="userClicked">
+        Sign out {{ userName }}
+      </button>
     </Btn>
     <div v-if="gameSession === undefined">
       Click to
       <Btn>
-        <button @click="createGameClicked">
+        <button :disabled="loading" @click="createGameClicked">
           Create new game
         </button>
       </Btn>
       or
       <span v-if="gameSession === undefined">
         <input
+          :disabled="loading"
           :value="modelValue"
           placeholder="Game id"
           type="text"
           @input="$emit('update:modelValue', $event.target.value)"
         />
         <Btn>
-          <button @click="joinGameClicked">Join game</button>
+          <button :disabled="loading" @click="joinGameClicked">
+            Join game
+          </button>
         </Btn>
       </span>
     </div>
@@ -37,7 +42,8 @@ export default {
     userName: String,
     gameSession: Object,
     gameID: { type: String, default: "" },
-    modelValue: String
+    modelValue: String,
+    loading: { type: Boolean, default: false }
   },
   methods: {
     userClicked() {
