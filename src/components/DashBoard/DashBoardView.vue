@@ -4,7 +4,6 @@
       <button @click="userClicked">Sign out {{ userName }}</button>
     </Btn>
     <div v-if="gameSession === undefined">
-      <!-- What type do I send game prop as?-->
       Click to
       <Btn>
         <button @click="createGameClicked">
@@ -48,8 +47,7 @@ export default {
       this.$emit("createClicked");
     },
     joinGameClicked() {
-      //this.$emit("joinClicked");
-      console.log(this.gameID);
+      this.$emit("joinClicked");
     }
   }
 };

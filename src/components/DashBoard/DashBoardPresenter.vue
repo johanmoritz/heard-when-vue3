@@ -5,16 +5,15 @@
     @createClicked="initialize"
     :userName="username"
     :gameSession="game"
-    :gameID="gameId"
     @joinClicked="join"
-    v-model="gameId"
+    v-model="gameIdRaw"
   />
 </template>
 
 <script lang="ts">
 import DashBoardView from "./DashBoardView.vue";
 import userApi, { data } from "@/store/user";
-import { PropType, toRefs } from "vue";
+import { PropType, toRefs, ref } from "vue";
 import { Card } from "firebase/functions/src/types";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -30,12 +29,14 @@ export default {
     const model = useStore();
     const router = useRouter();
     const { user } = toRefs(data);
-    const { username, game, gameId } = toRefs(model.state);
+    const { username, game } = toRefs(model.state);
+
+    const gameIdRaw = ref("");
 
     const { signOut } = userApi({ model, router });
 
     const initialize = () => model.dispatch("initializeGame", props.deck);
-    const join = (id: string) => model.dispatch("joinGame", id);
+    const join = () => model.dispatch("joinGame", gameIdRaw.value);
 
     return {
       signOut,
@@ -43,7 +44,7 @@ export default {
       initialize,
       username,
       game,
-      gameId,
+      gameIdRaw,
       join
     };
   }
