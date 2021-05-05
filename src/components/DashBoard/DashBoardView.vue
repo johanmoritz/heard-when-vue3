@@ -1,37 +1,38 @@
 <template>
   <div v-if="gameUser !== undefined">
-    <Button>
-      <button class="btn btn-exit" @click="userClicked">
-        Sign out {{ userName }}
-      </button>
-      <div v-if="gameSession === undefined">
-        <!-- What type do I send game prop as?-->
-        Click to
-        <button class="btn" @click="createGameClicked">
+    <Btn :theme="'alert'">
+      <button @click="userClicked">Sign out {{ userName }}</button>
+    </Btn>
+    <div v-if="gameSession === undefined">
+      <!-- What type do I send game prop as?-->
+      Click to
+      <Btn>
+        <button @click="createGameClicked">
           Create new game
         </button>
-        or
-        <span v-if="gameSession === undefined">
-          <input
-            :value="modelValue"
-            placeholder="Game id"
-            type="text"
-            @input="$emit('update:modelValue', $event.target.value)"
-          />
-          <button class="btn" @click="joinGameClicked">Join game</button>
-          <!-- fix -->
-        </span>
-      </div>
-    </Button>
+      </Btn>
+      or
+      <span v-if="gameSession === undefined">
+        <input
+          :value="modelValue"
+          placeholder="Game id"
+          type="text"
+          @input="$emit('update:modelValue', $event.target.value)"
+        />
+        <Btn>
+          <button @click="joinGameClicked">Join game</button>
+        </Btn>
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
-import Button from "@/components/Btn.vue";
+import Btn from "@/components/Btn.vue";
 
 export default {
   name: "DashBoardView",
-  components: Button,
+  components: { Btn },
   props: {
     gameUser: Object,
     userName: String,
