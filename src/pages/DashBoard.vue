@@ -1,12 +1,11 @@
 <template>
-  <game-demo v-bind="{ auth, deck, firestore, functions }"></game-demo>
+  <DashBoardPresenter :deck="deck" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { functions, firestore, auth } from "@/config/firebaseConfig";
 import { Card } from "firebase/functions/src/types";
-import GameDemo from "@/components/GameDemo.vue";
+import DashBoardPresenter from "@/components/DashBoard/DashBoardPresenter.vue";
 
 function randomReal(args: { min: number; max: number }): number {
   const { min, max } = args;
@@ -30,7 +29,7 @@ function randomOrder<T>(arr: Array<T>): Array<T> {
 }
 
 export default defineComponent({
-  components: { GameDemo },
+  components: { DashBoardPresenter },
   setup() {
     const deck: Array<Card> = [
       {
@@ -134,9 +133,6 @@ export default defineComponent({
     ];
 
     return {
-      functions,
-      auth,
-      firestore,
       deck: randomOrder(deck)
     };
   }

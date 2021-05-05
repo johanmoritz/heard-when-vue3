@@ -3,18 +3,18 @@
     <div class="container">
       <p class="info">Sign in using your Google account</p>
       <Btn>
-        <button class="btn" @click="userClicked">Sign in</button>
+        <button @click="userClicked">Sign in</button>
       </Btn>
     </div>
   </div>
 </template>
 
 <script>
-import Btn from "./Btn";
+import Btn from "@/components/Btn.vue";
 
 export default {
   name: "LoginView",
-  components: Btn,
+  components: { Btn },
   props: {
     gameUser: Object
   },
