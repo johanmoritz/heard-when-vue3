@@ -3,13 +3,11 @@
     <div>
       <GameView :msg="msg">
         <div class="cards-container">
-          <button
-            v-if="cards.length === 0"
-            class="first-guess-button"
-            @click="guess(0)"
-          >
-            First guess is free!
-          </button>
+          <Btn>
+            <button class="btn" v-if="cards.length === 0" @click="guess(0)">
+              First Card is free!
+            </button>
+          </Btn>
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button class="guess-button" @click="guess(index)">
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
@@ -35,7 +33,7 @@
       <slot></slot>
     </div>
     <div v-if="game.phase === 'choice'">
-      <div class="overlay">
+      <div>
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
@@ -77,10 +75,10 @@ export default defineComponent({
         ? "It's " +
             game.value.currentPlayer.displayName +
             "'s turn.\n When is the song from?"
-        : game.value.phase === "choice" 
+        : game.value.phase === "choice"
         ? "It's " +
-            game.value.currentPlayer.displayName +
-            "'s turn.\n Want to continue?"
+          game.value.currentPlayer.displayName +
+          "'s turn.\n Want to continue?"
         : "";
     });
 

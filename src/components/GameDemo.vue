@@ -25,6 +25,8 @@
     <div v-if="game !== undefined && user !== undefined">
       <!-- Step 3: Wait for players to join and then start the game. -->
       <div v-if="game.status === 'initialized' && user !== undefined">
+        
+        <!--
         <p>
           Game <b> {{ gameId }} </b>
         </p>
@@ -39,14 +41,17 @@
           Player {{ game.currentPlayer.displayName }}s deck:
           {{ game.temporaryCards.map(({ year }) => year).join(", ") }}
         </p>
+        -->
         <p>Waiting for players to join...</p>
-        <button
-          class="button"
-          :disabled="game.currentPlayer.id !== user.uid"
-          @click="start"
-        >
-          Start game
-        </button>
+        <Btn>
+          <button
+            class="btn"
+            :disabled="game.currentPlayer.id !== user.uid"
+            @click="start"
+          >
+            Start game
+          </button>
+        </Btn>
       </div>
 
       <div v-if="game.status === 'started'">
@@ -76,9 +81,11 @@
           {{ player.displayName }} has {{ player.lockedCards.length }} cards
         </p>
       </div>
+      <Btn>
       <div>
-        <button class="button" @click="quit">End game</button>
+        <button class="btn" @click="quit">End game</button>
       </div>
+      </Btn>
     </div>
     <!--<button class="button" @click="signOut">Sign out {{ username }}</button>-->
   </main>

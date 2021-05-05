@@ -1,10 +1,11 @@
 <template>
   <div class="choice-container">
     <p class="text">Do you want to continue guessing or lock your cards?</p>
-    <div>
-      <button class="button" @click="draw">Draw card</button>
-      <button class="button" @click="lock">Lock cards</button>
+    <div class="choice">
+      <Btn><button class="btn" @click="draw">Draw card</button> </Btn>
+      <Btn><button class="btn" @click="lock">Lock cards</button> </Btn>
     </div>
+    
   </div>
 </template>
 
@@ -27,7 +28,21 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .choice-container {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background: rgba(194, 155, 163);
+  display: inline-block;
+  
+  justify-content: center;
+  width: 35%;
+  margin: 20px;
+  padding: 30px;
+  }
+
+
+
+.choice-container-overlay {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background: rgba(194, 155, 163);
   top: 0;

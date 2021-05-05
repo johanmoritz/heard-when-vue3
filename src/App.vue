@@ -69,6 +69,7 @@
   position: relative;
   border: 4px solid #fff;
   top: 50%;
+  margin: 15px;
   animation: loader 2s infinite ease;
 }
 
