@@ -1,10 +1,32 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <!-- <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> -->
   </div>
   <router-view />
 </template>
+
+<script lang="ts">
+import { defineComponent, onUnmounted } from "vue";
+import { useStore } from "vuex";
+import userApi from "@/store/user";
+import { useRouter } from "vue-router";
+
+export default defineComponent({
+  setup() {
+    const model = useStore();
+    const router = useRouter();
+    const { handleGameUpdates, handleAuthState } = userApi({ model, router });
+    const unsubModel = handleGameUpdates();
+    const unsubFb = handleAuthState();
+
+    onUnmounted(() => {
+      unsubModel();
+      unsubFb();
+    });
+  }
+});
+</script>
 
 <style>
 #app {

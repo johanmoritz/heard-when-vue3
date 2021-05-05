@@ -1,6 +1,6 @@
 <template>
   <div v-if="gameUser !== undefined">
-    <Btn>
+    <Button>
       <button class="btn btn-exit" @click="userClicked">
         Sign out {{ userName }}
       </button>
@@ -22,16 +22,16 @@
           <!-- fix -->
         </span>
       </div>
-    </Btn>
+    </Button>
   </div>
 </template>
 
 <script>
-import Btn from "./Btn";
+import Button from "@/components/Btn.vue";
 
 export default {
   name: "DashBoardView",
-  components: Btn,
+  components: Button,
   props: {
     gameUser: Object,
     userName: String,
