@@ -6,6 +6,7 @@
   <router-view />
 
   <Loader id="loading" v-if="loading" />
+  <Error id="error" v-if="error" :msg="error" />
 </template>
 
 <script lang="ts">
@@ -14,9 +15,10 @@ import { useStore } from "vuex";
 import userApi from "@/store/user";
 import { useRouter } from "vue-router";
 import Loader from "@/components/Loader.vue";
+import Error from "@/components/Error.vue";
 
 export default defineComponent({
-  components: { Loader },
+  components: { Loader, Error },
   setup() {
     const model = useStore();
     const router = useRouter();
@@ -97,5 +99,11 @@ export default defineComponent({
   position: fixed;
   bottom: 2em;
   right: 2em;
+}
+
+#error {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
 }
 </style>
