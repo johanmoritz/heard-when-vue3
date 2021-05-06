@@ -3,6 +3,7 @@
     <h1>Heard When</h1>
   </div>
   <router-view />
+  <Help />
 </template>
 
 <style>
