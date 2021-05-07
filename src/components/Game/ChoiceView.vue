@@ -1,10 +1,14 @@
 <template>
   <div class="choice-container">
     <p class="text">Do you want to continue guessing or lock your cards?</p>
-    <div>
+    <Btn>
+    <div class="btn">
       <button class="button" @click="draw">Draw card</button>
+    </div>
+    <div class="btn">
       <button class="button" @click="lock">Lock cards</button>
     </div>
+    </Btn>
   </div>
 </template>
 

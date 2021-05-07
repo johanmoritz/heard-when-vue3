@@ -3,13 +3,18 @@
     <div>
       <GameView :msg="msg">
         <div class="cards-container">
-          <button
+          <Btn>
+            <div class="btn">
+            <button
             v-if="cards.length === 0"
             class="first-guess-button"
             @click="guess(0)"
           >
-            First guess is free!
-          </button>
+            First draw is free!
+            </button>
+            </div>
+          </Btn>
+
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button class="guess-button" @click="guess(index)">
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
