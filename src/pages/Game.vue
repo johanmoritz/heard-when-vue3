@@ -31,9 +31,9 @@
       </div>
 
       <Btn>
-      <div class="btn btn-exit">
-        <button @click="quit">End game</button>
-      </div>
+        <div class="btn btn-exit">
+          <button @click="quit">End game</button>
+        </div>
       </Btn>
     </div>
   </main>

@@ -1,17 +1,29 @@
 <template>
   <div>
     <div>
+      <!-- 
+      skapa div
+
+      läsa in spelare 
+        skapa <li> element för varje spelare
+          för varje <li> skriva spelares namn + antal kort
+      upprepa varje gång en "action" görs
+      -->
+      
+      <Scoreboard props :game="game"/>
       <GameView :msg="msg">
+
+        
         <div class="cards-container">
           <Btn>
             <div class="btn">
-            <button
-            v-if="cards.length === 0"
-            class="first-guess-button"
-            @click="guess(0)"
-          >
-            First draw is free!
-            </button>
+              <button
+                v-if="cards.length === 0"
+                class="first-guess-button"
+                @click="guess(0)"
+              >
+                First draw is free!
+              </button>
             </div>
           </Btn>
 
@@ -51,11 +63,12 @@
 import { defineComponent, toRefs, computed, PropType } from "vue";
 import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
+import Scoreboard from "./ScoreBoard.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
 
 export default defineComponent({
-  components: { GameView, ChoiceView, Card },
+  components: { GameView, ChoiceView, Card, Scoreboard },
   props: {
     game: {
       type: Object as PropType<Game>,
@@ -82,10 +95,10 @@ export default defineComponent({
         ? "It's " +
             game.value.currentPlayer.displayName +
             "'s turn.\n When is the song from?"
-        : game.value.phase === "choice" 
+        : game.value.phase === "choice"
         ? "It's " +
-            game.value.currentPlayer.displayName +
-            "'s turn.\n Want to continue?"
+          game.value.currentPlayer.displayName +
+          "'s turn.\n Want to continue?"
         : "";
     });
 
@@ -105,3 +118,4 @@ export default defineComponent({
   }
 });
 </script>
+
