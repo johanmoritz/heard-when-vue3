@@ -5,7 +5,7 @@
     <div class="btn">
       <button class="button" @click="draw">Draw card</button>
     </div>
-    <div class="btn">
+    <div class="btn">   
       <button class="button" @click="lock">Lock cards</button>
     </div>
     </Btn>

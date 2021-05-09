@@ -8,13 +8,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from "vue";
+import { defineComponent, toRefs, PropType } from "vue";
 import { Game } from "../../../firebase/functions/src/types";
+
 export default defineComponent({
   name: "ScoreBoard",
   props: {
-    game: { type: Object as PropType<Game>,
-      required: true }
+    game: {
+      type: Object as PropType<Game>,
+      required: true
+    }
   }
 });
 </script>
