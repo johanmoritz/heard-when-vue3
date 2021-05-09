@@ -14,6 +14,7 @@
                 game.currentHiddenCard !== undefined
             "
           >
+          
             <MusicPlayerPresenter
               class="music-player"
               :songId="game.currentHiddenCard.uri"
@@ -29,9 +30,11 @@
         </p>
       </div>
 
-      <div>
-        <button class="button" @click="quit">End game</button>
-      </div>
+      <Btn>
+        <div class="btn btn-exit">
+          <button @click="quit">End game</button>
+        </div>
+      </Btn>
     </div>
   </main>
 </template>
