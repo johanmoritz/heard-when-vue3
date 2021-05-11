@@ -1,7 +1,7 @@
 <template>
   <h3>Waiting for players...</h3>
-  <p class="game-code">{{ gameId }}</p>
-  <p>
+  <p class="game-code"><strong>GameID:</strong> {{ gameId }}</p>
+  <p>Current player(s): 
     <span class="player" v-for="player in players" :key="player.id">{{
       player.displayName
     }}</span>

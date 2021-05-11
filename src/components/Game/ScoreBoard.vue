@@ -27,6 +27,8 @@ export default defineComponent({
   background-color: grey;
   opacity: 0.6;
   display: inline-block;
+  float: right;
   padding: 10px;
+ 
 }
 </style>

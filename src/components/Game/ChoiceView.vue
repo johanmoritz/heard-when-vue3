@@ -46,6 +46,12 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%, -50%);
+  opacity: 0.6;
+}
+
+.choice-container:hover {
+  opacity: 1;
+
 }
 .text {
   text-align: center;
