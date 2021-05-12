@@ -6,7 +6,13 @@
       </div>
 
       <div v-if="game.status === 'started'">
-        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock" />
+        <GamePresenter
+          :game="game"
+          :guess="guess"
+          :draw="draw"
+          :lock="lock"
+          :username="username"
+        />
         <div
           v-if="game.phase === 'listen' && game.currentHiddenCard !== undefined"
         >

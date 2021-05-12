@@ -18,6 +18,7 @@
                 v-if="cards.length === 0"
                 class="first-guess-button"
                 @click="guess(0)"
+                :disabled="!isPlayerInTurn"
               >
                 First draw is free!
               </button>
@@ -25,7 +26,11 @@
           </Btn>
 
           <div class="button-card" v-for="(card, index) in cards" :key="index">
-            <button class="guess-button" @click="guess(index)">
+            <button
+              class="guess-button"
+              @click="guess(index)"
+              :disabled="!isPlayerInTurn"
+            >
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
             </button>
             <div
@@ -49,6 +54,7 @@
             v-if="cards.length > 0"
             class="guess-button"
             @click="guess(cards.length)"
+            :disabled="!isPlayerInTurn"
           >
             {{ "After" }}
           </button>
@@ -59,7 +65,7 @@
       <slot></slot>
     </div>
     <div v-if="game.phase === 'choice'">
-      <div>
+      <div v-if="isPlayerInTurn">
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
@@ -92,6 +98,10 @@ export default defineComponent({
     lock: {
       type: Function as PropType<() => void>,
       required: true
+    },
+    username: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
@@ -117,12 +127,24 @@ export default defineComponent({
       return game.value.temporaryCards;
     });
 
+    const isPlayerInTurn = computed(() => {
+      return game.value.currentPlayer.displayName === props.username;
+    });
+
+    const user = game.value.players.find(player => {
+      return player.displayName === props.username;
+    });
+
+    const userCards = user?.lockedCards;
+
     return {
       msg,
       song,
-      cards
+      cards,
+      isPlayerInTurn,
+      user,
+      userCards
     };
   }
 });
 </script>
-
