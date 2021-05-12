@@ -21,6 +21,10 @@
   transition-timing-function: ease-in-out;
 }
 
+.btn *:disabled {
+  cursor: not-allowed;
+}
+
 .btn:hover *:not(:disabled),
 .btn:active *:not(:disabled) {
   background-color: #4caf50; /* Green */

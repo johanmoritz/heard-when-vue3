@@ -1,13 +1,16 @@
 <template>
   <h3>Waiting for players...</h3>
   <p class="game-code"><strong>GameID:</strong> {{ gameId }}</p>
-  <p>Current player(s): 
+  <p>
+    Current player(s):
     <span class="player" v-for="player in players" :key="player.id">{{
       player.displayName
     }}</span>
   </p>
   <Button>
-    <button :disabled="loading" @click="startGame">Start the game</button>
+    <button :disabled="loading || !isGameCreator" @click="startGame">
+      Start the game
+    </button>
   </Button>
 </template>
 
@@ -25,7 +28,8 @@ export default defineComponent({
       type: (Object as Function) as PropType<() => void>,
       required: true
     },
-    gameId: { type: String, required: true }
+    gameId: { type: String, required: true },
+    isGameCreator: { type: Boolean, required: true }
   }
 });
 </script>
