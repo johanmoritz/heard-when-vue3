@@ -79,6 +79,8 @@ import ChoiceView from "./ChoiceView.vue";
 import Scoreboard from "./ScoreBoard.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
+import { data as userData } from "@/store/user";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { GameView, ChoiceView, Card, Scoreboard },
@@ -98,14 +100,11 @@ export default defineComponent({
     lock: {
       type: Function as PropType<() => void>,
       required: true
-    },
-    username: {
-      type: String,
-      required: true
     }
   },
   setup(props) {
     const { game } = toRefs(props);
+    const model = useStore();
 
     const msg = computed(() => {
       return game.value.phase === "listen"
@@ -128,11 +127,11 @@ export default defineComponent({
     });
 
     const isPlayerInTurn = computed(() => {
-      return game.value.currentPlayer.displayName === props.username;
+      return game.value.currentPlayer.displayName === model.state.username;
     });
 
     const user = game.value.players.find(player => {
-      return player.displayName === props.username;
+      return player.displayName === model.state.username;
     });
 
     const userCards = user?.lockedCards;
