@@ -6,21 +6,15 @@
       </div>
 
       <div v-if="game.status === 'started'">
-        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock">
-          <div
-            v-if="
-              game.phase === 'listen' &&
-                game.currentPlayer.id === user.uid &&
-                game.currentHiddenCard !== undefined
-            "
-          >
-          
-            <MusicPlayerPresenter
-              class="music-player"
-              :songId="game.currentHiddenCard.uri"
-            />
-          </div>
-        </GamePresenter>
+        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock" />
+        <div
+          v-if="game.phase === 'listen' && game.currentHiddenCard !== undefined"
+        >
+          <MusicPlayerPresenter
+            class="music-player"
+            :songId="game.currentHiddenCard.uri"
+          />
+        </div>
       </div>
 
       <div v-if="game.status === 'finished'">
