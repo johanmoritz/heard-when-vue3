@@ -113,6 +113,7 @@ const store = createStore<State>({
       }
       runAsync(commit, () =>
         gameApi.join({ gameId, displayName: username }).then(() => {
+          commit("setGameId", gameId);
           const unsubscribe = subscribeToGameChanges({
             gameId,
             onData: g => commit("setGame", g),
