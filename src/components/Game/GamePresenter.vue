@@ -9,11 +9,8 @@
           för varje <li> skriva spelares namn + antal kort
       upprepa varje gång en "action" görs
       -->
-      
-      <Scoreboard props :game="game"/>
+      <Scoreboard props :game="game" />
       <GameView :msg="msg">
-
-        
         <div class="cards-container">
           <Btn>
             <div class="btn">
@@ -31,12 +28,22 @@
             <button class="guess-button" @click="guess(index)">
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
             </button>
-            <Card
-              :title="card.title"
-              :artist="card.artist"
-              :year="card.year"
-              :id="card.id"
-            />
+            <div
+              v-bind:style="[
+                game.currentPlayer.lockedCards.some(c => {
+                  return c.id === card.id;
+                })
+                  ? { background: 'green' }
+                  : { background: 'red' }
+              ]"
+            >
+              <Card
+                :title="card.title"
+                :artist="card.artist"
+                :year="card.year"
+                :id="card.id"
+              />
+            </div>
           </div>
           <button
             v-if="cards.length > 0"
@@ -52,7 +59,7 @@
       <slot></slot>
     </div>
     <div v-if="game.phase === 'choice'">
-      <div class="overlay">
+      <div>
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
