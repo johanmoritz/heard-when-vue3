@@ -2,6 +2,7 @@
   <LayoutView>
     <template v-slot:nav> </template>
     <template v-slot:main>
+      <h1>Heard When</h1>
       <router-view />
       <Help />
     </template>
