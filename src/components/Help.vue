@@ -1,12 +1,12 @@
 <template>
   <div>
     <Btn>
-      <button @click="modalOpen = true">
-        Help
+      <button id="openHelp" @click="modalOpen = true">
+        ?
       </button>
     </Btn>
 
-    <div class="help" v-show="modalOpen">
+    <div id="help" v-show="modalOpen">
       <Btn id="closeHelp" :theme="'alert'">
         <button @click="modalOpen = false">
           X
@@ -78,7 +78,7 @@ export default {
 </script>
 
 <style scoped>
-.help {
+#help {
   background: rgba(194, 155, 163);
   top: 0;
   display: inline-block;
@@ -98,10 +98,10 @@ export default {
   z-index: 10; /* keep on top of other elements on the page */
   outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
-.help p {
+#help p {
   text-align: left;
 }
-.help h2 {
+#help h2 {
   clear: right;
   margin-top: 0;
 }
@@ -110,6 +110,11 @@ img {
   justify-content: center;
   width: 100%;
   max-width: 400px;
+}
+#openHelp {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
 }
 #closeHelp {
   position: -webkit-sticky; /* Safari */
@@ -121,6 +126,9 @@ img {
 @media screen and (max-width: 1000px) {
   .help {
     width: 70%;
+  }
+  #openHelp {
+    top: 2em;
   }
 }
 </style>

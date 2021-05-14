@@ -2,12 +2,12 @@
   <div class="choice-container">
     <p class="text">Do you want to continue guessing or lock your cards?</p>
     <Btn>
-    <div class="btn">
-      <button class="button" @click="draw">Draw card</button>
-    </div>
-    <div class="btn">   
-      <button class="button" @click="lock">Lock cards</button>
-    </div>
+      <div class="btn">
+        <button class="button" @click="draw">Draw card</button>
+      </div>
+      <div class="btn">
+        <button class="button" @click="lock">Lock cards</button>
+      </div>
     </Btn>
   </div>
 </template>
@@ -44,14 +44,13 @@ export default defineComponent({
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   opacity: 0.6;
 }
 
 .choice-container:hover {
   opacity: 1;
-
 }
 .text {
   text-align: center;

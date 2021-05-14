@@ -6,9 +6,6 @@
   <div id="bottom-left">
     <slot name="bottom-left"> </slot>
   </div>
-  <div id="bottom-right">
-    <slot name="bottom-right"></slot>
-  </div>
 </template>
 
 <style>
@@ -24,6 +21,7 @@
   left: 0;
   bottom: 0;
   right: 0;
+  overflow-x: hidden;
 }
 
 .button {
@@ -66,15 +64,17 @@
   color: #42b983;
 }
 
-#bottom-right {
-  position: fixed;
-  bottom: 2em;
-  right: 2em;
-}
-
 #bottom-left {
   position: fixed;
   bottom: 1em;
   left: 1em;
+}
+
+#loader {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  z-index: 10;
+  outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 </style>
