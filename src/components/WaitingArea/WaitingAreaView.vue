@@ -54,6 +54,8 @@ export default defineComponent({
 
 .wait-disp {
   display: block; /*needed so that all items aren't on a single line */
-  /*width: fit-content; removes black bg-color but pushes everything to the left, how to center properly?*/
+  width: fit-content; /*prevents bg color from spanning whole div width*/
+  margin: auto; /* centers elements*/
+  margin-bottom: 2rem;
 }
 </style>
