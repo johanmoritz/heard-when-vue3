@@ -69,6 +69,22 @@
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
+    <div
+      v-if="!isPlayerInTurn && user !== undefined && userCards !== undefined"
+    >
+      <div v-if="userCards.length !== 0">
+        <OtherPlayerCards :userName="user.displayName">
+          <div v-for="card in userCards" :key="card" style="margin:10px">
+            <Card
+              :title="card.title"
+              :artist="card.artist"
+              :year="card.year"
+              :id="card.id"
+            />
+          </div>
+        </OtherPlayerCards>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,13 +93,14 @@ import { defineComponent, toRefs, computed, PropType } from "vue";
 import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
 import Scoreboard from "./ScoreBoard.vue";
+import OtherPlayerCards from "@/components/OtherPlayerCards.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
 import { data as userData } from "@/store/user";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { GameView, ChoiceView, Card, Scoreboard },
+  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards },
   props: {
     game: {
       type: Object as PropType<Game>,
