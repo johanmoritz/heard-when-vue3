@@ -46,7 +46,7 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%, -50%);
-  opacity: 0.6;
+  opacity: 0.05;
 }
 
 .choice-container:hover {

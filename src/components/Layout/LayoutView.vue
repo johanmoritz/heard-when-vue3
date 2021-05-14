@@ -19,6 +19,7 @@
   text-align: center;
   color: #2c3e50;
   background-color: rgba(194, 155, 163);
+  background-image: linear-gradient(90deg, rgb(236, 129, 231), rgba(194, 155, 163),rgb(236, 129, 231));
   position: fixed;
   top: 0;
   left: 0;

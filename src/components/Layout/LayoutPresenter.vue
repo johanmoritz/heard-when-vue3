@@ -2,7 +2,7 @@
   <LayoutView>
     <template v-slot:nav> </template>
     <template v-slot:main>
-      <h1>Heard When</h1>
+      <h1 class="layout">Heard When</h1>
       <router-view />
       <Help />
     </template>
@@ -49,3 +49,6 @@ export default defineComponent({
   }
 });
 </script>
+<style scoped>
+.layout { color: #d54d7b; font-family: "Brush Script MT", cursive; font-size: 100px; line-height: 100px; margin: 0px; font-weight: normal; text-align: center; }
+</style>

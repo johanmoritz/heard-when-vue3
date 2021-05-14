@@ -17,7 +17,8 @@ export default defineComponent({
     game: {
       type: Object as PropType<Game>,
       required: true
-    }
+    },
+    score: { type: Number }
   }
 });
 </script>
@@ -29,6 +30,5 @@ export default defineComponent({
   display: inline-block;
   float: right;
   padding: 10px;
- 
 }
 </style>

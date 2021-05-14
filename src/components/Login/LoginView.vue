@@ -33,6 +33,7 @@ export default {
   border-radius: 25px;
   position: relative;
   height: 175px;
+  background-image: linear-gradient(90deg, rgb(236, 129, 231), rgb(233, 46, 84),rgb(236, 129, 231));
 }
 
 .info {
@@ -40,5 +41,6 @@ export default {
   text-align: center;
   padding: 15px 32px;
   font-size: large;
+  
 }
 </style>
