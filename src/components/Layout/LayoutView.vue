@@ -17,17 +17,25 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
   background-color: rgba(194, 155, 163);
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80")
+}
+
+h1{
+  background-color: black;
+  color: white;
+  display: inline-block;
 }
 
 .button {
-  background: rgba(243, 215, 220, 0.8);
+  color: black;
+  background: white;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: none;
   color: #2c3e50;

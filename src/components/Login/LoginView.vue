@@ -1,6 +1,6 @@
 <template>
   <div v-if="gameUser === undefined">
-    <div class="container">
+    <div class="login-container">
       <p class="info">Sign in using your Google account</p>
       <Btn>
         <button :disabled="loading" @click="userClicked">Sign in</button>
@@ -28,8 +28,8 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  background-color: rgb(156, 151, 151);
+.login-container {
+  
   border-radius: 25px;
   position: relative;
   height: 175px;

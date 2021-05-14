@@ -22,7 +22,8 @@ export default defineComponent({
 <style scoped>
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background: rgba(243, 215, 220, 0.8);
+  background: black;
+  color: white;
   width: 100px;
   height: 150px;
   overflow-wrap: break-word;
