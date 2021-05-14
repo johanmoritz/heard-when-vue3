@@ -6,9 +6,6 @@
   <div id="bottom-left">
     <slot name="bottom-left"> </slot>
   </div>
-  <div id="bottom-right">
-    <slot name="bottom-right"></slot>
-  </div>
 </template>
 
 <style>
@@ -27,10 +24,10 @@
   background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: 50% 50%;  
+  background-position: 50% 50%;
 }
 
-h1{
+h1 {
   background-color: black;
   color: white;
   display: inline-block;
@@ -77,10 +74,12 @@ h1{
   color: #42b983;
 }
 
-#bottom-right {
+#loader {
   position: fixed;
-  bottom: 2em;
-  right: 2em;
+  top: 35%;
+  left: 50%;
+  z-index: 10;
+  outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 
 #bottom-left {
