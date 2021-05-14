@@ -1,7 +1,9 @@
 <template>
-  <h3>Waiting for players...</h3>
-  <p class="game-code"><strong>GameID:</strong> {{ gameId }}</p>
-  <p>
+  <h2 class="text-contrast wait-disp">Waiting for players...</h2>
+  <p class="game-code text-contrast wait-disp">
+    <strong>GameID:</strong> {{ gameId }}
+  </p>
+  <p class="text-contrast wait-disp">
     Current player(s):
     <span class="player" v-for="player in players" :key="player.id">{{
       player.displayName
@@ -37,6 +39,7 @@ export default defineComponent({
 <style scoped>
 .player {
   background-color: white;
+  color: black;
   padding: 0 0.5em;
   font-weight: bold;
 }
@@ -47,5 +50,10 @@ export default defineComponent({
 
 .game-code {
   font-size: 1.5em;
+}
+
+.wait-disp {
+  display: block; /*needed so that all items aren't on a single line */
+  /*width: fit-content; removes black bg-color but pushes everything to the left, how to center properly?*/
 }
 </style>

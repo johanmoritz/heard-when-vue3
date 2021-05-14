@@ -1,5 +1,5 @@
 <template>
-  <p class="error">{{ msg }}</p>
+  <p class="error text-contrast">{{ msg }}</p>
 </template>
 
 <script lang="ts">
