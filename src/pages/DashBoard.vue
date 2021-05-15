@@ -197,7 +197,7 @@ export default defineComponent({
         id: 23,
         title: "Children's Story",
         artist: "Slick Rick",
-        year: 198,
+        year: 1988,
         uri: "spotify:track:7fZvt74249k2rH03itW8um"
       },
       {
