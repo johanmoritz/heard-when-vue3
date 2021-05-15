@@ -1,4 +1,5 @@
 <template>
+  <slot name="background"></slot>
   <div id="nav">
     <slot name="nav"> </slot>
   </div>
@@ -19,11 +20,28 @@
   left: 0;
   bottom: 0;
   right: 0;
+}
+.background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
   background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center center;
   background-size: cover;
+  z-index: -1;
+  transition: all 1s ease;
+}
+
+.gametheme {
+  filter: blur(7px);
+}
+
+.othertheme {
+  filter: grayscale(50%) blur(7px);
 }
 
 .text-contrast {
