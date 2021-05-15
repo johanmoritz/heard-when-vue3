@@ -16,7 +16,7 @@ export default defineComponent({
 .error {
   font-size: 2em;
   font-weight: bolder;
-  background-color: rgb(228 207 20);
+  background-color: rgb(228, 207, 20);
   color: black;
   display: inline-block;
 }

@@ -1,17 +1,19 @@
 <template>
   <div>
     <Btn>
-      <button @click="modalOpen = true">
-        Help
+      <button id="helpButton" @click="modalOpen = true">
+        ?
       </button>
     </Btn>
 
     <div class="help" v-show="modalOpen">
-      <Btn id="closeHelp" :theme="'alert'">
-        <button @click="modalOpen = false">
-          X
-        </button>
-      </Btn>
+      <div class="close-btn-position">
+        <Btn>
+          <button id="closeHelp" :theme="'alert'" @click="modalOpen = false">
+            X
+          </button>
+        </Btn>
+      </div>
       <h2>Help</h2>
       <p style="text-align: center;">
         Are you confused? Don't worry, we've got you.
@@ -79,7 +81,9 @@ export default {
 
 <style scoped>
 .help {
-  background: rgba(194, 155, 163);
+  background: rgb(228, 207, 20);
+  /*background:black;
+  color: white;*/
   top: 0;
   display: inline-block;
   flex-direction: column;
@@ -105,6 +109,13 @@ export default {
   clear: right;
   margin-top: 0;
 }
+.close-btn-position {
+  float: right;
+  top: 0;
+  margin: 0;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+}
 img {
   border: 2px solid black;
   justify-content: center;
@@ -112,11 +123,30 @@ img {
   max-width: 400px;
 }
 #closeHelp {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0;
-  float: right;
-  margin-bottom: 0;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  font-size: 20px;
+  color: rgb(99, 99, 99);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+#helpButton {
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: rgb(228, 207, 20);
+  box-shadow: 0 4px rgb(88, 80, 4);
+  padding: 10px;
+  height: 60px;
+  width: 60px;
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+}
+#helpButton:hover {
+  background-color: rgb(42, 41, 36);
+  box-shadow: 0 4px black;
 }
 @media screen and (max-width: 1000px) {
   .help {

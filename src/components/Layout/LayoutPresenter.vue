@@ -5,7 +5,7 @@
       <h1 class="text-contrast">Heard When</h1>
       <router-view />
       <Loader id="loader" v-if="loading" />
-      <Help />
+      <Help id="help-position" />
     </template>
 
     <template v-slot:bottom-left>
