@@ -1,6 +1,8 @@
 <template>
   <div id="board-view" class="board">
-    <h2 class="text-contrast">{{ msg }}</h2>
+    <div style="padding: 0px 40px 0px 40px">
+      <h2 class="text-contrast">{{ msg }}</h2>
+    </div>
     <slot></slot>
   </div>
 </template>
@@ -20,7 +22,6 @@ export default defineComponent({
   width: fill;
   height: fill;
   margin: 0 auto;
-  padding: 0px 50px 0px 50px;
 }
 .cards-container {
   width: 100%;
@@ -28,6 +29,8 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   height: auto;
+  overflow: scroll;
+  margin-bottom: 15px;
 }
 .button-card {
   display: flex;
@@ -45,7 +48,7 @@ export default defineComponent({
 .guess-button:hover {
   opacity: 0.6;
   cursor: pointer;
-  padding: 40px;
+  padding: 20px;
   font-weight: bold;
   font-size: 1.2rem;
 }

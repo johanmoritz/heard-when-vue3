@@ -17,7 +17,7 @@
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;
-  box-shadow: 0 4px rgb(99, 99, 99);
+  box-shadow: 0 4px rgba(99, 99, 99, 0.342);
   transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
 }
@@ -33,13 +33,19 @@
 }
 
 .btn:active *:not(:disabled) {
-  box-shadow: 0 2px rgb(43, 42, 42);
-  transform: translateY(2px);
+  box-shadow: 0 2px rgba(43, 42, 42, 0.383);
+  transform: scale(0.9);
 }
 
 .btn-exit:hover *:not(:disabled),
 .btn-exit:active *:not(:disabled) {
   background-color: #af4c4c;
+}
+.end {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
 
