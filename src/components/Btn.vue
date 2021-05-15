@@ -24,6 +24,7 @@
 
 .btn *:disabled {
   cursor: not-allowed;
+  color: rgba(112, 111, 111, 0.692);
 }
 
 .btn:hover *:not(:disabled),

@@ -35,12 +35,9 @@ export default defineComponent({
   color:black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background: rgba(228, 207, 20, 0.9);
-  top: 0;
   display: inline-block;
-  flex-direction: column;
-  justify-content: center;
   width: 35%;
-  margin: 20px;
+  max-width: 350px;
   padding: 40px;
   position: absolute;
   top: 50%;

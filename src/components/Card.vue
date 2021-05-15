@@ -25,7 +25,7 @@ export default defineComponent({
   background: black;
   color: white;
   width: 100px;
-  height: inherit;
+  height: 100%;
   min-height: 150px;
   overflow-wrap: break-word;
   text-align: center;

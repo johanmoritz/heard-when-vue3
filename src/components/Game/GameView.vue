@@ -41,6 +41,10 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
 }
+.first-guess-button:disabled {
+  color: rgba(112, 111, 111, 0.692);
+}
+
 .guess-button {
   opacity: 0;
   transition: all 0.3s ease;
