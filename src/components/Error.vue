@@ -1,5 +1,5 @@
 <template>
-  <p class="error text-contrast">{{ msg }}</p>
+  <p class="error">{{ msg }}</p>
 </template>
 
 <script lang="ts">
@@ -14,7 +14,10 @@ export default defineComponent({
 
 <style>
 .error {
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 2em;
+  font-weight: bolder;
+  background-color: rgb(228 207 20);
+  color: black;
+  display: inline-block;
 }
 </style>
