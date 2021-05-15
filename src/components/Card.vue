@@ -33,6 +33,10 @@ export default defineComponent({
 .card div {
   margin-top: 10px;
 }
+.other-card {
+  background: rgb(228, 207, 20);
+  color: black;
+}
 .year {
   font-size: 150%;
   font-weight: bold;

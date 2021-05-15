@@ -76,6 +76,7 @@
         <OtherPlayerCards :userName="user.displayName">
           <div v-for="card in userCards" :key="card" style="margin:10px">
             <Card
+              class="other-card"
               :title="card.title"
               :artist="card.artist"
               :year="card.year"
