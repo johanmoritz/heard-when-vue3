@@ -19,8 +19,6 @@ export default defineComponent({
 .board {
   width: fill;
   height: fill;
-  display: flex;
-  flex-direction: column;
   margin: 0 auto;
   padding: 60px;
 }
