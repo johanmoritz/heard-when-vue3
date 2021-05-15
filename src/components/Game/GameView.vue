@@ -52,4 +52,8 @@ export default defineComponent({
   font-weight: bold;
   font-size: 1.2rem;
 }
+.guess-button:disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
 </style>

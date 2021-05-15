@@ -19,7 +19,7 @@
         <input
           :disabled="loading"
           :value="modelValue"
-          placeholder="Game id"
+          placeholder="Enter GameId"
           type="text"
           @input="$emit('update:modelValue', $event.target.value)"
         />
