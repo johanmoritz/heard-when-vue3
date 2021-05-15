@@ -1,11 +1,17 @@
 <template>
   <LayoutView>
+    <template v-slot:background>
+      <div
+        class="background"
+        :class="{ gametheme: isInitialized, othertheme: isOtherPlayer }"
+      ></div>
+    </template>
     <template v-slot:nav> </template>
     <template v-slot:main>
       <h1 class="text-contrast">Heard When</h1>
       <router-view />
       <Loader id="loader" v-if="loading" />
-      <Help />
+      <Help id="help-position" />
     </template>
 
     <template v-slot:bottom-left>
@@ -37,12 +43,18 @@ export default defineComponent({
     const unsubModel = handleGameUpdates();
     const unsubFb = handleAuthState();
 
+    const isInitialized = computed(() => model.state.game);
+    const isOtherPlayer = computed(() =>
+        model.state.game &&
+        model.state.game.currentPlayer.displayName !== model.state.username
+    );
+
     onUnmounted(() => {
       unsubModel();
       unsubFb();
     });
 
-    return { loading, error };
+    return { loading, error, isInitialized, isOtherPlayer };
   }
 });
 </script>

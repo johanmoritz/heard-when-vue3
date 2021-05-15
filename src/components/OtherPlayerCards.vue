@@ -18,13 +18,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.otehr-player-container {
+.other-player-container {
   display: flex;
   flex-direction: column;
+  color: white;
+  
 }
 .other-player-cards {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  transform: scale(0.7);
+  height: auto;
 }
 </style>

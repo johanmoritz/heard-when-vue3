@@ -27,7 +27,10 @@ export default defineComponent({
   background-color: grey;
   opacity: 0.9;
   display: inline-block;
-  float: right;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px;
   padding: 10px;
 }
 #scorehead {

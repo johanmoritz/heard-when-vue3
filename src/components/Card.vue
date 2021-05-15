@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="year">{{ year }}</div>
-    <div>{{ title }}</div>
+    <div>"{{ title }}"</div>
     <div>{{ artist }}</div>
   </div>
 </template>
@@ -25,13 +25,18 @@ export default defineComponent({
   background: black;
   color: white;
   width: 100px;
-  height: 150px;
+  height: inherit;
+  min-height: 150px;
   overflow-wrap: break-word;
   text-align: center;
   padding: 5px;
 }
 .card div {
   margin-top: 10px;
+}
+.other-card {
+  background: rgb(228, 207, 20);
+  color: black;
 }
 .year {
   font-size: 150%;
