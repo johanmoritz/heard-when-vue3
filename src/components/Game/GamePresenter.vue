@@ -38,8 +38,8 @@
                 game.currentPlayer.lockedCards.some(c => {
                   return c.id === card.id;
                 })
-                  ? { background: 'green' }
-                  : { background: 'red' }
+                  ? { opacity: 1 }
+                  : { opacity: 0.65 }
               ]"
             >
               <Card
