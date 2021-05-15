@@ -1,12 +1,32 @@
 <template>
+  <div v-if="game.status !== 'started'" class="background-image-normal"></div>
+
   <div id="nav">
     <slot name="nav"> </slot>
   </div>
   <slot name="main"></slot>
+
   <div id="bottom-left">
     <slot name="bottom-left"> </slot>
   </div>
 </template>
+
+<script lang="ts">
+//ta emot game some en prop och skicka till div:en
+import { Game } from "../../firebase/functions/src/types";
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
+export default defineComponent({
+  setup() {
+    const model = useStore();
+    const game = computed(() => model.state.game as Game | undefined);
+
+    return {
+      game
+    };
+  }
+});
+</script>
 
 <style>
 #app {
@@ -14,17 +34,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: rgba(194, 155, 163);
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center center;
-  background-size: cover;
+  z-index: 1;
 }
 
 .text-contrast {
@@ -87,5 +102,34 @@
   position: fixed;
   bottom: 1em;
   left: 1em;
+}
+.background-image-normal {
+  height: 100vh;
+  background-color: rgb(229, 112, 112);
+  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.background-image-blur {
+  height: 100vh;
+  background-color: rgb(229, 112, 112);
+  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
 }
 </style>

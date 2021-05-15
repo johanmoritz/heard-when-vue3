@@ -1,5 +1,5 @@
 <template>
-  <LayoutView>
+  <LayoutView :game="game">
     <template v-slot:nav> </template>
     <template v-slot:main>
       <h1 class="text-contrast">Heard When</h1>
@@ -23,7 +23,7 @@ import Loader from "@/components/Loader.vue";
 import Error from "@/components/Error.vue";
 import Help from "@/components/Help.vue";
 import LayoutView from "@/components/Layout/LayoutView.vue";
-
+// skick med game som en prop till layoutview
 export default defineComponent({
   components: { Loader, Error, LayoutView, Help },
   setup() {
@@ -36,6 +36,8 @@ export default defineComponent({
 
     const unsubModel = handleGameUpdates();
     const unsubFb = handleAuthState();
+
+    const game = computed(() => model.state.game as Game | undefined);
 
     onUnmounted(() => {
       unsubModel();
