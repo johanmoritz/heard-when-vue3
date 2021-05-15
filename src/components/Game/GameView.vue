@@ -1,6 +1,6 @@
 <template>
   <div id="board-view" class="board">
-    <h1>{{ msg }}</h1>
+    <h2 class="text-contrast">{{ msg }}</h2>
     <slot></slot>
   </div>
 </template>
@@ -45,8 +45,10 @@ export default defineComponent({
 }
 
 .guess-button:hover {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: pointer;
   padding: 40px;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 </style>

@@ -2,17 +2,14 @@
   <LayoutView>
     <template v-slot:nav> </template>
     <template v-slot:main>
-      <h1>Heard When</h1>
+      <h1 class="text-contrast">Heard When</h1>
       <router-view />
+      <Loader id="loader" v-if="loading" />
       <Help />
     </template>
 
     <template v-slot:bottom-left>
       <Error v-if="error" :msg="error" />
-    </template>
-
-    <template v-slot:bottom-right>
-      <Loader v-if="loading" />
     </template>
   </LayoutView>
 </template>

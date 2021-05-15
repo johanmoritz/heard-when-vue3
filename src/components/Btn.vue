@@ -9,7 +9,8 @@
   display: inline-block;
 }
 .btn * {
-  background-color: rgb(196, 196, 196);
+  color: black;
+  background-color: rgb(240, 240, 240);
   border: none;
   padding: 15px 32px;
   font-size: 16px;

@@ -1,11 +1,13 @@
 <template>
   <div v-if="gameUser !== undefined">
-    <Btn :theme="'alert'">
-      <button :disabled="loading" @click="userClicked">
-        Sign out {{ userName }}
-      </button>
-    </Btn>
-    <div v-if="gameSession === undefined">
+    <p>
+      <Btn :theme="'alert'">
+        <button :disabled="loading" @click="userClicked">
+          Sign out {{ userName }}
+        </button>
+      </Btn>
+    </p>
+    <div class="text-contrast" v-if="gameSession === undefined">
       Click to
       <Btn>
         <button :disabled="loading" @click="createGameClicked">

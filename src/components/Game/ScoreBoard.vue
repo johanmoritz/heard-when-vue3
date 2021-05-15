@@ -1,6 +1,6 @@
 <template>
   <div class="scoreboard">
-    Score board:
+    <span id="scorehead">Scoreboard</span>
     <p v-for="player in game.players" :key="player.id">
       {{ player.displayName }} : {{ player.lockedCards.length }}
     </p>
@@ -25,10 +25,13 @@ export default defineComponent({
 <style scoped>
 .scoreboard {
   background-color: grey;
-  opacity: 0.6;
+  opacity: 0.9;
   display: inline-block;
   float: right;
   padding: 10px;
- 
+}
+#scorehead {
+  text-decoration: underline;
+  font-weight: bold;
 }
 </style>

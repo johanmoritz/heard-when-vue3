@@ -6,9 +6,6 @@
   <div id="bottom-left">
     <slot name="bottom-left"> </slot>
   </div>
-  <div id="bottom-right">
-    <slot name="bottom-right"></slot>
-  </div>
 </template>
 
 <style>
@@ -17,17 +14,29 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   background-color: rgba(194, 155, 163);
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+}
+
+.text-contrast {
+  color: white;
+  font-weight: bold;
+  background-color: black;
+  display: inline-block;
 }
 
 .button {
-  background: rgba(243, 215, 220, 0.8);
+  color: black;
+  background: white;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: none;
   color: #2c3e50;
@@ -66,10 +75,12 @@
   color: #42b983;
 }
 
-#bottom-right {
+#loader {
   position: fixed;
-  bottom: 2em;
-  right: 2em;
+  top: 35%;
+  left: 50%;
+  z-index: 10;
+  outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 
 #bottom-left {

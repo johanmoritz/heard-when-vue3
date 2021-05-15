@@ -32,8 +32,9 @@ export default defineComponent({
 
 <style scoped>
 .choice-container {
+  color:black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background: rgba(194, 155, 163);
+  background: rgba(118, 99, 82);
   top: 0;
   display: inline-block;
   flex-direction: column;
