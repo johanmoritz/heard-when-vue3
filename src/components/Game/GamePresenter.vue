@@ -123,15 +123,17 @@ export default defineComponent({
     const { game } = toRefs(props);
     const model = useStore();
 
+    const isPlayerInTurn = computed(() => {
+      return game.value.currentPlayer.displayName === model.state.username;
+    });
+
     const msg = computed(() => {
-      return game.value.phase === "listen"
-        ? "It's " +
+      return game.value.phase === "listen" && isPlayerInTurn.value
+        ? "It's your turn, " +
             game.value.currentPlayer.displayName +
-            "'s turn.\n When is the song from?"
-        : game.value.phase === "choice"
-        ? "It's " +
-          game.value.currentPlayer.displayName +
-          "'s turn.\n Want to continue?"
+            ".\n When is the song from?"
+        : !isPlayerInTurn.value
+        ? "It's " + game.value.currentPlayer.displayName + "'s turn."
         : "";
     });
 
@@ -141,10 +143,6 @@ export default defineComponent({
 
     const cards = computed(() => {
       return game.value.temporaryCards;
-    });
-
-    const isPlayerInTurn = computed(() => {
-      return game.value.currentPlayer.displayName === model.state.username;
     });
 
     const user = game.value.players.find(player => {

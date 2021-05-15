@@ -20,22 +20,21 @@
       </p>
       <h3>About</h3>
       <p>
-        <i>Heard When</i> is a music trivia game inspired by the Swedish board
-        game "När då då?". <br />
+        <i>Heard When</i> is a music trivia game inspired by the Swedish
+        <br /> board game "När då då?". <br /><br />
         Songs from Spotify decade playlists are played and the player in turn
         guesses in which order the current song was released by placing it
         relative to other song cards, which correspond to songs from other
         years. The goal is to reach a specific number of song cards at the end
-        of the game. <br />
-        The game is simple and intuitive and difficulty increases as more cards
-        are collected.
+        of the game. The game is simple and intuitive and difficulty increases
+        as more cards are collected.
       </p>
       <h3>Connection</h3>
       <p>
         To sign in, use a <i>Google account</i>. You will also need a
         <i>Spotify Premium account</i> to play the music in-game. Both of these
         steps will temporarily redirect you to their respective login services.
-        <br />
+        <br /><br />
         From the dashboard menu, you can either create a new game session or
         join an existing session by entering its ID.
       </p>
@@ -43,7 +42,7 @@
       <p>
         When it's your turn, you will hear a song via the in-game Spotify
         player. Your task is to guess in which order the song was released.
-        <br />
+        <br /><br />
         The cards displayed on the board are the cards you have selected so far
         during the current round and they are ordered chronologically. You make
         a guess by clicking on the space between or next to the card(s).
@@ -84,11 +83,12 @@ export default {
   background: rgb(228, 207, 20);
   /*background:black;
   color: white;*/
+  text-align: center;
   top: 0;
   display: inline-block;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
+  width: 45%;
   height: 100%;
   margin: 0 1rem;
   padding: 0 1.5rem;
@@ -103,7 +103,7 @@ export default {
   outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 .help p {
-  text-align: left;
+  text-align: center;
 }
 .help h2 {
   clear: right;

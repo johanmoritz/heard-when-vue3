@@ -34,7 +34,7 @@ export default defineComponent({
 .choice-container {
   color:black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background: rgba(118, 99, 82);
+  background: rgb(182, 170, 158);
   top: 0;
   display: inline-block;
   flex-direction: column;
@@ -47,14 +47,9 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%, -50%);
-  opacity: 0.6;
-}
-
-.choice-container:hover {
-  opacity: 1;
-
 }
 .text {
   text-align: center;
+  font-weight: bold;
 }
 </style>

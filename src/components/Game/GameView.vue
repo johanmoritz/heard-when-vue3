@@ -20,7 +20,7 @@ export default defineComponent({
   width: fill;
   height: fill;
   margin: 0 auto;
-  padding: 60px;
+  padding: 50px 50px 0px 50px;
 }
 .cards-container {
   width: 100%;
