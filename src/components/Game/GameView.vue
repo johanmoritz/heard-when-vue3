@@ -20,13 +20,14 @@ export default defineComponent({
   width: fill;
   height: fill;
   margin: 0 auto;
-  padding: 50px 50px 0px 50px;
+  padding: 0px 50px 0px 50px;
 }
 .cards-container {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: auto;
 }
 .button-card {
   display: flex;
