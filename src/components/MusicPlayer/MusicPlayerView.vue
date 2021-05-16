@@ -21,6 +21,7 @@
   padding: 0.5em 1em 1em 1em;
   width: 30%;
   color: white;
+  margin: auto;
 }
 .logo {
   display: flex;
