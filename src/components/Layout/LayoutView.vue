@@ -47,7 +47,7 @@
 }
 
 .othertheme {
-  filter: grayscale(50%) blur(7px);
+  filter: grayscale(80%) blur(7px);
 }
 
 .text-contrast {
@@ -55,7 +55,6 @@
   font-weight: bold;
   background-color: black;
   display: inline-block;
-  padding: 2px;
 }
 
 .button {
@@ -71,6 +70,12 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.player-position {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
 }
 
 .overlay {
