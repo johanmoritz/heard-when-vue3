@@ -29,7 +29,7 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   height: auto;
-  overflow: scroll;
+  
   margin-bottom: 15px;
 }
 .button-card {

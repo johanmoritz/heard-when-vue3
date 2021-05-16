@@ -21,7 +21,7 @@
           :value="modelValue"
           placeholder="Enter GameId"
           type="text"
-          @input="$emit('update:modelValue', $event.target.value)"
+          @input="$emit('update:modelValue', $.target.value)"
         />
         <Btn>
           <button :disabled="loading" @click="joinGameClicked">
