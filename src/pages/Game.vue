@@ -26,7 +26,7 @@
 
       <Btn>
         <div class="btn btn-exit">
-          <button class="end" @click="quit">End game</button>
+          <button @click="quit">End game</button>
         </div>
       </Btn>
     </div>

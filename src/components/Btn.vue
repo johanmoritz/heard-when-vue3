@@ -48,6 +48,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.end:hover {
+  background-color: #af4c4c;
+}
 </style>
 
 <script lang="ts">
