@@ -18,10 +18,13 @@
   flex-direction: row;
   justify-content: center;
   background-color: rgba(30, 215, 95, 0.822);
-  padding: 0.5em 1em 1em 1em;
   width: 30%;
   color: white;
   margin: auto;
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  border-radius: 30px;
 }
 .logo {
   display: flex;
