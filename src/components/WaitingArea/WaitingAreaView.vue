@@ -9,20 +9,20 @@
       player.displayName
     }}</span>
   </p>
-  <Button>
+  <Btn>
     <button :disabled="loading || !isGameCreator" @click="startGame">
-      Start the game
+      Start Game
     </button>
-  </Button>
+  </Btn>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import Button from "@/components/Btn.vue";
+import Btn from "@/components/Btn.vue";
 import { Player } from "firebase/functions/src/types";
 
 export default defineComponent({
-  components: { Button },
+  components: { Btn },
   props: {
     players: { type: Array as PropType<Array<Player>>, required: true },
     loading: { type: Boolean, required: true },

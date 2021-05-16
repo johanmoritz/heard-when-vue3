@@ -47,8 +47,8 @@
       </p>
       <img src="@/assets/drawLock.png" alt="Draw new card or lock cards" />
       <p>
-        An incorrect guess results in losing all the cards you have gained
-        during the current round, as well as your turn.
+        An incorrect guess results in losing all the cards gained during the
+        current round, as well as your turn.
       </p>
     </div>
   </div>

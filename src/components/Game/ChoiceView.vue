@@ -52,12 +52,12 @@ export default defineComponent({
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border: none;
   color: #2c3e50;
-  padding: 15px 32px;
+  padding: 0.9rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 5px;
+  margin: 0.8rem;
   cursor: pointer;
 }
 .choice-btn:hover {

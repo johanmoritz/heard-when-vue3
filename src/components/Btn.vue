@@ -12,9 +12,9 @@
   color: black;
   background-color: rgb(240, 240, 240);
   border: none;
-  padding: 15px 32px;
-  font-size: 16px;
-  margin: 4px 2px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  margin: 0.7rem;
   cursor: pointer;
   border-radius: 50px;
   box-shadow: 0 4px rgba(99, 99, 99, 0.342);
