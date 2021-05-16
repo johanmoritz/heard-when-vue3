@@ -59,7 +59,6 @@
 .control:hover >>> img {
   opacity: 50%;
 }
-
 </style>
 
 <script lang="ts">

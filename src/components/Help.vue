@@ -1,19 +1,13 @@
 <template>
   <div>
     <Btn>
-      <button id="openHelp" @click="modalOpen = true">
-        ?
-      </button>
+      <button id="openHelp" @click="modalOpen = true">?</button>
     </Btn>
 
     <div class="help" v-show="modalOpen">
-      <div id="close-btn-position">
-        <Btn>
-          <button id="closeHelp" @click="modalOpen = false">
-            X
-          </button>
-        </Btn>
-      </div>
+      <Btn class="btn-exit" id="close-btn-position">
+        <button id="closeHelp" @click="modalOpen = false">X</button>
+      </Btn>
       <h2>About</h2>
       <p>
         <i>Heard When</i> is a multiplayer music trivia game inspired by the
@@ -49,6 +43,13 @@
       <p>
         An incorrect guess results in losing all the cards gained during the
         current round, as well as your turn.
+      </p>
+      <p>
+        <br /><br />
+        <b>Background image</b> by gotafli:
+        <a href="https://unsplash.com/photos/qyzWgOSa_WU"
+          >https://unsplash.com/photos/qyzWgOSa_WU</a
+        >
       </p>
     </div>
   </div>
@@ -98,8 +99,7 @@ export default {
   text-align: left;
 }
 .help h2 {
-  clear: right;
-  margin-top: 0;
+  margin-top: 1.5rem;
 }
 img {
   border: 2px solid black;
@@ -126,8 +126,9 @@ img {
 }
 #close-btn-position {
   float: right;
-  top: 0;
+  top: 1rem;
   margin: 0;
+  padding: 0;
   position: -webkit-sticky; /* Safari */
   position: sticky;
 }
@@ -136,13 +137,11 @@ img {
   font-weight: bold;
   height: 40px;
   width: 40px;
-  padding: 10px;
+  padding: 0;
+  margin: 0;
   font-size: 20px;
   color: rgb(37, 16, 16);
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
-#closeHelp:hover {
-  background-color: #af4c4c;
 }
 @media screen and (max-width: 1000px) {
   .help {

@@ -27,7 +27,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  background-image: url("https://images.unsplash.com/photo-1520884225266-ebc9159f0aab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=100");
+  background-image: url("~@/assets/gotafli-qyzWgOSa_WU-unsplash.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center center;
