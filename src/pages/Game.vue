@@ -25,7 +25,10 @@
       </div>
 
       <Btn>
-        <div class="btn btn-exit">
+        <div
+          class="btn btn-exit"
+          style="position: fixed; bottom: 1em; left: 45%;"
+        >
           <button @click="quit">End Game</button>
         </div>
       </Btn>

@@ -55,6 +55,7 @@
   font-weight: bold;
   background-color: black;
   display: inline-block;
+  padding: 0.3rem;
 }
 
 .button {
