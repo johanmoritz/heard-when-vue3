@@ -61,7 +61,7 @@
         </div>
       </GameView>
     </div>
-    <div>
+    <div class="player-position">
       <slot></slot>
     </div>
     <div v-if="game.phase === 'choice'">
@@ -135,7 +135,7 @@ export default defineComponent({
             ".\n When is the song from?"
         : !isPlayerInTurn.value
         ? "It's " + game.value.currentPlayer.displayName + "'s turn."
-        : "";
+        :"";
     });
 
     const song = computed(() => {
