@@ -61,5 +61,4 @@ export default defineComponent({
   pointer-events: none;
   opacity: 0.6;
 }
-
 </style>

@@ -17,8 +17,8 @@
         </div>
       </div>
 
-      <div v-if="game.status === 'finished'">
-        The score is
+      <div class="text-contrast" v-if="game.status === 'finished'">
+        Game Over! The final score is...
         <p v-for="player in game.players" :key="player.displayName">
           {{ player.displayName }} has {{ player.lockedCards.length }} cards
         </p>
@@ -26,7 +26,7 @@
 
       <Btn>
         <div class="btn btn-exit">
-          <button @click="quit">End game</button>
+          <button @click="quit">End Game</button>
         </div>
       </Btn>
     </div>

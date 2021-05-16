@@ -3,10 +3,10 @@
     <p class="text">Do you want to continue guessing or lock your cards?</p>
     <Btn>
       <div class="btn">
-        <button class="choice-btn" @click="draw">Draw card</button>
+        <button class="choice-btn" @click="draw">Draw Card</button>
       </div>
       <div class="btn">
-        <button class="choice-btn" @click="lock">Lock cards</button>
+        <button class="choice-btn" @click="lock">Lock Cards</button>
       </div>
     </Btn>
   </div>
@@ -32,7 +32,7 @@ export default defineComponent({
 
 <style scoped>
 .choice-container {
-  color:black;
+  color: black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background: rgba(228, 207, 20, 0.9);
   display: inline-block;
@@ -42,7 +42,7 @@ export default defineComponent({
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
 }
 
@@ -61,7 +61,7 @@ export default defineComponent({
   cursor: pointer;
 }
 .choice-btn:hover {
-  background-color: rgb(42, 41, 36);;
+  background-color: rgb(42, 41, 36);
 }
 
 .text {

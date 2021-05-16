@@ -4,7 +4,7 @@
       <p class="info text-contrast">Sign in using your Google account</p>
       <p>
         <Btn>
-          <button :disabled="loading" @click="userClicked">Sign in</button>
+          <button :disabled="loading" @click="userClicked">Sign In</button>
         </Btn>
       </p>
     </div>

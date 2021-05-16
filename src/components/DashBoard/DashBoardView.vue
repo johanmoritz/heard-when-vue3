@@ -3,15 +3,14 @@
     <p>
       <Btn :theme="'alert'">
         <button :disabled="loading" @click="userClicked">
-          Sign out {{ userName }}
+          Sign Out
         </button>
       </Btn>
     </p>
     <div class="text-contrast" v-if="gameSession === undefined">
-      Click to
       <Btn>
         <button :disabled="loading" @click="createGameClicked">
-          Create new game
+          Create Game
         </button>
       </Btn>
       or
@@ -19,13 +18,13 @@
         <input
           :disabled="loading"
           :value="modelValue"
-          placeholder="Enter GameId"
+          placeholder="Enter Game ID"
           type="text"
           @input="$emit('update:modelValue', $event.target.value)"
         />
         <Btn>
           <button :disabled="loading" @click="joinGameClicked">
-            Join game
+            Join Game
           </button>
         </Btn>
       </span>

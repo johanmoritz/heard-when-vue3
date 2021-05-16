@@ -14,35 +14,26 @@
           </button>
         </Btn>
       </div>
-      <h2>Help</h2>
-      <p style="text-align: center;">
-        Are you confused? Don't worry, we've got you.
-      </p>
-      <h3>About</h3>
+      <h2>About</h2>
       <p>
-        <i>Heard When</i> is a music trivia game inspired by the Swedish
-        <br /> board game "När då då?". <br /><br />
-        Songs from Spotify decade playlists are played and the player in turn
+        <i>Heard When</i> is a multiplayer music trivia game inspired by the
+        Swedish board game "När då då?". <br /><br />
+        Listening to songs from Spotify decade playlists, the player in turn
         guesses in which order the current song was released by placing it
         relative to other song cards, which correspond to songs from other
-        years. The goal is to reach a specific number of song cards at the end
-        of the game. The game is simple and intuitive and difficulty increases
-        as more cards are collected.
+        years.
       </p>
       <h3>Connection</h3>
       <p>
         To sign in, use a <i>Google account</i>. You will also need a
         <i>Spotify Premium account</i> to play the music in-game. Both of these
         steps will temporarily redirect you to their respective login services.
-        <br /><br />
-        From the dashboard menu, you can either create a new game session or
-        join an existing session by entering its ID.
       </p>
       <h3>Game instructions</h3>
       <p>
         When it's your turn, you will hear a song via the in-game Spotify
-        player. Your task is to guess in which order the song was released.
-        <br /><br />
+        player. If the song doesn't play, hit the play button on an external
+        Spotify application where you are also logged in and try again.<br /><br />
         The cards displayed on the board are the cards you have selected so far
         during the current round and they are ordered chronologically. You make
         a guess by clicking on the space between or next to the card(s).
@@ -50,14 +41,15 @@
       <img src="@/assets/guessSong.png" alt="Guess when the song is from" />
       <p>
         By guessing correctly, you are given the option to "draw" a new card to
-        take a shot at another song, or "lock" your cards and surrender your
-        turn to the next player.
+        take a shot at another song. You can also "lock" your cards, which
+        increases your score by the number of cards you have guessed correctly
+        during the current round, but also surrenders your turn to the next
+        player.
       </p>
       <img src="@/assets/drawLock.png" alt="Draw new card or lock cards" />
       <p>
         An incorrect guess results in losing all your cards gained during the
-        round and the next player gets a chance at placing the song in the
-        correct order.
+        round and losing your turn.
       </p>
     </div>
   </div>
@@ -103,7 +95,7 @@ export default {
   outline: 9999px solid rgba(0, 0, 0, 0.5);
 }
 .help p {
-  text-align: center;
+  text-align: left;
 }
 .help h2 {
   clear: right;
