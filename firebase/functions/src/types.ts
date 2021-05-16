@@ -9,6 +9,7 @@ export interface Card {
   artist: string;
   year: number;
   uri: string;
+  numberOfGuesses?: number;
 }
 
 export interface Player {

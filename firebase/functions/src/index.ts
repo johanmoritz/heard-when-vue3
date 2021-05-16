@@ -21,6 +21,7 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
   const uid = context.auth?.uid;
   const displayName = data?.displayName as string | undefined;
   const deck = data?.deck as Array<Card> | undefined;
+  const goalNumberOfCards = data?.goalNumberOfCards as number ?? 7;
 
   if (
     uid === undefined ||
@@ -34,7 +35,14 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
     );
   }
 
-  const firstPlayer = player({ id: uid, displayName });
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const initialCard = deck.pop()!;
+
+  const firstPlayer = player({
+    id: uid,
+    lockedCards: [initialCard],
+    displayName,
+  });
 
   const initialGame: Partial<Game> = {
     currentPlayer: firstPlayer,
@@ -42,7 +50,7 @@ export const initializeGame = functions.https.onCall(async (data, context) => {
     deck,
     // currentHiddenCard: undefined, // Cannot have undefined values in firebase
     temporaryCards: [],
-    goalNumberOfCards: 7,
+    goalNumberOfCards,
     log: [],
     phase: "newTurn",
     status: "initialized",
@@ -75,18 +83,31 @@ export const connectToGame = functions.https.onCall(async (data, context) => {
       .then((result) => result.data())) as Game;
     const gameIsInitialized = game.status === "initialized";
     const playerAlreadyAdded = game.players.find(({ id }) => id === uid);
+    const tooManyPlayers = game.players.length > 10;
 
-    if (!gameIsInitialized) {
+    if (!gameIsInitialized || tooManyPlayers) {
       throw new functions.https.HttpsError(
         "failed-precondition",
-        "Game must be initialized."
+        "Game must be initialized and there can only be 10 players."
       );
     }
     if (playerAlreadyAdded) {
       return;
     }
-    const newPlayer = player({ id: uid, displayName });
-    transaction.update(gameRef, { players: game.players.concat(newPlayer) });
+    const deck = game.deck;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const initialCard = deck[0];
+    const newDeck = deck.filter(({ id }) => id !== initialCard.id);
+
+    const newPlayer = player({
+      id: uid,
+      displayName,
+      lockedCards: [initialCard],
+    });
+    transaction.update(gameRef, {
+      deck: newDeck,
+      players: game.players.concat(newPlayer),
+    });
   });
 });
 
@@ -123,7 +144,7 @@ export const startGame = functions.https.onCall(async (data, context) => {
 
     const newGameState = executeEvents({
       events: [nextEvent({ from: initialPlayer, to: initialPlayer })],
-      game: { ...game, status: "started" },
+      game: { ...game, temporaryCards: initialPlayer.lockedCards, status: "started" },
     });
 
     transaction.set(gameRef, newGameState);

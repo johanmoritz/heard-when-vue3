@@ -8,7 +8,7 @@ import {
   wrongEvent,
   passEvent,
 } from "./event";
-import { Game, GamePhase, Player, PlayerId } from "./types";
+import { Card, Game, GamePhase, Player, PlayerId } from "./types";
 
 /**
  * Determines who the next player is.
@@ -127,9 +127,23 @@ export function handleEvent(args: { event: GameEvent; state: Game }): Game {
   switch (event._tag) {
     case "nextEvent": {
       const newPlayer = event.next.id !== event.current.id;
-      const temporaryCards = newPlayer
+      const multiPlayerTemporaryCards = newPlayer
         ? event.next.lockedCards
         : state.temporaryCards;
+      const singlePlayerTemporaryCards =
+        // This is a hack, should add an additional event "newTurnEvent" instead
+        state.log.length > 0 &&
+        (state.log[state.log.length - 1]._tag === "passEvent" ||
+          state.log[state.log.length - 1]._tag === "wrongEvent")
+          ? state.players.find(({ id }) => id === event.current.id)
+              ?.lockedCards ?? []
+          : state.temporaryCards;
+      const inSinglePlayerMode = state.players.length === 1;
+
+      const temporaryCards = inSinglePlayerMode
+        ? singlePlayerTemporaryCards
+        : multiPlayerTemporaryCards;
+
       return {
         ...state,
         currentPlayer: event.next,
@@ -180,7 +194,26 @@ export function handleEvent(args: { event: GameEvent; state: Game }): Game {
       };
     }
     case "wrongEvent": {
-      return { ...state, temporaryCards: [], phase: newPhase, log: newLog };
+      // Add back the guessed card to the deck
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const hiddenCard = state.currentHiddenCard!;
+      const newHiddenCard = {
+        ...hiddenCard,
+        numberOfGuesses: (hiddenCard.numberOfGuesses ?? 0) + 1,
+      };
+
+      const everyoneGuessedOnSameCard =
+        newHiddenCard.numberOfGuesses === state.players.length;
+      const newDeck = everyoneGuessedOnSameCard
+        ? state.deck
+        : ([newHiddenCard] as Array<Card>).concat(state.deck);
+      return {
+        ...state,
+        deck: newDeck,
+        temporaryCards: [],
+        phase: newPhase,
+        log: newLog,
+      };
     }
     case "finnishEvent": {
       const currentPlayerIndex = state.players.findIndex(
@@ -188,7 +221,10 @@ export function handleEvent(args: { event: GameEvent; state: Game }): Game {
       );
       const savedPlayer = {
         ...state.players[currentPlayerIndex],
-        lockedCards: state.temporaryCards,
+        lockedCards:
+          state.temporaryCards.length >= state.currentPlayer.lockedCards.length
+            ? state.temporaryCards
+            : state.currentPlayer.lockedCards,
       };
       const newPlayers = update(savedPlayer, currentPlayerIndex, state.players);
 
@@ -203,25 +239,26 @@ export function handleEvent(args: { event: GameEvent; state: Game }): Game {
   }
 }
 
-export function player(args: { id: PlayerId; displayName: string }): Player {
-  const { id, displayName } = args;
-  return { id, displayName, lockedCards: [] };
+export function player(args: {
+  id: PlayerId;
+  displayName: string;
+  lockedCards?: Array<Card>;
+}): Player {
+  const { id, displayName, lockedCards = [] } = args;
+  return { id, displayName, lockedCards };
 }
 
 export function winners(args: { game: Game }): Array<Player> {
+  const { game } = args;
   const goal =
-    args.game.deck.length === 0
-      ? Math.max(
-          ...args.game.players.map(({ lockedCards }) => lockedCards.length)
-        )
-      : args.game.goalNumberOfCards;
-  return args.game.players.filter(
-    ({ lockedCards }) => lockedCards.length >= goal
-  );
+    game.deck.length === 0
+      ? Math.max(...game.players.map(({ lockedCards }) => lockedCards.length))
+      : game.goalNumberOfCards;
+  return game.players.filter(({ lockedCards }) => lockedCards.length >= goal) || game.temporaryCards.length >= goal;
 }
 
 export function hasWinner(args: { game: Game }): boolean {
-  return winners({ game: args.game }).length > 0;
+  return winners({ ...args }).length > 0;
 }
 
 function insert<T>(val: T, at: number, arr: Array<T>): Array<T> {
@@ -263,10 +300,11 @@ export function randomPlayer(args: { game: Game }): Player {
 }
 
 function evaluateState(args: { state: Game }): GameEvent | undefined {
+  
   if (args.state.phase !== "newTurn" || args.state.status !== "started") {
     return undefined;
   }
-
+  
   if (hasWinner({ game: args.state })) {
     return finnishEvent();
   }
