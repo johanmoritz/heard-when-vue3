@@ -48,6 +48,10 @@
   z-index: -1;
 }
 
+.control >>> img {
+  filter: invert(1);
+}
+
 .control:hover >>> img {
   opacity: 50%;
 }
