@@ -8,7 +8,10 @@
     </template>
     <template v-slot:nav> </template>
     <template v-slot:main>
-      <h1 class="text-contrast">Heard When</h1>
+      <img
+        class="logostart"
+        src="@/assets/heard-when.jpg"
+      />
       <router-view />
       <Loader id="loader" v-if="loading" />
       <Help id="help-position" />
@@ -44,7 +47,8 @@ export default defineComponent({
     const unsubFb = handleAuthState();
 
     const isInitialized = computed(() => model.state.game);
-    const isOtherPlayer = computed(() =>
+    const isOtherPlayer = computed(
+      () =>
         model.state.game &&
         model.state.game.currentPlayer.displayName !== model.state.username
     );

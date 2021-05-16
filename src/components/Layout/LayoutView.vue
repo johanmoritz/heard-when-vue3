@@ -36,6 +36,12 @@
   transition: all 1s ease;
 }
 
+.logostart {
+  width: 35%;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 5px 0px rgba(0, 0, 0, 0.8);
+}
+
 .gametheme {
   filter: blur(7px);
 }
@@ -49,6 +55,7 @@
   font-weight: bold;
   background-color: black;
   display: inline-block;
+  padding: 2px;
 }
 
 .button {
