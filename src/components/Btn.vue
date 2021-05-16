@@ -29,7 +29,7 @@
 
 .btn:hover *:not(:disabled),
 .btn:active *:not(:disabled) {
-  background-color: #4caf50; /* Green */
+  background-color: rgba(30, 215, 95); /* Green */
   color: rgba(255, 255, 255, 0.966);
 }
 

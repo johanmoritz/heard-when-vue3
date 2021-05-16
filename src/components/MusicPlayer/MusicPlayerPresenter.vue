@@ -1,17 +1,24 @@
 <template>
   <MusicPlayerView>
+    <template v-slot:spotify>
+      <img src="@/assets/spotify.png" style="height: 3.5em"/>
+    </template>
     <template v-slot:status>
       <span>{{ msg }}</span>
     </template>
-    <button :disabled="!canPlay" @click="play">
-      Play
-    </button>
-    <button :disabled="!canPause" @click="pause">
-      Pause
-    </button>
-    <button :disabled="!canConnect" @click="connect">
-      Connect
-    </button>
+    <div class="control-container">
+      <button class="control" :disabled="!canPlay" @click="play">
+        <img src="@/assets/play.png" style="width:2.5em" />
+      </button>
+      <button class="control" :disabled="!canPause" @click="pause">
+        <img src="@/assets/pause.png" style="width:2.5em" />
+      </button>
+      <Btn class="btn">
+        <button :disabled="!canConnect" @click="connect">
+          Connect
+        </button>
+      </Btn>
+    </div>
   </MusicPlayerView>
 </template>
 
@@ -25,9 +32,10 @@ import {
 } from "vue";
 import music from "@/store/music";
 import MusicPlayerView from "./MusicPlayerView.vue";
+import Btn from "@/components/Btn.vue";
 
 export default defineComponent({
-  components: { MusicPlayerView },
+  components: { MusicPlayerView, Btn },
   props: {
     songId: {
       type: String,
