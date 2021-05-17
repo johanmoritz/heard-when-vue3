@@ -3,7 +3,9 @@
     <div class="status-block">
       <h2 class="text-contrast">{{ msg }}</h2>
     </div>
-    <slot></slot>
+    <div class="cards-container">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -41,29 +43,5 @@ export default defineComponent({
 .button-card {
   display: flex;
   flex-direction: row;
-}
-.first-guess-button {
-  width: 100px;
-  flex-direction: row;
-  justify-content: center;
-}
-.first-guess-button:disabled {
-  color: rgba(112, 111, 111, 0.692);
-}
-
-.guess-button {
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-.guess-button:hover {
-  opacity: 0.4;
-  cursor: pointer;
-  padding: 20px;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-.guess-button:disabled {
-  pointer-events: none;
-  opacity: 0.6;
 }
 </style>

@@ -35,4 +35,8 @@ export default defineComponent({
   transform: scale(0.7);
   height: auto;
 }
+
+.other-player-cards > * {
+  margin: 10px;
+}
 </style>
