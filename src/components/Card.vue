@@ -22,8 +22,6 @@ export default defineComponent({
 <style scoped>
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background: black;
-  color: white;
   width: 100px;
   height: 100%;
   min-height: 150px;
@@ -34,9 +32,15 @@ export default defineComponent({
 .card div {
   margin-top: 10px;
 }
-.other-card {
+
+.mycardtheme {
   background: rgb(228, 207, 20);
   color: black;
+}
+
+.othercardtheme {
+  background: black;
+  color: white;
 }
 .year {
   font-size: 150%;

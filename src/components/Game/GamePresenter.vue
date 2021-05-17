@@ -43,6 +43,10 @@
               ]"
             >
               <Card
+                :class="{
+                  mycardtheme: isPlayerInTurn,
+                  othercardtheme: !isPlayerInTurn
+                }"
                 :title="card.title"
                 :artist="card.artist"
                 :year="card.year"
@@ -76,7 +80,7 @@
         <OtherPlayerCards :userName="user.displayName">
           <div v-for="card in userCards" :key="card" style="margin:10px">
             <Card
-              class="other-card"
+              class="other-card mycardtheme"
               :title="card.title"
               :artist="card.artist"
               :year="card.year"
