@@ -56,25 +56,22 @@
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
-    <div v-if="!isPlayerInTurn && user !== undefined">
-      <div v-if="user.lockedCards.length !== 0">
-        <OtherPlayerCards :userName="user.displayName">
-          <div
-            v-for="card in user.lockedCards"
-            :key="card"
-            class="small-spaced"
-          >
-            <Card
-              class="other-card mycardtheme"
-              :title="card.title"
-              :artist="card.artist"
-              :year="card.year"
-              :id="card.id"
-            />
-          </div>
-        </OtherPlayerCards>
-      </div>
-    </div>
+    <OtherPlayerCards
+      :userName="user.displayName"
+      v-if="
+        !isPlayerInTurn && user !== undefined && user.lockedCards.length !== 0
+      "
+    >
+      <Card
+        v-for="card in user.lockedCards"
+        :key="card"
+        class="other-card mycardtheme small-spaced"
+        :title="card.title"
+        :artist="card.artist"
+        :year="card.year"
+        :id="card.id"
+      />
+    </OtherPlayerCards>
   </div>
 </template>
 
