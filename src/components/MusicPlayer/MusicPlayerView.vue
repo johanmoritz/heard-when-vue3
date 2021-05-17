@@ -46,18 +46,18 @@
   border: none;
 }
 
+.control:hover >>> img {
+  transform: scale(1.1);
+}
+
 .control:disabled {
-  filter: grayscale(50%);
-  -webkit-filter: grayscale(50%);
-  z-index: -1;
+  opacity: 0.5;
 }
 
 .control >>> img {
   filter: invert(1);
-}
-
-.control:hover >>> img {
-  opacity: 50%;
+  -webkit-filter: invert(1);
+  opacity: 1;
 }
 </style>
 
