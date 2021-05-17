@@ -10,29 +10,28 @@
       </Btn>
       <h2>About</h2>
       <p>
-        This is a multiplayer music trivia game inspired by the
-        Swedish board game "När då då?".<br /><br />
+        This is a multiplayer music trivia game inspired by the Swedish board
+        game "När då då?".<br /><br />
 
-        Listen to songs and try to guess their <i>year</i> relative to other songs
-        
+        Listen to songs and try to guess their <i>year</i> relative to other
+        songs
       </p>
       <h3>Requirements</h3>
       <p>
-        To play you need a <i>Google</i> account for signing in and a <i>Spotify Premium</i> account 
-        for playing the songs
+        To play you need a <i>Google</i> account for signing in and a
+        <i>Spotify Premium</i> account for playing the songs
       </p>
       <h3>Game instructions</h3>
       <p>
         You start with one song card. Choose if you want to draw another or lock
-        it (and end your turn). If you draw you will hear a song via the in-game Spotify
-        player
+        it (and end your turn). If you draw you will hear a song via the in-game
+        Spotify player
       </p>
       <img src="@/assets/draw-or-lock.png" alt="Guess when the song is from" />
       <p>
         Make a guess by clicking on the adjacent space between or next to the
-        card(s). Guessing correctly gives you a card and a new turn. <br /><br />
-        
-        
+        card(s). Guessing correctly gives you a card and a new turn.
+        <br /><br />
       </p>
       <img src="@/assets/place-before.png" alt="Guess when the song is from" />
       <img src="@/assets/place-after.png" alt="Guess when the song is from" />
@@ -44,6 +43,12 @@
       <p>
         An incorrect guess results in losing all the cards gained during the
         current round, as well as your turn.
+      </p>
+      <h3>Troubleshooting</h3>
+      <p>
+        Should the song not play, hit the play button on an external Spotify
+        application where you are also signed in. Pause it then try using the
+        in-game player again
       </p>
       <p>
         <br /><br />
