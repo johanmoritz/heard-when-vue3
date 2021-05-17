@@ -23,8 +23,8 @@
       </p>
       <h3>Game instructions</h3>
       <p>
-        You start with one song card. Choose if you want to draw another or lock
-        it (and end your turn). If you draw you will hear a song via the in-game
+        You start with one song card. Choose if you want to draw or lock
+        (and end your turn). If you draw and have connected Spotify you will hear a song via the in-game
         Spotify player
       </p>
       <img
@@ -38,7 +38,7 @@
       </p>
       <img src="@/assets/card-before.png" alt="Guess when the song is from" />
       <p>
-        <i>Locking</i> increases your score by the number of current cards
+        <i>Locking</i> increases your score by the number of current cards and ends your turn
       </p>
       <img src="@/assets/won-card.png" alt="Draw new card or lock cards" />
       <img src="@/assets/score-increased.png" alt="Draw new card or lock cards" />
