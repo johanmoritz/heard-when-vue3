@@ -7,13 +7,10 @@
       <span>{{ msg }}</span>
     </template>
     <div class="control-container">
-      <button class="control" :disabled="!canPlay" @click="play">
-        <img src="@/assets/play.png" style="width:2.5em" />
+      <button class="control" :disabled="!isConnected" @click="togglePlayPause">
+        <img :src="controlSrc" style="width:3em" />
       </button>
-      <button class="control" :disabled="!canPause" @click="pause">
-        <img src="@/assets/pause.png" style="width:2.5em" />
-      </button>
-      <Btn class="btn">
+      <Btn class="btn btn-connect">
         <button :disabled="!canConnect" @click="connect">
           Connect
         </button>
@@ -57,12 +54,11 @@ export default defineComponent({
         : "Please connect to Spotify.";
     });
 
-    const canPlay = computed(
-      () => api.value.kind === "connected" && !api.value.playing
-    );
-    const canPause = computed(
+    const isPlaying = computed(
       () => api.value.kind === "connected" && api.value.playing
     );
+
+    const isConnected = computed(() => api.value.kind === "connected");
 
     const canConnect = computed(() => api.value.kind !== "loading");
 
@@ -92,14 +88,26 @@ export default defineComponent({
       pause();
     });
 
+     const togglePlayPause = () => {
+      isPlaying.value ? pause() : play();
+    };
+
+    const controlSrc = computed(() => {
+      return isPlaying.value
+        ? require("@/assets/pause.png")
+        : require("@/assets/play.png");
+    });
+
     return {
       play,
       pause,
       connect,
       msg,
-      canPlay,
-      canPause,
-      canConnect
+      isPlaying,
+      isConnected,
+      canConnect,
+      togglePlayPause,
+      controlSrc
     };
   }
 });
