@@ -3,59 +3,40 @@
     <div>
       <Scoreboard props :game="game" />
       <GameView :msg="msg">
-        <div class="cards-container">
-          <Btn>
-            <button
-              v-if="cards.length === 0"
-              class="first-guess-button"
-              @click="guess(0)"
-              :disabled="!isPlayerInTurn"
-            >
-              First draw is free!
-            </button>
-          </Btn>
-
-          <div class="button-card" v-for="(card, index) in cards" :key="index">
-            <button
-              class="guess-button"
-              @click="guess(index)"
-              :disabled="!isPlayerInTurn"
-            >
-              {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
-            </button>
-            <Card
-              :class="{
-                mycardtheme: isPlayerInTurn,
-                othercardtheme: !isPlayerInTurn,
-                'semi-transparent': !game.currentPlayer.lockedCards.some(c => {
-                  return c.id === card.id;
-                })
-              }"
-              :title="card.title"
-              :artist="card.artist"
-              :year="card.year"
-              :id="card.id"
-            />
-          </div>
-          <button
-            v-if="cards.length > 0"
-            class="guess-button"
-            @click="guess(cards.length)"
-            :disabled="!isPlayerInTurn"
-          >
-            {{ "After" }}
-          </button>
+        <div class="button-card" v-for="(card, index) in cards" :key="index">
+          <GuessButton @click="guess(index)" :disabled="!isPlayerInTurn">{{
+            index === 0 || cards.length === 1 ? `Before` : `Between`
+          }}</GuessButton>
+          <Card
+            :class="{
+              mycardtheme: isPlayerInTurn,
+              othercardtheme: !isPlayerInTurn,
+              'semi-transparent': !game.currentPlayer.lockedCards.some(c => {
+                return c.id === card.id;
+              })
+            }"
+            :title="card.title"
+            :artist="card.artist"
+            :year="card.year"
+            :id="card.id"
+          />
         </div>
+        <GuessButton
+          v-if="cards.length > 0"
+          @click="guess(cards.length)"
+          :disabled="!isPlayerInTurn"
+        >
+          After
+        </GuessButton>
       </GameView>
     </div>
-    <div class="player-position">
-      <slot></slot>
-    </div>
-    <div v-if="game.phase === 'choice'">
-      <div v-if="isPlayerInTurn">
-        <ChoiceView :draw="draw" :lock="lock" />
-      </div>
-    </div>
+
+    <ChoiceView
+      v-if="game.phase === 'choice' && isPlayerInTurn"
+      :draw="draw"
+      :lock="lock"
+    />
+
     <OtherPlayerCards
       :userName="user.displayName"
       v-if="
@@ -80,15 +61,21 @@ import { defineComponent, toRefs, computed, PropType } from "vue";
 import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
 import Scoreboard from "./ScoreBoard.vue";
+import GuessButton from "./GuessButton.vue";
 import OtherPlayerCards from "@/components/OtherPlayerCards.vue";
-import Btn from "@/components/Btn.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
-import { data as userData } from "@/store/user";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards, Btn },
+  components: {
+    GameView,
+    ChoiceView,
+    Card,
+    Scoreboard,
+    OtherPlayerCards,
+    GuessButton
+  },
   props: {
     game: {
       type: Object as PropType<Game>,
