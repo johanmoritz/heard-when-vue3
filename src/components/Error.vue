@@ -20,4 +20,9 @@ export default defineComponent({
   color: black;
   display: inline-block;
 }
+@media screen and (max-width: 500px) {
+  .error {
+    font-size: 1.1em;
+  }
+}
 </style>

@@ -37,7 +37,7 @@
 }
 
 .logostart {
-  width: 30vw;
+  width: 35vw;
   margin-bottom: 20px;
   box-shadow: 0 3px 5px 0px rgba(0, 0, 0, 0.8);
 }
@@ -117,5 +117,14 @@
   position: fixed;
   bottom: 1em;
   left: 1em;
+}
+
+@media screen and (max-width: 900px) {
+  .logostart {
+    position: fixed;
+    left: 1rem;
+    top: 2rem;
+    width: 40vw;
+  }
 }
 </style>

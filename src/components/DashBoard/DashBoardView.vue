@@ -13,7 +13,7 @@
           Create Game
         </button>
       </Btn>
-      or
+      <br class="screen-br" />or<br class="screen-br" /><br class="screen-br" />
       <span v-if="gameSession === undefined">
         <input
           :disabled="loading"
@@ -23,6 +23,7 @@
           @input="$emit('update:modelValue', $event.target.value)"
           style="margin-left: 1rem;"
         />
+        <br class="screen-br" /><br class="screen-br" />
         <Btn>
           <button :disabled="loading" @click="joinGameClicked">
             Join Game
@@ -60,3 +61,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.screen-br {
+  display: none;
+}
+@media screen and (max-width: 500px) {
+  .screen-br {
+    display: inline-block;
+  }
+}
+</style>
