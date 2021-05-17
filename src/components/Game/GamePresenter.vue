@@ -13,16 +13,14 @@
       <GameView :msg="msg">
         <div class="cards-container">
           <Btn>
-            <div class="btn">
-              <button
-                v-if="cards.length === 0"
-                class="first-guess-button"
-                @click="guess(0)"
-                :disabled="!isPlayerInTurn"
-              >
-                First draw is free!
-              </button>
-            </div>
+            <button
+              v-if="cards.length === 0"
+              class="first-guess-button"
+              @click="guess(0)"
+              :disabled="!isPlayerInTurn"
+            >
+              First draw is free!
+            </button>
           </Btn>
 
           <div class="button-card" v-for="(card, index) in cards" :key="index">
@@ -73,12 +71,14 @@
         <ChoiceView :draw="draw" :lock="lock" />
       </div>
     </div>
-    <div
-      v-if="!isPlayerInTurn && user !== undefined"
-    >
+    <div v-if="!isPlayerInTurn && user !== undefined">
       <div v-if="user.lockedCards.length !== 0">
         <OtherPlayerCards :userName="user.displayName">
-          <div v-for="card in user.lockedCards" :key="card" style="margin:10px">
+          <div
+            v-for="card in user.lockedCards"
+            :key="card"
+            class="small-spaced"
+          >
             <Card
               class="other-card mycardtheme"
               :title="card.title"
@@ -99,13 +99,14 @@ import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
 import Scoreboard from "./ScoreBoard.vue";
 import OtherPlayerCards from "@/components/OtherPlayerCards.vue";
+import Btn from "@/components/Btn.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
 import { data as userData } from "@/store/user";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards },
+  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards, Btn },
   props: {
     game: {
       type: Object as PropType<Game>,
@@ -139,7 +140,7 @@ export default defineComponent({
             ".\n When is the song from?"
         : !isPlayerInTurn.value
         ? "It's " + game.value.currentPlayer.displayName + "'s turn."
-        :"";
+        : "";
     });
 
     const song = computed(() => {
@@ -166,3 +167,9 @@ export default defineComponent({
   }
 });
 </script>
+
+<style>
+.small-spaced {
+  margin: 10px;
+}
+</style>

@@ -1,19 +1,19 @@
 <template>
   <MusicPlayerView>
     <template v-slot:spotify>
-      <img src="@/assets/spotify.png" style="height: 3.5em"/>
+      <img src="@/assets/spotify.png" class="large-icon" />
     </template>
     <template v-slot:status>
       <span>{{ msg }}</span>
     </template>
     <div class="control-container">
       <button class="control" :disabled="!canPlay" @click="play">
-        <img src="@/assets/play.png" style="width:2.5em" />
+        <img src="@/assets/play.png" class="small-icon" />
       </button>
       <button class="control" :disabled="!canPause" @click="pause">
-        <img src="@/assets/pause.png" style="width:2.5em" />
+        <img src="@/assets/pause.png" class="small-icon" />
       </button>
-      <Btn class="btn">
+      <Btn>
         <button :disabled="!canConnect" @click="connect">
           Connect
         </button>
@@ -104,3 +104,12 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.small-icon {
+  width: 2.5em;
+}
+.large-icon {
+  width: 3.5em;
+}
+</style>

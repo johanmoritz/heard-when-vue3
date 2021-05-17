@@ -1,6 +1,6 @@
 <template>
   <div id="board-view" class="board">
-    <div style="padding: 0px 40px 0px 40px">
+    <div class="status-block">
       <h2 class="text-contrast">{{ msg }}</h2>
     </div>
     <slot></slot>
@@ -18,6 +18,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.status-block {
+  padding: 0px 40px 0px 40px;
+}
+
 .board {
   width: fill;
   height: fill;
