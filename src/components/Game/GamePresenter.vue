@@ -35,7 +35,9 @@
 
   <OtherPlayerCards
     :userName="user.displayName"
-    v-if="isPlayerInTurn && user !== undefined && user.lockedCards.length !== 0"
+    v-if="
+      !isPlayerInTurn && user !== undefined && user.lockedCards.length !== 0
+    "
   >
     <Card
       v-for="card in user.lockedCards"
