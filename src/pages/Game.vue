@@ -24,7 +24,7 @@
         </p>
       </div>
 
-      <div class="pos-mid-bottom">
+      <div id="endButton">
         <Btn theme="alert">
           <button @click="quit">End Game</button>
         </Btn>
@@ -81,11 +81,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-.pos-mid-bottom {
-  position: fixed;
-  bottom: 1em;
-  left: 45%;
-}
-</style>

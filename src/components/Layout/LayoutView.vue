@@ -118,4 +118,31 @@
   bottom: 1em;
   left: 1em;
 }
+
+#endButton {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+}
+
+@media screen and (max-width: 700px) {
+  #endButton {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .logostart {
+    position: fixed;
+    left: 1rem;
+    top: 2rem;
+    width: 40vw;
+  }
+}
 </style>

@@ -55,7 +55,6 @@ export default defineComponent({
   opacity: 0;
   transition: all 0.3s ease;
 }
-
 .guess-button:hover {
   opacity: 0.4;
   cursor: pointer;
