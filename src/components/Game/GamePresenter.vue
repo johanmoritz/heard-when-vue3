@@ -1,14 +1,6 @@
 <template>
   <div>
     <div>
-      <!-- 
-      skapa div
-
-      läsa in spelare 
-        skapa <li> element för varje spelare
-          för varje <li> skriva spelares namn + antal kort
-      upprepa varje gång en "action" görs
-      -->
       <Scoreboard props :game="game" />
       <GameView :msg="msg">
         <div class="cards-container">
