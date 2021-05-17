@@ -10,36 +10,37 @@
       </Btn>
       <h2>About</h2>
       <p>
-        <i>Heard When</i> is a multiplayer music trivia game inspired by the
-        Swedish board game "När då då?". <br /><br />
-        Listening to songs from Spotify decade playlists, the player in turn
-        guesses when the current song was released by placing it relative to
-        other displayed song cards.
+        This is a multiplayer music trivia game inspired by the
+        Swedish board game "När då då?".<br /><br />
+
+        Listen to songs and try to guess their <i>year</i> relative to other songs
+        
       </p>
-      <h3>Connection</h3>
+      <h3>Requirements</h3>
       <p>
-        To sign in, use a <i>Google account</i>. You will also need to connect a
-        <i>Spotify Premium account</i> to the in-game music player. Both of
-        these steps will temporarily redirect you to their respective services.
-        <br /><br />Should the song not play, hit the play button on an external
-        Spotify application where you are also signed in, pause it and try using
-        the in-game player again.
+        To play you need a <i>Google</i> account for signing in and a <i>Spotify Premium</i> account 
+        for playing the songs
       </p>
       <h3>Game instructions</h3>
       <p>
-        When it's your turn, you will hear a song via the in-game Spotify
-        player. Make a guess by clicking on the space between or next to the
-        card(s).
+        You start with one song card. Choose if you want to draw another or lock
+        it (and end your turn). If you draw you will hear a song via the in-game Spotify
+        player
       </p>
-      <img src="@/assets/guessSong.png" alt="Guess when the song is from" />
+      <img src="@/assets/draw-or-lock.png" alt="Guess when the song is from" />
       <p>
-        By guessing correctly, you are given the option to "draw" a new card to
-        take a shot at another song. Or, you can "lock" your cards, which
-        increases your score by the number of cards you have guessed correctly
-        during the current round, but also surrenders your turn to the next
-        player.
+        Make a guess by clicking on the adjacent space between or next to the
+        card(s). Guessing correctly gives you a card and a new turn. <br /><br />
+        
+        
       </p>
-      <img src="@/assets/drawLock.png" alt="Draw new card or lock cards" />
+      <img src="@/assets/place-before.png" alt="Guess when the song is from" />
+      <img src="@/assets/place-after.png" alt="Guess when the song is from" />
+      <p>
+        Locking increases your score by the number of current cards
+      </p>
+      <img src="@/assets/won-card.png" alt="Draw new card or lock cards" />
+      <img src="@/assets/score.png" alt="Draw new card or lock cards" />
       <p>
         An incorrect guess results in losing all the cards gained during the
         current round, as well as your turn.
