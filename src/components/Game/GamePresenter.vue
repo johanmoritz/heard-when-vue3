@@ -3,19 +3,110 @@
     <div>
       <Scoreboard props :game="game" />
       <GameView :msg="msg">
+        <div style="display:flex; justify-content: center;">
+          <Card
+            class="othercardtheme guess-card"
+            :class="{ hiddenCardWhenDragged: dragSelected.started }"
+            title="---"
+            artist="unknown"
+            year="?"
+            :id="game.currentHiddenCard?.id"
+            key="-1"
+            :draggable="true"
+            @drag="
+              () => {
+                dragSelected.started = true;
+              }
+            "
+            @dragend="
+              () => {
+                dragSelected.started = false;
+              }
+            "
+          />
+        </div>
         <div class="cards-container">
-          <Btn>
-            <button
-              v-if="cards.length === 0"
-              class="first-guess-button"
-              @click="guess(0)"
-              :disabled="!isPlayerInTurn"
+          <div
+            v-for="(card, index) in cards"
+            :key="index"
+            style="display:flex;"
+          >
+            <div
+              class="guess before"
+              @dragover="
+                () => {
+                  dragSelected.id = card.id;
+                  dragSelectedChoice.choice = 'before';
+                }
+              "
+              @dragleave="
+                () => {
+                  dragSelected.id = -1;
+                  dragSelectedChoice.choice = 'none';
+                }
+              "
+              @drop="guess(index)"
+              :class="{
+                activeGuess: dragSelected.id === card.id,
+                inactiveGuess: dragSelected.id !== card.id,
+                'activeGuess-on-drop':
+                  dragSelected.id === card.id &&
+                  dragSelectedChoice.choice === 'before'
+              }"
             >
-              First draw is free!
-            </button>
-          </Btn>
+              Before
+            </div>
+            <Card
+              @dragover="
+                () => {
+                  dragSelected.id = card.id;
+                }
+              "
+              @dragleave="
+                () => {
+                  dragSelected.id = -1;
+                }
+              "
+              :class="{
+                mycardtheme: isPlayerInTurn,
+                othercardtheme: !isPlayerInTurn,
+                'semi-transparent': !game.currentPlayer.lockedCards.some(c => {
+                  return c.id === card.id;
+                })
+              }"
+              :title="card.title"
+              :artist="card.artist"
+              :year="card.year"
+              :id="card.id"
+            />
+            <div
+              class="guess after"
+              @dragover="
+                () => {
+                  dragSelected.id = card.id;
+                  dragSelectedChoice.choice = 'after';
+                }
+              "
+              @dragleave="
+                () => {
+                  dragSelected.id = -1;
+                  dragSelectedChoice.choice = 'none';
+                }
+              "
+              @drop="guess((index + 1) % cards.length)"
+              :class="{
+                activeGuess: dragSelected.id === card.id,
+                inactiveGuess: dragSelected.id !== card.id,
+                'activeGuess-on-drop':
+                  dragSelected.id === card.id &&
+                  dragSelectedChoice.choice === 'after'
+              }"
+            >
+              After
+            </div>
+          </div>
 
-          <div class="button-card" v-for="(card, index) in cards" :key="index">
+          <!-- <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button
               class="guess-button"
               @click="guess(index)"
@@ -44,7 +135,7 @@
             :disabled="!isPlayerInTurn"
           >
             {{ "After" }}
-          </button>
+          </button> --->
         </div>
       </GameView>
     </div>
@@ -73,22 +164,29 @@
       />
     </OtherPlayerCards>
   </div>
+  <h1>{{ dragSelected.id }}</h1>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed, PropType } from "vue";
+import {
+  defineComponent,
+  toRefs,
+  computed,
+  PropType,
+  ref,
+  reactive
+} from "vue";
 import GameView from "./GameView.vue";
 import ChoiceView from "./ChoiceView.vue";
 import Scoreboard from "./ScoreBoard.vue";
 import OtherPlayerCards from "@/components/OtherPlayerCards.vue";
-import Btn from "@/components/Btn.vue";
 import { Game } from "../../../firebase/functions/src/types";
 import Card from "@/components/Card.vue";
 import { data as userData } from "@/store/user";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards, Btn },
+  components: { GameView, ChoiceView, Card, Scoreboard, OtherPlayerCards },
   props: {
     game: {
       type: Object as PropType<Game>,
@@ -139,12 +237,19 @@ export default defineComponent({
       });
     });
 
+    const dragSelected = reactive({ id: -1, started: false });
+    const dragSelectedChoice = reactive({ choice: "none" } as {
+      choice: "before" | "after" | "none";
+    });
+
     return {
       msg,
       song,
       cards,
       isPlayerInTurn,
-      user
+      user,
+      dragSelected,
+      dragSelectedChoice
     };
   }
 });
@@ -156,6 +261,42 @@ export default defineComponent({
 }
 
 .semi-transparent {
+  opacity: 0.65;
+}
+
+.inactiveGuess {
+  transition: all 0.1s linear;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.activeGuess {
+  background-color: white;
+  transition: all 0.1s linear;
+  opacity: 0.4;
+  cursor: pointer;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.activeGuess-on-drop {
+  background-color: grey;
+}
+
+.before {
+  transform-origin: 100% 50%;
+}
+
+.after {
+  transform-origin: 0% 50%;
+}
+
+.guess {
+  pointer-events: fill;
+}
+
+.hiddenCardWhenDragged {
   opacity: 0.65;
 }
 </style>
