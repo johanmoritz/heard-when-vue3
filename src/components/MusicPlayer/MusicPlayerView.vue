@@ -59,6 +59,12 @@
 .control:hover >>> img {
   opacity: 50%;
 }
+
+@media screen and (max-width: 700px) {
+  .music-player-container {
+    display: none;
+  }
+}
 </style>
 
 <script lang="ts">

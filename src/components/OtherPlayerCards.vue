@@ -1,6 +1,6 @@
 <template>
   <div class="other-player-container">
-    <p>These are your cards, {{ userName }}:</p>
+    <p class="text-contrast">These are your cards, {{ userName }}:</p>
     <div class="other-player-cards">
       <slot></slot>
     </div>
@@ -22,7 +22,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   color: white;
-  
 }
 .other-player-cards {
   display: flex;
