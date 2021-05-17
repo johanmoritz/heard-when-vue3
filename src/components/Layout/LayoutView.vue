@@ -37,7 +37,7 @@
 }
 
 .logostart {
-  width: 35%;
+  width: 30vw;
   margin-bottom: 20px;
   box-shadow: 0 3px 5px 0px rgba(0, 0, 0, 0.8);
 }
