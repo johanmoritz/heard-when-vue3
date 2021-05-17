@@ -37,12 +37,13 @@
         take a shot at another song. Or, you can "lock" your cards, which
         increases your score by the number of cards you have guessed correctly
         during the current round, but also surrenders your turn to the next
-        player.
+        player.<br /><br />The first player to lock a total of 7 cards wins.
       </p>
       <img src="@/assets/drawLock.png" alt="Draw new card or lock cards" />
       <p>
         An incorrect guess results in losing all the cards gained during the
-        current round, as well as your turn.
+        current round, as well as your turn. The next player will now get a shot
+        at placing the song card correctly.
       </p>
       <p>
         <br /><br />
