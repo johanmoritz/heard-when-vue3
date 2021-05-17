@@ -27,19 +27,21 @@
         it (and end your turn). If you draw you will hear a song via the in-game
         Spotify player
       </p>
-      <img src="@/assets/draw-or-lock.png" alt="Guess when the song is from" />
+      <img
+        src="@/assets/draw-or-lock-2.png"
+        alt="Guess when the song is from"
+      />
       <p>
-        Make a guess by clicking on the adjacent space between or next to the
-        card(s). Guessing correctly gives you a card and a new turn.
+        Make a guess by hovering and clicking on the adjacent space between or
+        next to the card(s). Guessing correctly gives you a card and a new turn.
         <br /><br />
       </p>
-      <img src="@/assets/place-before.png" alt="Guess when the song is from" />
-      <img src="@/assets/place-after.png" alt="Guess when the song is from" />
+      <img src="@/assets/card-before.png" alt="Guess when the song is from" />
       <p>
-        Locking increases your score by the number of current cards
+        <i>Locking</i> increases your score by the number of current cards
       </p>
       <img src="@/assets/won-card.png" alt="Draw new card or lock cards" />
-      <img src="@/assets/score.png" alt="Draw new card or lock cards" />
+      <img src="@/assets/score-increased.png" alt="Draw new card or lock cards" />
       <p>
         An incorrect guess results in losing all the cards gained during the
         current round, as well as your turn.
