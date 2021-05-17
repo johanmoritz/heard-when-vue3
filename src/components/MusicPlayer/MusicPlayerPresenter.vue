@@ -1,14 +1,14 @@
 <template>
   <MusicPlayerView>
     <template v-slot:spotify>
-      <img src="@/assets/spotify.png" style="height: 3.5em"/>
+      <img src="@/assets/spotify.png" class="large-icon" />
     </template>
     <template v-slot:status>
       <span>{{ msg }}</span>
     </template>
     <div class="control-container">
       <button class="control" :disabled="!isConnected" @click="togglePlayPause">
-        <img :src="controlSrc" style="width:3em" />
+        <img :src="controlSrc" class="small-icon" />
       </button>
       <Btn class="btn btn-connect">
         <button :disabled="!canConnect" @click="connect">
@@ -88,7 +88,7 @@ export default defineComponent({
       pause();
     });
 
-     const togglePlayPause = () => {
+    const togglePlayPause = () => {
       isPlaying.value ? pause() : play();
     };
 
@@ -112,3 +112,12 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.small-icon {
+  width: 2.5em;
+}
+.large-icon {
+  width: 3.5em;
+}
+</style>
