@@ -115,7 +115,7 @@ export default defineComponent({
 
 <style>
 .small-icon {
-  width: 2.5em;
+  width: 3em;
 }
 .large-icon {
   width: 3.5em;
