@@ -43,9 +43,18 @@
       <img src="@/assets/won-card.png" alt="Draw new card or lock cards" />
       <img src="@/assets/score-increased.png" alt="Draw new card or lock cards" />
       <p>
-        An incorrect guess results in losing all the cards gained during the
+        An incorrect guess results in losing all loose cards gained during the
         current round, as well as your turn.
       </p>
+      <img src="@/assets/card-loose.png" alt="Draw new card or lock cards" />
+      <p>
+        When not playing your cards appear in yellow below the other players
+      </p>
+      <img src="@/assets/cards-other.png" alt="Draw new card or lock cards" />
+      <p>
+        You can invite other players by sending them the GameID shown
+      </p>
+      <img src="@/assets/gameID.png" alt="Draw new card or lock cards" />
       <h3>Troubleshooting</h3>
       <p>
         Should the song not play, hit the play button on an external Spotify
