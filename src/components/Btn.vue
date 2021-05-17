@@ -42,6 +42,10 @@
 .btn-exit *:active:not(:disabled) {
   background-color: #af4c4c;
 }
+
+.btn-connect {
+  transform: scale(0.8);
+}
 </style>
 
 <script lang="ts">
