@@ -4,7 +4,7 @@
     <strong>GameID:</strong> {{ gameId }}
   </p>
   <p class="text-contrast wait-disp">
-    Current player(s):
+    Current players:
     <span class="player" v-for="player in players" :key="player.id">{{
       player.displayName
     }}</span>
