@@ -61,7 +61,7 @@
   opacity: 1;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 749px) {
   .music-player-container {
     display: none;
   }

@@ -127,7 +127,7 @@
   -ms-transform: translate(-50%, 0);
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 749px) {
   #endButton {
     position: fixed;
     bottom: 1rem;
