@@ -105,7 +105,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .small-icon {
   width: 2.5em;
 }
