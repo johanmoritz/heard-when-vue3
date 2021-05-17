@@ -74,11 +74,11 @@
       </div>
     </div>
     <div
-      v-if="!isPlayerInTurn && user !== undefined && userCards !== undefined"
+      v-if="!isPlayerInTurn && user !== undefined"
     >
-      <div v-if="userCards.length !== 0">
+      <div v-if="user.lockedCards.length !== 0">
         <OtherPlayerCards :userName="user.displayName">
-          <div v-for="card in userCards" :key="card" style="margin:10px">
+          <div v-for="card in user.lockedCards" :key="card" style="margin:10px">
             <Card
               class="other-card mycardtheme"
               :title="card.title"
@@ -150,19 +150,18 @@ export default defineComponent({
       return game.value.temporaryCards;
     });
 
-    const user = game.value.players.find(player => {
-      return player.displayName === model.state.username;
+    const user = computed(() => {
+      return game.value.players.find(player => {
+        return player.displayName === model.state.username;
+      });
     });
-
-    const userCards = user?.lockedCards;
 
     return {
       msg,
       song,
       cards,
       isPlayerInTurn,
-      user,
-      userCards
+      user
     };
   }
 });
