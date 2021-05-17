@@ -27,28 +27,19 @@
   color: rgba(112, 111, 111, 0.692);
 }
 
-.btn:hover *:not(:disabled),
-.btn:active *:not(:disabled) {
+.btn *:hover:not(:disabled),
+.btn *:active:not(:disabled) {
   background-color: rgba(30, 215, 95); /* Green */
   color: rgba(255, 255, 255, 0.966);
 }
 
-.btn:active *:not(:disabled) {
+.btn *:active:not(:disabled) {
   box-shadow: 0 2px rgba(43, 42, 42, 0.383);
   transform: scale(0.9);
 }
 
-.btn-exit:hover *:not(:disabled),
-.btn-exit:active *:not(:disabled) {
-  background-color: #af4c4c;
-}
-.end {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.end:hover {
+.btn-exit *:hover:not(:disabled),
+.btn-exit *:active:not(:disabled) {
   background-color: #af4c4c;
 }
 </style>
