@@ -1,6 +1,8 @@
 <template>
   <div class="other-player-container">
-    <p class="text-contrast">These are your cards, {{ userName }}:</p>
+    <p>
+      <span class="text-contrast">These are your cards, {{ userName }}:</span>
+    </p>
     <div class="other-player-cards">
       <slot></slot>
     </div>
