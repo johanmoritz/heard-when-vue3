@@ -1,14 +1,6 @@
 <template>
   <div>
     <div>
-      <!-- 
-      skapa div
-
-      läsa in spelare 
-        skapa <li> element för varje spelare
-          för varje <li> skriva spelares namn + antal kort
-      upprepa varje gång en "action" görs
-      -->
       <Scoreboard props :game="game" />
       <GameView :msg="msg">
         <div class="cards-container">
@@ -31,26 +23,19 @@
             >
               {{ index === 0 || cards.length === 1 ? `Before` : `Between` }}
             </button>
-            <div
-              v-bind:style="[
-                game.currentPlayer.lockedCards.some(c => {
+            <Card
+              :class="{
+                mycardtheme: isPlayerInTurn,
+                othercardtheme: !isPlayerInTurn,
+                'semi-transparent': !game.currentPlayer.lockedCards.some(c => {
                   return c.id === card.id;
                 })
-                  ? { opacity: 1 }
-                  : { opacity: 0.65 }
-              ]"
-            >
-              <Card
-                :class="{
-                  mycardtheme: isPlayerInTurn,
-                  othercardtheme: !isPlayerInTurn
-                }"
-                :title="card.title"
-                :artist="card.artist"
-                :year="card.year"
-                :id="card.id"
-              />
-            </div>
+              }"
+              :title="card.title"
+              :artist="card.artist"
+              :year="card.year"
+              :id="card.id"
+            />
           </div>
           <button
             v-if="cards.length > 0"
@@ -171,5 +156,9 @@ export default defineComponent({
 <style>
 .small-spaced {
   margin: 10px;
+}
+
+.semi-transparent {
+  opacity: 0.65;
 }
 </style>
