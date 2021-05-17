@@ -15,7 +15,7 @@ The game is multiplayer and meant to support players attending on seperate devic
 
 **Spotify** 
 
-The Spotify music player can be a bit wonky. It's currently very sensitive to state changes, for example if you pause the music in the Spotify app it won't understand that. To make a good connection, ensure that your Spotify app is opened (preferably on your computer) and start to play (and pause) a song on it before you click "Connect" in the UI. Otherwise Spotify might not understand that you have an active device, and the connection will fail. 
+The Spotify music player can be a bit wonky. It's sensitive to state changes, for example if you pause the music in the Spotify app it won't understand that. To make a good connection, ensure that your Spotify app is opened (preferably on your computer) and start to play (and pause) a song on it before you click "Connect" in the UI. Otherwise Spotify might not understand that you have an active device, and the connection will fail. 
 
 **Prototype layout:** https://www.figma.com/file/wm9hhtZjF8UUN3JPo1QwNv/Heard-When?node-id=0%3A1
 
