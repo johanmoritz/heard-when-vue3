@@ -23,41 +23,42 @@
   position: fixed;
   bottom: 1em;
   left: 1em;
-  border-radius: 30px;
   padding: 0.3rem 0.4rem 0 0.4rem;
 }
 .logo {
   display: flex;
   align-items: center;
-  margin: 5px;
+  margin: 1em;
 }
+
 .player {
   display: inline-block;
   text-align: left;
-  margin: 5px;
+  margin: 0.5em 0.5em 0 0;
 }
 .control-container {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .control {
   position: relative;
-  display: inline-block;
   background-color: transparent;
   border: none;
 }
 
+.control:hover >>> img {
+  transform: scale(1.1);
+}
+
 .control:disabled {
-  filter: grayscale(50%);
-  -webkit-filter: grayscale(50%);
-  z-index: -1;
+  opacity: 0.5;
 }
 
 .control >>> img {
   filter: invert(1);
-}
-
-.control:hover >>> img {
-  opacity: 50%;
+  -webkit-filter: invert(1);
+  opacity: 1;
 }
 
 @media screen and (max-width: 700px) {

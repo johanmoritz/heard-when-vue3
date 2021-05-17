@@ -21,7 +21,7 @@
           placeholder="Enter Game ID"
           type="text"
           @input="$emit('update:modelValue', $event.target.value)"
-          style="margin-left: 1rem;"
+          class="game-id-field"
         />
         <br class="screen-br" /><br class="screen-br" />
         <Btn>
@@ -70,5 +70,8 @@ export default {
   .screen-br {
     display: inline-block;
   }
+}
+.game-id-field {
+  margin-left: 1rem;
 }
 </style>

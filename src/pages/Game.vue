@@ -24,11 +24,11 @@
         </p>
       </div>
 
-      <Btn>
-        <div class="btn btn-exit" id="endButton">
+      <div id="endButton">
+        <Btn theme="alert">
           <button @click="quit">End Game</button>
-        </div>
-      </Btn>
+        </Btn>
+      </div>
     </div>
   </main>
 </template>
@@ -39,12 +39,18 @@ import { Game } from "../../firebase/functions/src/types";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
 import WaitingAreaPresenter from "@/components/WaitingArea/WaitingAreaPresenter.vue";
+import Btn from "@/components/Btn.vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import userApi, { data as userData } from "@/store/user";
 
 export default defineComponent({
-  components: { MusicPlayerPresenter, GamePresenter, WaitingAreaPresenter },
+  components: {
+    MusicPlayerPresenter,
+    GamePresenter,
+    WaitingAreaPresenter,
+    Btn
+  },
   setup() {
     const model = useStore();
     const router = useRouter();

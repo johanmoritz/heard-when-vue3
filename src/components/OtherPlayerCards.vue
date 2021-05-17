@@ -22,6 +22,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   color: white;
+  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .other-player-cards {
   display: flex;
