@@ -18,6 +18,7 @@
           <div class="button-card" v-for="(card, index) in cards" :key="index">
             <button
               class="guess-button"
+              :class="{onecardbutton: cards.length === 1}"
               @click="guess(index)"
               :disabled="!isPlayerInTurn"
             >
@@ -40,6 +41,7 @@
           <button
             v-if="cards.length > 0"
             class="guess-button"
+            :class="{onecardbutton: cards.length === 1}"
             @click="guess(cards.length)"
             :disabled="!isPlayerInTurn"
           >
