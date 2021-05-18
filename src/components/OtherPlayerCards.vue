@@ -1,6 +1,8 @@
 <template>
   <div class="other-player-container">
-    <p>These are your cards, {{ userName }}:</p>
+    <p>
+      <span class="text-contrast">These are your cards, {{ userName }}:</span>
+    </p>
     <div class="other-player-cards">
       <slot></slot>
     </div>
@@ -32,5 +34,9 @@ export default defineComponent({
   justify-content: center;
   transform: scale(0.7);
   height: auto;
+}
+
+.other-player-cards > * {
+  margin: 10px;
 }
 </style>

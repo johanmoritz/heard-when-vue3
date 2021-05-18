@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :class="`${theme}-theme ${!locked ? 'un-locked' : ''}`">
     <div class="year">{{ year }}</div>
     <div>"{{ title }}"</div>
     <div>{{ artist }}</div>
@@ -7,14 +7,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 export default defineComponent({
   name: "Card",
   props: {
     id: { type: Number, required: true },
     title: { type: String, required: true },
     artist: { type: String, required: true },
-    year: { type: Number, required: true }
+    year: { type: Number, required: true },
+    theme: { type: String as PropType<"pimary" | "secondary">, required: true },
+    locked: { type: Boolean, default: true }
   }
 });
 </script>
@@ -33,15 +35,20 @@ export default defineComponent({
   margin-top: 10px;
 }
 
-.mycardtheme {
+.primary-theme {
   background: rgb(228, 207, 20);
   color: black;
 }
 
-.othercardtheme {
+.secondary-theme {
   background: black;
   color: white;
 }
+
+.un-locked {
+  opacity: 0.65;
+}
+
 .year {
   font-size: 150%;
   font-weight: bold;

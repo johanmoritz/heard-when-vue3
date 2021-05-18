@@ -1,36 +1,23 @@
 <template>
-  <main>
-    <div v-if="game !== undefined && user !== undefined">
-      <div v-if="game.status === 'initialized'">
-        <WaitingAreaPresenter />
-      </div>
+  <div v-if="game !== undefined && user !== undefined">
+    <WaitingAreaPresenter v-if="game.status === 'initialized'" />
 
-      <div v-if="game.status === 'started'">
-        <GamePresenter :game="game" :guess="guess" :draw="draw" :lock="lock" />
-        <div
-          v-if="game.phase === 'listen' && game.currentHiddenCard !== undefined"
-        >
-          <MusicPlayerPresenter
-            class="music-player"
-            :songId="game.currentHiddenCard.uri"
-          />
-        </div>
-      </div>
+    <GamePresenter
+      v-if="game.status === 'started'"
+      :game="game"
+      :guess="guess"
+      :draw="draw"
+      :lock="lock"
+    />
+    <MusicPlayerPresenter
+      v-if="game.phase === 'listen' && game.currentHiddenCard !== undefined"
+      :songId="game.currentHiddenCard.uri"
+    />
 
-      <div class="text-contrast" v-if="game.status === 'finished'">
-        Game Over! The final score is...
-        <p v-for="player in game.players" :key="player.displayName">
-          {{ player.displayName }} has {{ player.lockedCards.length }} cards
-        </p>
-      </div>
+    <EndView v-if="game.status === 'finished'" :players="game.players" />
 
-      <div class="pos-mid-bottom">
-        <Btn theme="alert">
-          <button @click="quit">End Game</button>
-        </Btn>
-      </div>
-    </div>
-  </main>
+    <EndGameButton :quit="quit" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -38,8 +25,9 @@ import { defineComponent, ref, computed, toRefs } from "vue";
 import { Game } from "../../firebase/functions/src/types";
 import MusicPlayerPresenter from "@/components/MusicPlayer/MusicPlayerPresenter.vue";
 import GamePresenter from "@/components/Game/GamePresenter.vue";
+import EndGameButton from "@/components/Game/EndGameButton.vue";
+import EndView from "@/components/Game/EndView.vue";
 import WaitingAreaPresenter from "@/components/WaitingArea/WaitingAreaPresenter.vue";
-import Btn from "@/components/Btn.vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import userApi, { data as userData } from "@/store/user";
@@ -49,7 +37,8 @@ export default defineComponent({
     MusicPlayerPresenter,
     GamePresenter,
     WaitingAreaPresenter,
-    Btn
+    EndGameButton,
+    EndView
   },
   setup() {
     const model = useStore();
@@ -60,7 +49,6 @@ export default defineComponent({
 
     const gameId = computed(() => model.state.gameId as string | undefined);
     const game = computed(() => model.state.game as Game | undefined);
-    const error = computed(() => model.state.error as string);
 
     const { quit } = userApi({ model, router });
 
@@ -81,11 +69,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-.pos-mid-bottom {
-  position: fixed;
-  bottom: 1em;
-  left: 45%;
-}
-</style>

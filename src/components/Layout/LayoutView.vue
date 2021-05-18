@@ -118,4 +118,13 @@
   bottom: 1em;
   left: 1em;
 }
+
+@media screen and (max-width: 600px) {
+  .logostart {
+    position: fixed;
+    left: 1rem;
+    top: 2rem;
+    width: 40vw;
+  }
+}
 </style>
