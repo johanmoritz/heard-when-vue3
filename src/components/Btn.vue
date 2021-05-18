@@ -46,6 +46,10 @@
 .btn-connect {
   transform: scale(0.8);
 }
+
+.btn-connect:hover {
+  transform: scale(1);
+}
 </style>
 
 <script lang="ts">
