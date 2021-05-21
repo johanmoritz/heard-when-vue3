@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <slot name="guide"></slot>
+  </div>
   <div class="music-player-container">
     <div class="logo">
       <slot name="spotify"></slot>

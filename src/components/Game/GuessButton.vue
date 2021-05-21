@@ -20,4 +20,7 @@
   pointer-events: none;
   opacity: 0.6;
 }
+.onecard {
+  opacity: 0.4;
+}
 </style>

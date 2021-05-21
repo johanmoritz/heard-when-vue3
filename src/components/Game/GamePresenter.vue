@@ -2,9 +2,14 @@
   <Scoreboard props :game="game" />
   <GameView :msg="msg">
     <div class="button-card" v-for="(card, index) in cards" :key="index">
-      <GuessButton @click="guess(index)" :disabled="!isPlayerInTurn">{{
-        index === 0 || cards.length === 1 ? `Before` : `Between`
-      }}</GuessButton>
+      <GuessButton
+        :class="{ onecard: cards.length === 1 }"
+        @click="guess(index)"
+        :disabled="!isPlayerInTurn"
+        >{{
+          index === 0 || cards.length === 1 ? `Before` : `Between`
+        }}</GuessButton
+      >
       <Card
         :locked="
           game.currentPlayer.lockedCards.some(c => {
@@ -20,6 +25,7 @@
     </div>
     <GuessButton
       v-if="cards.length > 0"
+      :class="{ onecard: cards.length === 1 }"
       @click="guess(cards.length)"
       :disabled="!isPlayerInTurn"
     >
@@ -103,7 +109,9 @@ export default defineComponent({
             game.value.currentPlayer.displayName +
             ".\n When is the song from?"
         : !isPlayerInTurn.value
-        ? "It's " + game.value.currentPlayer.displayName + "'s turn."
+        ? "It's " +
+          game.value.currentPlayer.displayName +
+          "'s turn. Stay put and wait for your turn."
         : "";
     });
 

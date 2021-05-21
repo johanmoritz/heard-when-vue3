@@ -1,5 +1,15 @@
 <template>
   <MusicPlayerView>
+    <template v-slot:guide>
+      <div class="guide-box">
+        <GuideText v-if="!isConnected" v-show="guideVisible">
+          <p>
+            Try playing in your external Spotify app and then press play. You can
+            read more in the manual to the right.
+          </p>
+        </GuideText>
+      </div>
+    </template>
     <template v-slot:spotify>
       <img src="@/assets/spotify.png" class="large-icon" />
     </template>
@@ -30,14 +40,23 @@ import {
 import music from "@/store/music";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import Btn from "@/components/Btn.vue";
+import GuideText from "@/components/GuideText.vue";
 
 export default defineComponent({
-  components: { MusicPlayerView, Btn },
+  components: { MusicPlayerView, Btn, GuideText },
   props: {
     songId: {
       type: String,
       required: true
     }
+  },
+  data() {
+    return {
+      guideVisible: false
+    };
+  },
+  created() {
+    setTimeout(() => (this.guideVisible = true), 10000);
   },
   setup(props) {
     const { songId } = toRefs(props);
