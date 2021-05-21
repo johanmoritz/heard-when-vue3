@@ -1,6 +1,8 @@
 <template>
   <div class="choice-container">
-    <p class="text">Do you want to continue guessing or lock your cards?</p>
+    <p class="text">
+      Do you want to draw another card and guess or lock your cards?
+    </p>
     <Btn>
       <div class="btn">
         <button class="choice-btn" @click="draw">Draw Card</button>

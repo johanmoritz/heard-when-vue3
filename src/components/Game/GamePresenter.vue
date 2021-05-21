@@ -109,7 +109,9 @@ export default defineComponent({
             game.value.currentPlayer.displayName +
             ".\n When is the song from?"
         : !isPlayerInTurn.value
-        ? "It's " + game.value.currentPlayer.displayName + "'s turn."
+        ? "It's " +
+          game.value.currentPlayer.displayName +
+          "'s turn. Stay put and wait for your turn."
         : "";
     });
 
