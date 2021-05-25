@@ -46,16 +46,9 @@ function asyncAction<T>(action: Promise<T>) {
     return Promise.reject("Already processing");
   }
   _loading.value = action;
-  return action.then(
-    res => {
-      _loading.value = undefined;
-      return res;
-    },
-    res => {
-      _loading.value = undefined;
-      return res;
-    }
-  );
+  return action.finally(() => {
+    _loading.value = undefined;
+  });
 }
 
 function resolveJson<T>(): (resp: Response) => Promise<T> {
