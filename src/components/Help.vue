@@ -154,6 +154,19 @@ img {
   background-color: rgb(42, 41, 36);
   box-shadow: 0 4px black;
 }
+
+#openHelp:before {
+  content: 'Read instructions here →';
+  color: white;
+  background-color: black;
+  top: -0.5rem;
+  left: -24rem;
+  position: absolute;
+  height: 1rem;
+  font: 2rem/100% Georgia, "Times New Roman", Times, serif;
+  padding-bottom: 25px;
+  }
+
 #close-btn-position {
   float: right;
   top: 1rem;
