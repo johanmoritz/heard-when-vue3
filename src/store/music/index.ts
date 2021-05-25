@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { computed, ComputedRef, ref } from "vue";
 import { spotify } from "@/services/spotify";
-import { Api, DevicesResponse, State } from "./type";
+import { Api, Device, DevicesResponse, State } from "./type";
 
 // This file uses the Composition API
 // to build a stateful api. State is shared globally.
@@ -46,16 +46,9 @@ function asyncAction<T>(action: Promise<T>) {
     return Promise.reject("Already processing");
   }
   _loading.value = action;
-  return action.then(
-    res => {
-      _loading.value = undefined;
-      return res;
-    },
-    res => {
-      _loading.value = undefined;
-      return res;
-    }
-  );
+  return action.finally(() => {
+    _loading.value = undefined;
+  });
 }
 
 function resolveJson<T>(): (resp: Response) => Promise<T> {
@@ -66,17 +59,34 @@ async function handleAsyncError({ msg }: any) {
   _errorMsg.value = msg;
 }
 
+interface PlaybackState {
+  is_playing: boolean;
+}
+
+async function playbackState(authId: string): Promise<PlaybackState> {
+  return spotify
+    .auth(authId)
+    .get("/me/player")
+    .then(resolveJson<PlaybackState>());
+}
+
+async function currentDevice(authId: string): Promise<Device> {
+  const { devices } = await spotify
+    .auth(authId)
+    .get("/me/player/devices")
+    .then(resolveJson<DevicesResponse>());
+
+  const activeDevice = devices.find(({ is_active }) => is_active) ?? devices[0];
+
+  return activeDevice;
+}
+
 async function connectRaw() {
   const id = await spotify.connect().then(({ authId }) => authId);
 
   _authId.value = id;
 
-  const { devices } = await spotify
-    .auth(_authId.value)
-    .get("/me/player/devices")
-    .then(resolveJson<DevicesResponse>());
-
-  const activeDevice = devices.find(({ is_active }) => is_active) ?? devices[0];
+  const activeDevice = await currentDevice(_authId.value);
 
   if (activeDevice === undefined) {
     return Promise.reject(
@@ -98,6 +108,11 @@ async function connect() {
 async function play() {
   if (publicState.value.kind === "connected") {
     const { authId } = publicState.value;
+    const { is_playing: playingBefore } = await playbackState(authId);
+    if (playingBefore) {
+      _playing.value = true;
+      return;
+    }
     await asyncAction(spotify.auth(authId).put("/me/player/play")).then(
       httpErrorGuard(() => {
         _playing.value = true;
@@ -131,6 +146,11 @@ async function playTrack(trackUri: string) {
 async function pause() {
   if (publicState.value.kind === "connected") {
     const { authId } = publicState.value;
+    const { is_playing: playingBefore } = await playbackState(authId);
+    if (!playingBefore) {
+      _playing.value = false;
+      return;
+    }
     await asyncAction(spotify.auth(authId).put("/me/player/pause")).then(
       httpErrorGuard(() => {
         _playing.value = false;
