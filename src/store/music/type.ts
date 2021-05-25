@@ -18,7 +18,7 @@ interface Loading {
   kind: "loading";
 }
 
-interface Device {
+export interface Device {
   id: string;
   is_active: boolean;
   is_private_session: boolean;
