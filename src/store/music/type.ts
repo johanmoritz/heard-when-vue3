@@ -40,6 +40,7 @@ export type Api =
       play: VoidAction;
       pause: VoidAction;
       playTrack: (uid: string) => Promise<void>;
+      connect: VoidAction;
     });
 
 export interface DevicesResponse {

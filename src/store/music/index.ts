@@ -37,6 +37,8 @@ function httpErrorGuard<T extends { status: number }>(
   return (res: T) => {
     if (200 <= res.status && res.status <= 299) {
       callback(res);
+    } else {
+      _errorMsg.value = "Please open spotify on one of your devices.";
     }
   };
 }
@@ -108,8 +110,10 @@ async function connect() {
 async function play() {
   if (publicState.value.kind === "connected") {
     const { authId } = publicState.value;
-    const { is_playing: playingBefore } = await playbackState(authId);
-    if (playingBefore) {
+    const { is_playing: playingBefore } = await playbackState(
+      authId
+    ).catch(() => ({ is_playing: undefined }));
+    if (playingBefore !== undefined && playingBefore === true) {
       _playing.value = true;
       return;
     }
@@ -146,8 +150,10 @@ async function playTrack(trackUri: string) {
 async function pause() {
   if (publicState.value.kind === "connected") {
     const { authId } = publicState.value;
-    const { is_playing: playingBefore } = await playbackState(authId);
-    if (!playingBefore) {
+    const { is_playing: playingBefore } = await playbackState(
+      authId
+    ).catch(() => ({ is_playing: undefined }));
+    if (playingBefore !== undefined && playingBefore === false) {
       _playing.value = false;
       return;
     }
@@ -183,7 +189,8 @@ export default function api(): ComputedRef<Api> {
           deviceId: publicState.value.deviceId,
           play,
           playTrack,
-          pause
+          pause,
+          connect
         };
       default: {
         throw "Should never happen...";

@@ -2,10 +2,10 @@
   <MusicPlayerView>
     <template v-slot:guide>
       <div class="guide-box">
-        <GuideText v-if="!isConnected" v-show="guideVisible">
+        <GuideText v-if="!(isConnected || isLoading)" v-show="guideVisible">
           <p>
-            Try playing in your external Spotify app and then press play. You can
-            read more in the manual to the right.
+            Try playing in your external Spotify app and then press play. You
+            can read more in the manual to the right.
           </p>
         </GuideText>
       </div>
@@ -78,6 +78,7 @@ export default defineComponent({
     );
 
     const isConnected = computed(() => api.value.kind === "connected");
+    const isLoading = computed(() => api.value.kind === "loading");
 
     const canConnect = computed(() => api.value.kind !== "loading");
 
@@ -124,6 +125,7 @@ export default defineComponent({
       msg,
       isPlaying,
       isConnected,
+      isLoading,
       canConnect,
       togglePlayPause,
       controlSrc
