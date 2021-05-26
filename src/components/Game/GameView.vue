@@ -3,8 +3,10 @@
     <div class="status-block">
       <h2 class="text-contrast">{{ msg }}</h2>
     </div>
-    <div class="cards-container">
-      <slot></slot>
+    <div class="cards-row">
+      <div class="cards-container">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -23,17 +25,18 @@ export default defineComponent({
 .status-block {
   padding: 0px 40px 0px 40px;
 }
-
 .board {
-  width: fill;
+  width: 100vw;
   height: fill;
   margin: 0 auto;
 }
+.cards-row {
+  display: flex;
+  justify-content: center;
+}
 .cards-container {
-  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   height: auto;
   overflow: scroll;
   overflow-x: auto;
