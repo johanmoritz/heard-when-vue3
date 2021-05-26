@@ -1,8 +1,13 @@
 <template>
   <div>
-    <Btn>
-      <button id="openHelp" @click="modalOpen = true">?</button>
-    </Btn>
+    <div id="arrow-container">
+      <div v-show="showText">
+        <HelpArrow />
+      </div>
+      <Btn>
+        <button id="openHelp" @click="modalOpen = true">?</button>
+      </Btn>
+    </div>
 
     <div class="help" v-show="modalOpen">
       <Btn class="btn-exit" id="close-btn-position">
@@ -88,9 +93,13 @@
 <script>
 import { ref } from "vue";
 import Btn from "@/components/Btn.vue";
+import HelpArrow from "@/components/HelpArrow.vue";
 
 export default {
-  components: { Btn },
+  components: { Btn, HelpArrow },
+  props: {
+    showText: { type: Boolean, required: true }
+  },
   setup() {
     const modalOpen = ref(false);
     return {
@@ -137,6 +146,16 @@ img {
   width: 100%;
   max-width: 400px;
 }
+
+#arrow-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  bottom: 3em;
+  right: 5em;
+  position: fixed;
+}
+
 #openHelp {
   border-radius: 50%;
   font-size: 25px;
@@ -154,18 +173,6 @@ img {
   background-color: rgb(42, 41, 36);
   box-shadow: 0 4px black;
 }
-
-#openHelp:before {
-  content: 'Read instructions here →';
-  color: white;
-  background-color: black;
-  top: -0.5rem;
-  left: -24rem;
-  position: absolute;
-  height: 1rem;
-  font: 2rem/100% Georgia, "Times New Roman", Times, serif;
-  padding-bottom: 25px;
-  }
 
 #close-btn-position {
   float: right;
