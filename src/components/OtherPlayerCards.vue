@@ -45,4 +45,7 @@ export default defineComponent({
   margin: 0.5rem;
   transform: scale(0.7);
 }
+.other-player-cards .card.primary-theme {
+  margin: 0.5rem 0;
+}
 </style>
