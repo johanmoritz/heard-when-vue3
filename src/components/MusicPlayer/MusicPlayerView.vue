@@ -31,10 +31,6 @@
   justify-content: center;
   background-color: rgba(30, 215, 95, 0.822);
   color: white;
-  margin: auto;
-  position: fixed;
-  bottom: 1em;
-  left: 1em;
   padding: 0.3rem 0.4rem 0 0.4rem;
 }
 .logo {
@@ -89,3 +85,4 @@ export default defineComponent({
   }
 });
 </script>
+
