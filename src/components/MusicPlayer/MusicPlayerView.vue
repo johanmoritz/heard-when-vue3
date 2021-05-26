@@ -1,21 +1,30 @@
 <template>
-  <div>
+  <div class="guide-container">
     <slot name="guide"></slot>
-  </div>
-  <div class="music-player-container">
-    <div class="logo">
-      <slot name="spotify"></slot>
-    </div>
-    <div class="player">
-      <b><slot name="status"></slot></b>
-      <div>
-        <slot></slot>
+    <div class="music-player-container">
+      <div class="logo">
+        <slot name="spotify"></slot>
+      </div>
+      <div class="player">
+        <b><slot name="status"></slot></b>
+        <div>
+          <slot></slot>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.guide-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: auto;
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+}
 .music-player-container {
   display: flex;
   flex-direction: row;
