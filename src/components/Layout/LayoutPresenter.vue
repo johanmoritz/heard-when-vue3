@@ -15,6 +15,7 @@
       <router-view />
       <Loader id="loader" v-if="loading" />
       <Help id="help-position" />
+      <HelpArrow id="help-position" />
     </template>
 
     <template v-slot:bottom-left>
@@ -31,10 +32,11 @@ import { useRouter } from "vue-router";
 import Loader from "@/components/Loader.vue";
 import Error from "@/components/Error.vue";
 import Help from "@/components/Help.vue";
+import HelpArrow from "@/components/HelpArrow.vue";
 import LayoutView from "@/components/Layout/LayoutView.vue";
 
 export default defineComponent({
-  components: { Loader, Error, LayoutView, Help },
+  components: { Loader, Error, LayoutView, Help, HelpArrow },
   setup() {
     const model = useStore();
     const router = useRouter();

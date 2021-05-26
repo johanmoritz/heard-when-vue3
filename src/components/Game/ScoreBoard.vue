@@ -24,7 +24,7 @@ export default defineComponent({
 
 <style scoped>
 .scoreboard {
-  color: white;
+  color: black;
   background-color: grey;
   opacity: 0.9;
   display: inline-block;
@@ -34,7 +34,7 @@ export default defineComponent({
   margin: 10px;
   padding: 40px;
   border-radius: 23% 27% 32% 19% / 64% 0% 35% 0%;
-  background-image: linear-gradient(-225deg, #bd8787 0%, rgba(255,255,255,0) 40%, rgba(0,255,255,0) 60%, aqua 100%),linear-gradient(45deg, #3023AE 0%, #f09 100%);
+  background-color:#dbc832;
 }
 
 #scorehead {
