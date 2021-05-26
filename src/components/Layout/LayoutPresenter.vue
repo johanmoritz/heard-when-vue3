@@ -14,7 +14,7 @@
       />
       <router-view />
       <Loader id="loader" v-if="loading" />
-      <Help id="help-position" />
+      <Help id="help-position" :showText="!isInitialized || !isStarted" />
     </template>
 
     <template v-slot:bottom-left>
@@ -47,6 +47,7 @@ export default defineComponent({
     const unsubFb = handleAuthState();
 
     const isInitialized = computed(() => model.state.game);
+    const isStarted = computed(() => model.state.game.status === "started");
     const isOtherPlayer = computed(
       () =>
         model.state.game &&
@@ -58,7 +59,7 @@ export default defineComponent({
       unsubFb();
     });
 
-    return { loading, error, isInitialized, isOtherPlayer };
+    return { loading, error, isInitialized, isStarted, isOtherPlayer };
   }
 });
 </script>
