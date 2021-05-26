@@ -25,7 +25,7 @@ export default defineComponent({
   border-radius: 1em;
   padding: 0.7em;
   margin-left: 0.7em;
-  margin-bottom: 5em;
+  margin-bottom: 2.2em;
   width: 40vw;
   max-width: 280px;
   z-index: 1;
@@ -51,7 +51,7 @@ export default defineComponent({
   font-size: 130%;
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 749px) {
   .guide {
     display: none;
   }
