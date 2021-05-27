@@ -4,14 +4,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "HelpArrow",
-  msg: String;
-});
-</script>
-
 <style scoped>
 
 .help-arrow {
@@ -25,3 +17,15 @@ export default defineComponent({
   padding-bottom: 25px;
 }
 </style>
+
+
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "HelpArrow",
+  props: {
+    text: { type: String}
+  }
+});
+</script>
+
