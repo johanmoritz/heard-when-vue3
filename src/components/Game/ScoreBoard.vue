@@ -101,12 +101,14 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 749px) {
-  .scoreboard {
-    height: 10%;
-    width: 10%;
-    margin: 0px;
+  #open-score {
+    margin: 5px;
+    padding: 10px;
 
   }
+  .scoreboard {
+    margin: 5px;
+}
 }
 </style>
 
