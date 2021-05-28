@@ -1,10 +1,12 @@
 <template>
-  <div class="other-player-container">
-    <p>
-      <span class="text-contrast">These are your cards, {{ userName }}:</span>
-    </p>
-    <div class="other-player-cards">
-      <slot></slot>
+  <span class="text-contrast other-player-msg"
+    >These are your cards, {{ userName }}:</span
+  >
+  <div class="other-player-row">
+    <div class="other-player-container">
+      <div class="other-player-cards">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -20,10 +22,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.other-player-msg {
+  margin-top: 2rem;
+}
+.other-player-row {
+  display: flex;
+  justify-content: center;
+}
 .other-player-container {
   display: flex;
-  flex-direction: column;
-  color: white;
+  flex-direction: row;
+  height: auto;
   overflow: scroll;
   overflow-x: auto;
   overflow-y: hidden;
@@ -31,12 +40,12 @@ export default defineComponent({
 .other-player-cards {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  transform: scale(0.7);
-  height: auto;
 }
-
 .other-player-cards > * {
-  margin: 10px;
+  margin: 0.5rem;
+  transform: scale(0.7);
+}
+.other-player-cards .card.primary-theme {
+  margin: 0.5rem 0;
 }
 </style>
