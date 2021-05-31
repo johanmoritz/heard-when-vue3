@@ -75,9 +75,32 @@
       <img src="@/assets/gameID.png" alt="Invite players using game ID" />
       <h3>Troubleshooting</h3>
       <p>
-        Should the song not play, hit the play button on an external Spotify
-        application where you are also signed in. Pause it, then try using the
-        in-game player again.
+        <img
+          src="@/assets/connect.png"
+          alt="Connect to Spotify prompt"
+          class="spotify-help"
+        />
+        <img
+          src="@/assets/please-open.png"
+          alt="Open exernal Spotify player prompt"
+          class="spotify-help"
+        />
+        When connecting Spotify to the in-game player and prompted to open
+        Spotify on another device, start playing any song on an external Spotify
+        application where you are also signed in. Then, the in-game player will
+        be ready to use.
+      </p>
+      <p>
+        <img
+          src="@/assets/external-playing.png"
+          class="spotify-help"
+          alt="External Spotify playing"
+        />
+        <img
+          src="@/assets/spotify-ready.png"
+          alt="In-game player ready"
+          class="spotify-help"
+        />
       </p>
       <p>
         <br /><br />
@@ -112,8 +135,6 @@ export default {
 <style scoped>
 .help {
   background: rgb(228, 207, 20);
-  /*background:black;
-  color: white;*/
   text-align: center;
   top: 0;
   display: inline-block;
@@ -145,6 +166,9 @@ img {
   justify-content: center;
   width: 100%;
   max-width: 400px;
+}
+.spotify-help {
+  max-height: 90px;
 }
 
 #arrow-container {
@@ -196,6 +220,12 @@ img {
 @media screen and (max-width: 1000px) {
   .help {
     width: 70%;
+  }
+}
+@media screen and (min-width: 580px) and (max-width: 1850px) {
+  .spotify-help {
+    display: block;
+    margin: 1rem auto;
   }
 }
 </style>

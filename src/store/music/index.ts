@@ -38,7 +38,7 @@ function httpErrorGuard<T extends { status: number }>(
     if (200 <= res.status && res.status <= 299) {
       callback(res);
     } else {
-      _errorMsg.value = "Please open spotify on one of your devices.";
+      _errorMsg.value = "Please open Spotify on one of your devices.";
     }
   };
 }
@@ -92,7 +92,7 @@ async function connectRaw() {
 
   if (activeDevice === undefined) {
     return Promise.reject(
-      new Error("Please open spotify on one of your devices.")
+      new Error("Please open Spotify on one of your devices.")
     );
   }
 
