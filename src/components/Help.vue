@@ -15,8 +15,8 @@
       </Btn>
       <h2>About</h2>
       <p>
-        Heard When is a multiplayer music trivia game inspired by the Swedish
-        board game "När då då?".<br /><br />
+        <b>Heard When</b> is a multiplayer music trivia game inspired by the
+        Swedish board game "När då då?".<br /><br />
         Listen to songs and try to guess their <i>release year</i> relative to
         other songs.
       </p>
@@ -74,34 +74,18 @@
       </p>
       <img src="@/assets/gameID.png" alt="Invite players using game ID" />
       <h3>Troubleshooting</h3>
+      <img
+        src="@/assets/please-open.png"
+        alt="Open external Spotify player prompt"
+      />
       <p>
-        <img
-          src="@/assets/connect.png"
-          alt="Connect to Spotify prompt"
-          class="spotify-help"
-        />
-        <img
-          src="@/assets/please-open.png"
-          alt="Open exernal Spotify player prompt"
-          class="spotify-help"
-        />
         When connecting Spotify to the in-game player and prompted to open
         Spotify on another device, start playing any song on an external Spotify
-        application where you are also signed in. Then, the in-game player will
-        be ready to use.
+        application where the same user is also signed in. Then press "Connect"
+        again and the in-game player will be ready to use.
       </p>
-      <p>
-        <img
-          src="@/assets/external-playing.png"
-          class="spotify-help"
-          alt="External Spotify playing"
-        />
-        <img
-          src="@/assets/spotify-ready.png"
-          alt="In-game player ready"
-          class="spotify-help"
-        />
-      </p>
+      <img src="@/assets/external-playing.png" alt="External Spotify playing" />
+      <img src="@/assets/spotify-ready.png" alt="In-game player ready" />
       <p>
         <br /><br />
         <b>Background image</b> by gotafli:
@@ -167,9 +151,6 @@ img {
   width: 100%;
   max-width: 400px;
 }
-.spotify-help {
-  max-height: 90px;
-}
 
 #arrow-container {
   display: flex;
@@ -220,12 +201,6 @@ img {
 @media screen and (max-width: 1000px) {
   .help {
     width: 70%;
-  }
-}
-@media screen and (min-width: 580px) and (max-width: 1850px) {
-  .spotify-help {
-    display: block;
-    margin: 1rem auto;
   }
 }
 </style>
